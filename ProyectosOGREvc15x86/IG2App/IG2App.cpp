@@ -236,6 +236,46 @@ void IG2App::setupScene(void){
 
     //mColumns->yaw(Ogre::Degree(0));
     mColumns->setVisible(true);
+
+
+    //------------------------------------------------------------------------
+    // CUBOS PARA P1
+
+    /*
+    IG2Ojbect* cube = nullpts;
+
+    //nuevo objeto, con pos inicial, creamos un nodo nuevo para el hijo, en en SceneManager, con la malla de cubo
+    cube = new IG2Object(Vector3::ZERO, mSM->getRootSceneNode()->createChildrenNode(), mSM, "cube.mesh");
+    
+    //Se pueden poner COUTS
+    cout << "Size:" << cube->calculateBoxSize() << endl;
+
+    //Se pueden resizear
+    cube->setScale(IG2App::BLOCK_SIZE /  cube->calculateBoxSize() );
+    cout << "New size:" << cube->calculateBoxSize() << endl;
+    */
+
+    //------------------------------------------------------------------------
+    // LABERINTO
+
+    /*
+    //Se recomienda usar un solo vector de IG2Object para almacenar, en vez de la matriz, pero intentar trabajar en modo cuadricula
+    //Tener en cuenta el tamaño de los bloques etcetc...
+
+    Crear nodo para el laberinto, y luego los cubos son hijos
+
+    //Los vacios son objeto sin malla
+
+
+
+    
+    
+    
+    
+    */
+
+
+
 }
 
 
