@@ -1,5 +1,6 @@
 #include "IG2App.h"
 
+
 using namespace Ogre;
 using namespace std;
 
@@ -108,17 +109,22 @@ void IG2App::setupScene(void){
     mSinbadNode->setScale(20, 20, 20);
     
     //mSinbadNode->yaw(Ogre::Degree(45));
-    mSinbadNode->setVisible(true);    
+    mSinbadNode->setVisible(false);
 
     //------------------------------------------------------------------------
     // CUBOS PARA P1
 
-    /*
-    IG2Ojbect* cube = nullpts;
+    //IG2Object* cube = nullptr;
 
-    //nuevo objeto, con pos inicial, creamos un nodo nuevo para el hijo, en en SceneManager, con la malla de cubo
-    cube = new IG2Object(Vector3::ZERO, mSM->getRootSceneNode()->createChildrenNode(), mSM, "cube.mesh");
+    //nuevo objeto 
+    //cube = new IG2Object(
+    //    Vector3::ZERO,                                   // pos inicial
+    //    mSM->getRootSceneNode()->createChildSceneNode(), // creamos un nodo nuevo para el hijo
+     //   mSM,                                             // en en SceneManager
+    //    "cube.mesh"                                      // con la malla de cubo
+    //);
     
+    /*
     //Se pueden poner COUTS
     cout << "Size:" << cube->calculateBoxSize() << endl;
 
