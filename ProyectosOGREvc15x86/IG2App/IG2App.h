@@ -2,6 +2,7 @@
 #define __IG2App_H__
 
 #include "IG2ApplicationContext.h"
+#include "IG2Object.h"
 #include <OgreSceneManager.h>
 #include <OgreSceneNode.h>
 #include <OgreTrays.h>
@@ -13,6 +14,9 @@
 #include <sstream>
 #include <iostream>
 #include <string>
+#include <iomanip>
+#include <fstream>
+#include <vector>
 
 class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener{
 

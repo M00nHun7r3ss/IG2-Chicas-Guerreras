@@ -1,5 +1,5 @@
 #include "IG2App.h"
-#include "IG2Object.h"
+
 
 using namespace Ogre;
 using namespace std;
@@ -94,21 +94,21 @@ void IG2App::setupScene(void){
     //------------------------------------------------------------------------
     // Creating Sinbad
 
-    Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
-    mSinbadNode = mSM->getRootSceneNode()->createChildSceneNode("nSinbad");
-    mSinbadNode->attachObject(ent);
+    //Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
+    //mSinbadNode = mSM->getRootSceneNode()->createChildSceneNode("nSinbad");
+    //mSinbadNode->attachObject(ent);
 
-    // Show bounding box
-    mSinbadNode->showBoundingBox(false);
-    
-    // Set position of Sinbad
-    //mSinbadNode->setPosition(x, y, z);
-    
-    // Set scale of Sinbad
-    mSinbadNode->setScale(20, 20, 20);
-    
-    //mSinbadNode->yaw(Ogre::Degree(-45));
-    mSinbadNode->setVisible(false);    
+    //// Show bounding box
+    //mSinbadNode->showBoundingBox(false);
+    //
+    //// Set position of Sinbad
+    ////mSinbadNode->setPosition(x, y, z);
+    //
+    //// Set scale of Sinbad
+    //mSinbadNode->setScale(20, 20, 20);
+    //
+    ////mSinbadNode->yaw(Ogre::Degree(-45));
+    //mSinbadNode->setVisible(false);    
 
     //------------------------------------------------------------------------
     // CUBOS PARA P1
@@ -122,6 +122,56 @@ void IG2App::setupScene(void){
         mSM,                                             // en en SceneManager
         "cube.mesh"                                      // con la malla de cubo
     );
+
+    const Vector3 boxSize = cube->calculateBoxSize();
+    cube->setVisible(false);
+
+
+    //Lectura archivo laberinto
+    std::ifstream file("stage1.txt");
+    if (!file.is_open())
+    {
+        cout << "Error al abrir el stageX.txt\n";
+        exit(EXIT_FAILURE);
+    }
+
+    int numFilas;
+    file >> numFilas;
+    
+    int numColumnas;
+    file >> numColumnas;
+
+    char lee; 
+
+    // creamos vector cajas. TODO: sera una clase luego 1. LABERINTO 2.MURO 3. VACIO
+    std::vector <IG2Object*> labyrinth(numFilas * numColumnas);
+
+    // leemos cada fila
+    for (int i = 0; i < numFilas; i++) {
+        for (int j = 0; j < numColumnas; j++) {
+            file >> lee;
+            std::cout << lee;
+
+            if (lee == 'x') {
+                // crea elemento muro
+                labyrinth.push_back(new IG2Object(
+                    Vector3(boxSize.x * j, 0, boxSize.z * i),                                    // pos inicial
+                    mSM->getRootSceneNode()->createChildSceneNode(), // creamos un nodo nuevo para el hijo
+                    mSM,                                             // en en SceneManager
+                    "cube.mesh"                                      // con la malla de cubo
+                ));
+            }
+            else if (lee == 'o') {
+                // crea elemento vacio
+                labyrinth.push_back(new IG2Object(
+                    Vector3(boxSize.x * j, 0, boxSize.z * i),                                    // pos inicial
+                    mSM->getRootSceneNode()->createChildSceneNode(), // creamos un nodo nuevo para el hijo
+                    mSM                                              // en en SceneManager
+                )); // sin malla
+            }
+        }
+    }
+
 
     /*
     //Se pueden poner COUTS
