@@ -13,7 +13,6 @@
 #include <sstream>
 #include <iostream>
 #include <string>
-#include <OgreBitesConfigDialog.h>
 
 class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener{
 
@@ -29,13 +28,6 @@ protected:
     
     
     Ogre::SceneNode* mSinbadNode = nullptr;
-    Ogre::SceneNode* mSwordNode = nullptr;
-    Ogre::SceneNode* mHelmetNode = nullptr;
-    Ogre::SceneNode* mOgreHead = nullptr;
-    Ogre::SceneNode* mFacial = nullptr;
-    Ogre::SceneNode* mBathLower = nullptr;
-    Ogre::SceneNode* mBathUpper = nullptr;
-    Ogre::SceneNode* mColumns = nullptr;
       
     Ogre::SceneManager* mSM = nullptr;
     OgreBites::TrayManager* mTrayMgr = nullptr;

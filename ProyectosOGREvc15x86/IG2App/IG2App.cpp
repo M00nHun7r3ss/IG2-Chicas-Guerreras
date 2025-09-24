@@ -1,5 +1,5 @@
 #include "IG2App.h"
-
+#include "IG2Object.h"
 
 using namespace Ogre;
 using namespace std;
@@ -30,9 +30,6 @@ void IG2App::shutdown(){
 
 void IG2App::setup(void){
     
-    // Caja de dialogo inicial
-    //mRoot->showConfigDialog(OgreBites::getNativeConfigDialog());
-
     // do not forget to call the base first
     IG2ApplicationContext::setup();
 
@@ -71,7 +68,7 @@ void IG2App::setupScene(void){
     
     // and tell it to render into the main window
     Viewport* vp = getRenderWindow()->addViewport(cam);
-
+    
     mCamMgr = new OgreBites::CameraMan(mCamNode);
     addInputListener(mCamMgr);
     mCamMgr->setStyle(OgreBites::CS_ORBIT);
@@ -83,7 +80,7 @@ void IG2App::setupScene(void){
     mSM->setAmbientLight(ColourValue(0.7, 0.8, 0.9));
     /*Light* luz = mSM->createLight("Luz");
     luz->setType(Ogre::Light::LT_DIRECTIONAL);
-    luz->setDiffuseColour(0.7, 0.8, 0.9);*/
+    luz->setDiffuseColour(0.75, 0.75, 0.75);*/
 
     mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
     //mLightNode = mCamNode->createChildSceneNode("nLuz");
@@ -91,13 +88,15 @@ void IG2App::setupScene(void){
     //mLightNode->setDirection(Ogre::Vector3(0, 0, -1)); //Luz de frente
     //mLightNode->setDirection(Ogre::Vector3(0, 1, 0)); //Luz de abajo
     //mLightNode->setDirection(Ogre::Vector3(-1, -0.25, 0.25)); //Luz de lado
+    
 
+    
     //------------------------------------------------------------------------
     // Creating Sinbad
 
-    Ogre::Entity* ent0 = mSM->createEntity("Sinbad.mesh");
+    Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
     mSinbadNode = mSM->getRootSceneNode()->createChildSceneNode("nSinbad");
-    mSinbadNode->attachObject(ent0);
+    mSinbadNode->attachObject(ent);
 
     // Show bounding box
     mSinbadNode->showBoundingBox(false);
@@ -108,22 +107,22 @@ void IG2App::setupScene(void){
     // Set scale of Sinbad
     mSinbadNode->setScale(20, 20, 20);
     
-    //mSinbadNode->yaw(Ogre::Degree(45));
-    mSinbadNode->setVisible(false);
+    //mSinbadNode->yaw(Ogre::Degree(-45));
+    mSinbadNode->setVisible(false);    
 
     //------------------------------------------------------------------------
     // CUBOS PARA P1
 
-    //IG2Object* cube = nullptr;
+    IG2Object* cube = nullptr;
 
     //nuevo objeto 
-    //cube = new IG2Object(
-    //    Vector3::ZERO,                                   // pos inicial
-    //    mSM->getRootSceneNode()->createChildSceneNode(), // creamos un nodo nuevo para el hijo
-     //   mSM,                                             // en en SceneManager
-    //    "cube.mesh"                                      // con la malla de cubo
-    //);
-    
+    cube = new IG2Object(
+        Vector3::ZERO,                                   // pos inicial
+        mSM->getRootSceneNode()->createChildSceneNode(), // creamos un nodo nuevo para el hijo
+        mSM,                                             // en en SceneManager
+        "cube.mesh"                                      // con la malla de cubo
+    );
+
     /*
     //Se pueden poner COUTS
     cout << "Size:" << cube->calculateBoxSize() << endl;
@@ -146,14 +145,11 @@ void IG2App::setupScene(void){
 
 
 
-    
-    
-    
-    
+
+
+
+
     */
-
-
-
 }
 
 
