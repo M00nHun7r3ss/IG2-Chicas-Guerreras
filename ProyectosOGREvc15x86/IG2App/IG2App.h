@@ -3,6 +3,7 @@
 
 #include "IG2ApplicationContext.h"
 #include "IG2Object.h"
+#include "Labyrinth.h"
 #include <OgreSceneManager.h>
 #include <OgreSceneNode.h>
 #include <OgreTrays.h>

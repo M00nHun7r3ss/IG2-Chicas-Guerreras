@@ -113,65 +113,66 @@ void IG2App::setupScene(void){
     //------------------------------------------------------------------------
     // CUBOS PARA P1
 
-    IG2Object* cube = nullptr;
+    //IG2Object* cube = nullptr;
 
-    //nuevo objeto 
-    cube = new IG2Object(
-        Vector3::ZERO,                                   // pos inicial
-        mSM->getRootSceneNode()->createChildSceneNode(), // creamos un nodo nuevo para el hijo
-        mSM,                                             // en en SceneManager
-        "cube.mesh"                                      // con la malla de cubo
-    );
+    ////nuevo objeto 
+    //cube = new IG2Object(
+    //    Vector3::ZERO,                                   // pos inicial
+    //    mSM->getRootSceneNode()->createChildSceneNode(), // creamos un nodo nuevo para el hijo
+    //    mSM,                                             // en en SceneManager
+    //    "cube.mesh"                                      // con la malla de cubo
+    //);
 
-    const Vector3 boxSize = cube->calculateBoxSize();
-    cube->setVisible(false);
+    //const Vector3 boxSize = cube->calculateBoxSize();
+    //cube->setVisible(false);
 
 
-    //Lectura archivo laberinto
-    std::ifstream file("stage1.txt");
-    if (!file.is_open())
-    {
-        cout << "Error al abrir el stageX.txt\n";
-        exit(EXIT_FAILURE);
-    }
+    ////Lectura archivo laberinto
+    //std::ifstream file("stage1.txt");
+    //if (!file.is_open())
+    //{
+    //    cout << "Error al abrir el stageX.txt\n";
+    //    exit(EXIT_FAILURE);
+    //}
 
-    int numFilas;
-    file >> numFilas;
-    
-    int numColumnas;
-    file >> numColumnas;
+    //int numFilas;
+    //file >> numFilas;
+    //
+    //int numColumnas;
+    //file >> numColumnas;
 
-    char lee; 
+    //char lee; 
 
-    // creamos vector cajas. TODO: sera una clase luego 1. LABERINTO 2.MURO 3. VACIO
-    std::vector <IG2Object*> labyrinth(numFilas * numColumnas);
+    //// creamos vector cajas. TODO: sera una clase luego 1. LABERINTO 2.MURO 3. VACIO
+    //std::vector <IG2Object*> labyrinth(numFilas * numColumnas);
 
-    // leemos cada fila
-    for (int i = 0; i < numFilas; i++) {
-        for (int j = 0; j < numColumnas; j++) {
-            file >> lee;
-            std::cout << lee;
+    //// leemos cada fila
+    //for (int i = 0; i < numFilas; i++) {
+    //    for (int j = 0; j < numColumnas; j++) {
+    //        file >> lee;
+    //        std::cout << lee;
 
-            if (lee == 'x') {
-                // crea elemento muro
-                labyrinth.push_back(new IG2Object(
-                    Vector3(boxSize.x * j, 0, boxSize.z * i),                                    // pos inicial
-                    mSM->getRootSceneNode()->createChildSceneNode(), // creamos un nodo nuevo para el hijo
-                    mSM,                                             // en en SceneManager
-                    "cube.mesh"                                      // con la malla de cubo
-                ));
-            }
-            else if (lee == 'o') {
-                // crea elemento vacio
-                labyrinth.push_back(new IG2Object(
-                    Vector3(boxSize.x * j, 0, boxSize.z * i),                                    // pos inicial
-                    mSM->getRootSceneNode()->createChildSceneNode(), // creamos un nodo nuevo para el hijo
-                    mSM                                              // en en SceneManager
-                )); // sin malla
-            }
-        }
-    }
+    //        if (lee == 'x') {
+    //            // crea elemento muro
+    //            labyrinth.push_back(new IG2Object(
+    //                Vector3(boxSize.x * j, 0, boxSize.z * i),                                    // pos inicial
+    //                mSM->getRootSceneNode()->createChildSceneNode(), // creamos un nodo nuevo para el hijo
+    //                mSM,                                             // en en SceneManager
+    //                "cube.mesh"                                      // con la malla de cubo
+    //            ));
+    //        }
+    //        else if (lee == 'o') {
+    //            // crea elemento vacio
+    //            labyrinth.push_back(new IG2Object(
+    //                Vector3(boxSize.x * j, 0, boxSize.z * i),                                    // pos inicial
+    //                mSM->getRootSceneNode()->createChildSceneNode(), // creamos un nodo nuevo para el hijo
+    //                mSM                                              // en en SceneManager
+    //            )); // sin malla
+    //        }
+    //    }
+    //}
 
+    Labyrinth* labyrinth = new Labyrinth("stage1.txt", mSM);
 
     /*
     //Se pueden poner COUTS
