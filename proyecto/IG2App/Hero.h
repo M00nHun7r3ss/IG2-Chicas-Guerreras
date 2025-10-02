@@ -24,8 +24,15 @@ class Hero : public Character
 public: 
 	explicit Hero(Vector3 initPos, SceneNode* node, SceneManager* sceneMng);
 
-	void heroInput(const OgreBites::KeyboardEvent evt);
+	void keyPressed(const OgreBites::KeyboardEvent evt);
 
 	void move() override;
+
+private:
+	int _lives;
+	int _points;
+	Vector3 _direction;
+	Vector3 _newDirection;
+	const double HERO_SPEED = 2.0;
 };
 

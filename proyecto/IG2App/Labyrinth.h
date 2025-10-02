@@ -18,9 +18,15 @@
 #include <vector>
 #include "Wall.h"
 #include "Empty.h"
+#include "Hero.h"
 
-class Labyrinth{
+class Labyrinth : public OgreBites::IG2ApplicationContext, OgreBites::InputListener {
 public:
     explicit Labyrinth(String file, SceneManager* sceneMng);
+
+    Hero* getHero() { return _hero; };
+    
+private:
+    Hero* _hero;
 };
 

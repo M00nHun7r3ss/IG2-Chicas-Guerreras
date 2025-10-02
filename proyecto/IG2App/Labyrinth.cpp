@@ -23,7 +23,7 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng)
     aux->setVisible(false);
     const Vector3 boxSize = aux->calculateBoxSize();
 
-    // creamos vector cajas. TODO: sera una clase luego 1. LABERINTO 2.MURO 3. VACIO
+    // creamos vector cajas.
     std::vector <IG2Object*> labyrinth(numFilas * numColumnas);
 
     // leemos cada fila
@@ -39,6 +39,15 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng)
             else if (lee == 'o') {
                 // crea elemento vacio
                 labyrinth.push_back(new Empty(Vector3(boxSize.x * j, 0, boxSize.z * i), sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
+            }
+            else if (lee == 'h') {
+                // crea elemento vacio
+                labyrinth.push_back(new Empty(Vector3(boxSize.x * j, 0, boxSize.z * i), sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
+                // crea hero
+                _hero = new Hero(Vector3(boxSize.x * j, 10, boxSize.z * i), sceneMng->getRootSceneNode()->createChildSceneNode("nSinbad"), sceneMng);
+            	_hero->setScale(Vector3(boxSize.x / _hero->calculateBoxSize().x, boxSize.y / _hero->calculateBoxSize().y + 5, boxSize.z / _hero->calculateBoxSize().z));
+                labyrinth.push_back(_hero);
+                addInputListener(_hero);
             }
         }
     }

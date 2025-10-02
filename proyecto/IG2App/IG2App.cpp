@@ -1,7 +1,6 @@
 #include "IG2App.h"
 
 
-
 using namespace Ogre;
 using namespace std;
 
@@ -13,7 +12,6 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
         getRoot()->queueEndRendering();
     }
 
-    // hero->heroInput(evt)
     
   return true;
 }
@@ -93,8 +91,6 @@ void IG2App::setupScene(void){
     //mLightNode->setDirection(Ogre::Vector3(0, 1, 0)); //Luz de abajo
     //mLightNode->setDirection(Ogre::Vector3(-1, -0.25, 0.25)); //Luz de lado
     
-
-    
     //------------------------------------------------------------------------
     // Creating Sinbad
 
@@ -115,11 +111,10 @@ void IG2App::setupScene(void){
     //mSinbadNode->setVisible(false);    
 
     //------------------------------------------------------------------------
-    
+    //Labyrinth creation
 
-    //Labyrinth* labyrinth = new Labyrinth("stage1.txt", mSM);
-    Hero* hero = new Hero(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nSinbad"), mSM);
-
+    Labyrinth* labyrinth = new Labyrinth("stage1.txt", mSM);
+ 
 }
 
 
