@@ -1,0 +1,9 @@
+    Notas:
+    Para el movimiento, revisar T3 grafo de la escena
+    Colocar con un setPosition la camara para mirar al centro del laberinto con lookAt. Mirarse lo de la Camara
+
+    El movimiento de SINBAD como si fuera un carrir en el medio del bloque. 
+
+    Método para traducir de posicion real de sinbad, a bloques en el laberinto (dividiendo entre el tamaño del bloque)    
+    Metodos : puedo moverme adelante
+    metodo: puedo girar a (direccion del input)
