@@ -22,6 +22,8 @@ class Character : public IG2Object
 public:
 	explicit Character(Vector3 initPos, SceneNode* node, SceneManager* sceneMng, String mesh) : IG2Object(initPos, node, sceneMng, mesh) {}
 
-	virtual void move() = 0;
+	virtual void move(double t) = 0;
+
+	virtual void rotate() = 0;
 };
 

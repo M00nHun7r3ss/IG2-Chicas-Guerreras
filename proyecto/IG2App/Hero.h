@@ -27,13 +27,15 @@ public:
 
 	void frameRendered(const Ogre::FrameEvent& evt) override;
 
-	void move() override;
+	void move(double t) override;
+
+	void rotate() override;
 
 private:
 	int _lives;
 	int _points;
 	Vector3 _direction;
 	Vector3 _newDirection;
-	const double HERO_SPEED = 2.0;
+	const double HERO_SPEED = 70.0;
 };
 
