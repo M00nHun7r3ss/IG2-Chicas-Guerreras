@@ -33,7 +33,6 @@ protected:
     virtual void setupScene();
     
     
-    Ogre::SceneNode* mSinbadNode = nullptr;
       
     Ogre::SceneManager* mSM = nullptr;
     OgreBites::TrayManager* mTrayMgr = nullptr;
@@ -45,7 +44,9 @@ protected:
     Ogre::SceneNode* mCamNode = nullptr;
     OgreBites::CameraMan* mCamMgr = nullptr;
 
-    Ogre::SceneNode* mHero = nullptr; // hero practica 1
+    // Objects
+    Ogre::SceneNode* mSinbadNode = nullptr;
+    Hero* _hero = nullptr; // hero practica 1
 };
 
 #endif

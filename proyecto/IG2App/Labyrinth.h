@@ -22,11 +22,17 @@
 
 class Labyrinth : public OgreBites::IG2ApplicationContext, OgreBites::InputListener {
 public:
-    explicit Labyrinth(String file, SceneManager* sceneMng);
+    explicit Labyrinth(String file, SceneManager* sceneMng, Hero* h);
 
-    Hero* getHero() { return _hero; };
-    
+    inline Vector3 getPos() { return _pos; }
+    inline float getHeight() { return _height; }
+    inline float getWidth() { return _width; }
+
 private:
     Hero* _hero;
+
+    float _width;
+    float _height;
+    Vector3 _pos;
 };
 

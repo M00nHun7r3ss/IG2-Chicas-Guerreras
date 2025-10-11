@@ -16,25 +16,11 @@
 #include <iomanip>
 #include <fstream>
 #include <vector>
-#include "Character.h"
 
-class Hero : public Character
-{
 
-public: 
-	explicit Hero(Vector3 initPos, SceneNode* node, SceneManager* sceneMng);
+class Floor : public  IG2Object {
 
-	void keyPressed(const OgreBites::KeyboardEvent evt);
-
-	void frameRendered(const Ogre::FrameEvent& evt) override;
-
-	void move(double t) override;
-
-private:
-	int _lives;
-	int _points;
-	Vector3 _direction;
-	Vector3 _newDirection;
-	const double HERO_SPEED = 2.0;
+public:
+    explicit Floor(Vector3 initPos, SceneNode* node, SceneManager* sceneMng); 
 };
 

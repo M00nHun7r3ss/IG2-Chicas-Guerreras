@@ -1,6 +1,6 @@
 #include "Labyrinth.h"
 
-Labyrinth::Labyrinth(String f, SceneManager* sceneMng)
+Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h) : _hero(h)
 {
     //Lectura archivo laberinto
     std::ifstream file(f);
@@ -44,12 +44,16 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng)
                 // crea elemento vacio
                 labyrinth.push_back(new Empty(Vector3(boxSize.x * j, 0, boxSize.z * i), sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
                 // crea hero
-                _hero = new Hero(Vector3(boxSize.x * j, 10, boxSize.z * i), sceneMng->getRootSceneNode()->createChildSceneNode("nSinbad"), sceneMng);
+                _hero->setPosition(Vector3(boxSize.x * j, 10, boxSize.z * i));
             	_hero->setScale(Vector3(boxSize.x / _hero->calculateBoxSize().x, boxSize.y / _hero->calculateBoxSize().y + 5, boxSize.z / _hero->calculateBoxSize().z));
                 labyrinth.push_back(_hero);
                 addInputListener(_hero);
             }
         }
     }
+
+    _width = numColumnas * boxSize.x;
+    _height = numFilas * boxSize.y;
+    _pos = Vector3(_width / 2, 0.0f, _height / 2);
 
 }

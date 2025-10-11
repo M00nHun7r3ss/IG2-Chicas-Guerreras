@@ -12,6 +12,8 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
         getRoot()->queueEndRendering();
     }
 
+    _hero->keyPressed(evt);
+
     
   return true;
 }
@@ -65,8 +67,8 @@ void IG2App::setupScene(void){
     mCamNode = mSM->getRootSceneNode()->createChildSceneNode("nCam");
     mCamNode->attachObject(cam);
 
-    mCamNode->setPosition(0, 0, 1000);
-    mCamNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TS_WORLD);
+    //mCamNode->setPosition(0, 0, 1000);
+    //mCamNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TS_WORLD);
     
     // and tell it to render into the main window
     Viewport* vp = getRenderWindow()->addViewport(cam);
@@ -113,7 +115,13 @@ void IG2App::setupScene(void){
     //------------------------------------------------------------------------
     //Labyrinth creation
 
-    Labyrinth* labyrinth = new Labyrinth("stage1.txt", mSM);
+    _hero = new Hero(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nSinbad"), mSM);
+
+    Labyrinth* labyrinth = new Labyrinth("stage1.txt", mSM, _hero);
+
+    // TODO luego cambiar para que parezca un libro.
+    mCamNode->setPosition(labyrinth->getPos().x, 3000, labyrinth->getPos().z); 
+    mCamNode->lookAt(labyrinth->getPos(), Ogre::Node::TS_WORLD);
  
 }
 
