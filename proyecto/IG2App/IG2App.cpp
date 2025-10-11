@@ -1,11 +1,9 @@
 #include "IG2App.h"
 
-
 using namespace Ogre;
 using namespace std;
 
 bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
-    // TODO ¿este metodo se llama por cada vez que se acciona el teclado?
         
     // ESC key finished the rendering...
     if (evt.keysym.sym == SDLK_ESCAPE){
@@ -14,8 +12,7 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
 
     _hero->keyPressed(evt);
 
-    
-  return true;
+	return true;
 }
 
 void IG2App::shutdown(){
@@ -66,9 +63,6 @@ void IG2App::setupScene(void){
             
     mCamNode = mSM->getRootSceneNode()->createChildSceneNode("nCam");
     mCamNode->attachObject(cam);
-
-    //mCamNode->setPosition(0, 0, 1000);
-    //mCamNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TS_WORLD);
     
     // and tell it to render into the main window
     Viewport* vp = getRenderWindow()->addViewport(cam);
@@ -92,37 +86,26 @@ void IG2App::setupScene(void){
     //mLightNode->setDirection(Ogre::Vector3(0, 0, -1)); //Luz de frente
     //mLightNode->setDirection(Ogre::Vector3(0, 1, 0)); //Luz de abajo
     //mLightNode->setDirection(Ogre::Vector3(-1, -0.25, 0.25)); //Luz de lado
-    
+
     //------------------------------------------------------------------------
-    // Creating Sinbad
-
-    //Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
-    //mSinbadNode = mSM->getRootSceneNode()->createChildSceneNode("nSinbad");
-    //mSinbadNode->attachObject(ent);
-
-    //// Show bounding box
-    //mSinbadNode->showBoundingBox(false);
-    //
-    //// Set position of Sinbad
-    ////mSinbadNode->setPosition(x, y, z);
-    //
-    //// Set scale of Sinbad
-    //mSinbadNode->setScale(20, 20, 20);
-    //
-    ////mSinbadNode->yaw(Ogre::Degree(-45));
-    //mSinbadNode->setVisible(false);    
+    //Hero creation
+    _hero = new Hero(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nSinbad"), mSM);
 
     //------------------------------------------------------------------------
     //Labyrinth creation
-
-    _hero = new Hero(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nSinbad"), mSM);
-
     Labyrinth* labyrinth = new Labyrinth("stage1.txt", mSM, _hero);
 
+    //Movemos la camara para que mire al laberinto
     // TODO luego cambiar para que parezca un libro.
     mCamNode->setPosition(labyrinth->getPos().x, 3000, labyrinth->getPos().z); 
     mCamNode->lookAt(labyrinth->getPos(), Ogre::Node::TS_WORLD);
  
+}
+
+void IG2App::frameRendered(const Ogre::FrameEvent& evt)
+{
+    //Update del Hero
+    _hero->frameRendered(evt);
 }
 
 

@@ -65,9 +65,6 @@
     <ClCompile Include="Empty.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="Character.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
     <ClCompile Include="Hero.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>

@@ -30,19 +30,20 @@ void Hero::keyPressed(const OgreBites::KeyboardEvent evt)
 
     _direction = _newDirection;
 
-    
+
 
 }
 
 void Hero::frameRendered(const Ogre::FrameEvent& evt){
+    //evt.timeSinceLastFrame //TODO: PA K CONIO ES ESTO?
     //evita que se mueva al arrancar
     if (_newDirection != Vector3::ZERO) {
-        move(evt.timeSinceLastFrame);
+        move();
     }
-        std::cout << "Hello im moving" << std::endl;
+
 }
 
 
-void Hero::move(double t){
+void Hero::move(){
     this->setPosition(this->getPosition() + HERO_SPEED * _direction);
 }

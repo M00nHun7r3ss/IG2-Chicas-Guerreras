@@ -20,7 +20,6 @@
 
 class Hero : public Character
 {
-
 public: 
 	explicit Hero(Vector3 initPos, SceneNode* node, SceneManager* sceneMng);
 
@@ -28,7 +27,7 @@ public:
 
 	void frameRendered(const Ogre::FrameEvent& evt) override;
 
-	void move(double t) override;
+	void move() override;
 
 private:
 	int _lives;
