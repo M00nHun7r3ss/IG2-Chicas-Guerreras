@@ -105,8 +105,10 @@ void IG2App::setupScene(void){
 
 void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 {
+    _lab->canHeroGoForward();
     //Update del Hero
     _hero->frameRendered(evt);
+
 }
 
 

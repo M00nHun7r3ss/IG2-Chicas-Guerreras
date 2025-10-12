@@ -26,8 +26,9 @@ public:
 	void keyPressed(const OgreBites::KeyboardEvent evt); // input
 	void frameRendered(const Ogre::FrameEvent& evt) override; // update
 
-	// metodo encargado de ver si delante hay WALL -> false, EMPTY -> true
-	bool canGoForward(Vector2 blockPos); 
+	Vector3 getDirection() { return _direction; }
+
+	void setCanGoForward(bool _canGo) { _canGoForward = _canGo; }
 
 private:
 	int _lives;
@@ -35,6 +36,8 @@ private:
 	Vector3 _direction;
 	Vector3 _newDirection;
 	const double HERO_SPEED = 70.0;
+
+	bool _canGoForward;
 
 	void move(double t) override;
 	void rotate() override;

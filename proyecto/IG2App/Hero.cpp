@@ -1,7 +1,9 @@
 #include "Hero.h"
 
+#include "Labyrinth.h"
+
 Hero::Hero(Vector3 initPos, SceneNode* node, SceneManager* sceneMng)
-: Character(initPos, node, sceneMng, "Sinbad.mesh"), _lives(3), _points(0), _direction(Vector3::ZERO), _newDirection(Vector3::ZERO) {
+: Character(initPos, node, sceneMng, "Sinbad.mesh"), _lives(3), _points(0), _direction(Vector3::ZERO), _newDirection(Vector3::ZERO), _canGoForward(true) {
 }
 
 void Hero::keyPressed(const OgreBites::KeyboardEvent evt){
@@ -41,15 +43,20 @@ void Hero::frameRendered(const Ogre::FrameEvent& evt){
 
 }
 
-bool Hero::canGoForward(Vector2 blockPos){
-   if (_direction.x == 1){
-	   
-   }
-   else if (_d)
-}
-
-void Hero::move(double t){
-    this->setPosition(this->getPosition() + HERO_SPEED * _direction * t);
+void Hero::move(double t)
+{
+    //std::cout << _canGoForward << std::endl;
+    //Si el siguiente bloque es traspasable, avanza
+	if (_canGoForward)
+	{
+		this->setPosition(this->getPosition() + HERO_SPEED * _direction * t);
+	}
+    //Si no, se para
+    else
+    {
+        _newDirection = Vector3::ZERO;
+    	_direction = _newDirection;
+    }
 }
 
 void Hero::rotate()

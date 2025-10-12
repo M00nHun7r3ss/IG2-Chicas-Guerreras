@@ -20,7 +20,10 @@
 class Character : public IG2Object
 {
 public:
-	explicit Character(Vector3 initPos, SceneNode* node, SceneManager* sceneMng, String mesh) : IG2Object(initPos, node, sceneMng, mesh) {}
+	explicit Character(Vector3 initPos, SceneNode* node, SceneManager* sceneMng, String mesh) : IG2Object(initPos, node, sceneMng, mesh)
+	{
+		_traspasable = false;
+	}
 
 	virtual void move(double t) = 0;
 

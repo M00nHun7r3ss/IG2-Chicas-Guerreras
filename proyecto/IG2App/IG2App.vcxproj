@@ -121,6 +121,7 @@
   <ItemGroup>
     <ClInclude Include="Character.h" />
     <ClInclude Include="Empty.h" />
+    <ClInclude Include="Environment.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="IG2ApplicationContext.h" />
@@ -131,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Empty.cpp" />
+    <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="IG2ApplicationContext.cpp" />

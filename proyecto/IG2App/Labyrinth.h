@@ -32,8 +32,18 @@ public:
     // ej.: de izq a der -> (0, 0), (1, 0), (2, 0) ...
     Vector2 getBlockPosition(Vector3 pos);
 
+    // devuelve el tipo de bloque en la posicion dada (Wall - false, Empty - true)
+    bool getBlockType(Vector2 blockPos);
+
+    // define si el hero puede avanzar a la siguiente casilla o no
+    // settea en el player si WALL -> false, EMPTY -> true
+    void canHeroGoForward();
+
 private:
     Hero* _hero;
+
+    //vector cajas
+    std::vector <IG2Object*> _labyrinth; 
 
     float _width;
     float _height;
