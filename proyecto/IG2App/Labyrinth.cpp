@@ -45,7 +45,7 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h) : _hero(h)
                 _labyrinth.push_back(new Empty(Vector3(_boxSize.x * j, 0, _boxSize.z * i), sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
                 // crea hero
                 _hero->setPosition(Vector3(_boxSize.x * j, 10, _boxSize.z * i));
-            	_hero->setScale(Vector3(_boxSize.x / _hero->calculateBoxSize().x, _boxSize.y / _hero->calculateBoxSize().y + 5, _boxSize.z / _hero->calculateBoxSize().z));
+            	_hero->setScale(Vector3(_boxSize.x / _hero->calculateBoxSize().x, _boxSize.y / _hero->calculateBoxSize().y + 5, _boxSize.z / _hero->calculateBoxSize().z)/2);
                 _labyrinth.push_back(_hero);
                 addInputListener(_hero);
             }
@@ -64,9 +64,8 @@ Vector2 Labyrinth::getBlockPosition(Vector3 pos){
     return Vector2((nBlocksWidth - 1) - int(pos.x / _boxSize.x), (nBlocksHeight - 1) - int(pos.z / _boxSize.z));
 }
 
-bool Labyrinth::getBlockType(Vector2 blockPos)
-{
-    int i = 0;
+bool Labyrinth::getBlockType(Vector2 blockPos){
+	int i = 0;
     //Buscamos el bloque que coincida con la pos dada
     while (i < _labyrinth.size())
     {
@@ -85,16 +84,14 @@ bool Labyrinth::getBlockType(Vector2 blockPos)
     return (_labyrinth[i]->isTraspasable());
 }
 
-void Labyrinth::canHeroGoForward()
-{
-    //Calculamos el siguiente bloque en cuestion a la posicion y direccion de hero
-    Vector3 forwardPos = _hero->getPosition() + _hero->getDirection();
+void Labyrinth::canHeroGoForward(){
+    // 1. Calculamos la pos en bloques del hero.
+    Vector2 heroBlockPos = getBlockPosition(_hero->getPosition());
 
-    //Sacamos la pos en la matriz del laberinto
-    Vector2 blockPos = getBlockPosition(forwardPos);
-
-    //Sacamos si la siguiente pos es traspasable o no
-    //y lo seteamos en el player
-    _hero->setCanGoForward(getBlockType(blockPos));
+    // 1. Calculamos el siguiente bloque en cuestion a la posicion y direccion de hero
+    Vector2 forwardBlock = Vector2(heroBlockPos.x + _hero->getDirection().x, heroBlockPos.y + _hero->getDirection().z);
+    
+    // 2. Miramos si es traspasable y lo seteamos.
+    _hero->setCanGoForward(getBlockType(forwardBlock));
 }
 

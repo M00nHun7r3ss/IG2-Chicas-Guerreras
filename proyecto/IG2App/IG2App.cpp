@@ -109,6 +109,8 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
     //Update del Hero
     _hero->frameRendered(evt);
 
+    std::cout << _lab->getBlockPosition(_hero->getPosition()) << std::endl;
+    std::cout << _hero->getDirection() << std::endl;
 }
 
 
