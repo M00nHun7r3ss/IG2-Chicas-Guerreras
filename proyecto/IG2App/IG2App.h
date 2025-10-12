@@ -45,6 +45,7 @@ protected:
 
     // Objects
     Hero* _hero = nullptr;
+    Labyrinth* _lab = nullptr;
 };
 
 #endif

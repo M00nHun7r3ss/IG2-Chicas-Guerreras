@@ -28,11 +28,24 @@ public:
     inline float getHeight() { return _height; }
     inline float getWidth() { return _width; }
 
+    // le pasas una posicion del laberinto y te devuelve que bloque es.
+    // ej.: de izq a der -> (0, 0), (1, 0), (2, 0) ...
+    Vector2 getBlockPosition(Vector3 pos);
+
 private:
     Hero* _hero;
 
     float _width;
     float _height;
+
     Vector3 _pos;
+
+    // es la posicion del bloque actual, ej.: (1, 5), (6, 18)...
+    // son como el v.size(), si se desea sacar la posicion actual reste 1.
+    // int _nBlocksWidth = _width / _boxSize.x; 
+    // int _nBlocksHeight = _height / _boxSize.z;
+    // TODO hacer luego porque da problemas
+
+    Vector3 _boxSize;
 };
 

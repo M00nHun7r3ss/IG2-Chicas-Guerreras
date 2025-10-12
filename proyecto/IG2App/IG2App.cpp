@@ -11,6 +11,7 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
     }
 
     _hero->keyPressed(evt);
+    std::cout << _lab->getBlockPosition(_hero->getPosition()) << std::endl;
 
 	return true;
 }
@@ -93,12 +94,12 @@ void IG2App::setupScene(void){
 
     //------------------------------------------------------------------------
     //Labyrinth creation
-    Labyrinth* labyrinth = new Labyrinth("stage1.txt", mSM, _hero);
+    _lab = new Labyrinth("stage1.txt", mSM, _hero);
 
     //Movemos la camara para que mire al laberinto
     // TODO luego cambiar para que parezca un libro.
-    mCamNode->setPosition(labyrinth->getPos().x, 3000, labyrinth->getPos().z); 
-    mCamNode->lookAt(labyrinth->getPos(), Ogre::Node::TS_WORLD);
+    mCamNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z);
+    mCamNode->lookAt(_lab->getPos(), Ogre::Node::TS_WORLD);
  
 }
 

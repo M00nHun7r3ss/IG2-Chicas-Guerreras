@@ -4,13 +4,7 @@ Hero::Hero(Vector3 initPos, SceneNode* node, SceneManager* sceneMng)
 : Character(initPos, node, sceneMng, "Sinbad.mesh"), _lives(3), _points(0), _direction(Vector3::ZERO), _newDirection(Vector3::ZERO) {
 }
 
-void Hero::keyPressed(const OgreBites::KeyboardEvent evt)
-{
-    /*earth->setPosition(EarthDistance*Ogre::Math::Cos(Ogre::Degree(alpha)), 0, EarthDistance*Ogre::Math::Sin(Ogre::Degree(alpha)));
-    earth->translate(-EarthDistance, 0, 0, SceneNode::TS_LOCAL);
-    earth->yaw(Ogre::Degree(alpha));
-    earth->translate(EarthDistance, 0, 0, SceneNode::TS_LOCAL);*/
-
+void Hero::keyPressed(const OgreBites::KeyboardEvent evt){
     if (evt.keysym.sym == SDLK_UP) {
         _newDirection = Vector3(0, 0, 1);
         std::cout << "UP" << std::endl;
@@ -36,8 +30,6 @@ void Hero::keyPressed(const OgreBites::KeyboardEvent evt)
 
     //this->yaw(Degree(90.0f));
     //std::cout << this->getOrientation() << std::endl;
-
-
 }
 
 void Hero::frameRendered(const Ogre::FrameEvent& evt){
@@ -47,6 +39,13 @@ void Hero::frameRendered(const Ogre::FrameEvent& evt){
         move(evt.timeSinceLastFrame);
     }
 
+}
+
+bool Hero::canGoForward(Vector2 blockPos){
+   if (_direction.x == 1){
+	   
+   }
+   else if (_d)
 }
 
 void Hero::move(double t){

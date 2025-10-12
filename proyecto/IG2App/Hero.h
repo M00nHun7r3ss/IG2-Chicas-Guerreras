@@ -23,13 +23,11 @@ class Hero : public Character
 public: 
 	explicit Hero(Vector3 initPos, SceneNode* node, SceneManager* sceneMng);
 
-	void keyPressed(const OgreBites::KeyboardEvent evt);
+	void keyPressed(const OgreBites::KeyboardEvent evt); // input
+	void frameRendered(const Ogre::FrameEvent& evt) override; // update
 
-	void frameRendered(const Ogre::FrameEvent& evt) override;
-
-	void move(double t) override;
-
-	void rotate() override;
+	// metodo encargado de ver si delante hay WALL -> false, EMPTY -> true
+	bool canGoForward(Vector2 blockPos); 
 
 private:
 	int _lives;
@@ -37,5 +35,8 @@ private:
 	Vector3 _direction;
 	Vector3 _newDirection;
 	const double HERO_SPEED = 70.0;
+
+	void move(double t) override;
+	void rotate() override;
 };
 
