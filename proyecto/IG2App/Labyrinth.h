@@ -27,6 +27,7 @@ public:
     inline Vector3 getPos() { return _pos; }
     inline float getHeight() { return _height; }
     inline float getWidth() { return _width; }
+    inline Vector3 getBoxSize() { return _boxSize; }
 
     // le pasas una posicion del laberinto y te devuelve que bloque es.
     // ej.: de izq a der -> (0, 0), (1, 0), (2, 0) ...
