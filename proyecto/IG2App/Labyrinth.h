@@ -47,8 +47,13 @@ private:
     //vector cajas
     std::vector <IG2Object*> _labyrinth; 
 
+    //ancho y alto del laberinto, en plano xz
     float _width;
     float _height;
+
+    //filas y columnas del txt
+    int _nFils; 
+    int _nCols;
 
     Vector3 _pos;
 
@@ -58,6 +63,7 @@ private:
     // int _nBlocksHeight = _height / _boxSize.z;
     // TODO hacer luego porque da problemas
 
+    //tamanio bloque
     Vector3 _boxSize;
 };
 

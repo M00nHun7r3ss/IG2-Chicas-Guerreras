@@ -9,12 +9,8 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h) : _hero(h)
         cout << "Error al abrir " << f << endl;
         exit(EXIT_FAILURE);
     }
-
-    int numFilas;
-    file >> numFilas;
-
-    int numColumnas;
-    file >> numColumnas;
+	
+    file >> _nFils >> _nCols;
 
     char lee;
 
@@ -24,13 +20,12 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h) : _hero(h)
 	_boxSize = aux->calculateBoxSize();
 
     // tamanio vector cajas.
-    _labyrinth.reserve(numFilas * numColumnas);
+    _labyrinth.reserve(_nFils * _nCols);
 
     // leemos cada fila
-    for (int i = 0; i < numFilas; i++) {
-        for (int j = 0; j < numColumnas; j++) {
+    for (int i = 0; i < _nFils; i++) {
+        for (int j = 0; j < _nCols; j++) {
             file >> lee;
-            //std::cout << lee;
 
             if (lee == 'x') {
                 // crea elemento muro
@@ -52,8 +47,8 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h) : _hero(h)
         }
     }
 
-    _width = numColumnas * _boxSize.x;
-    _height = numFilas * _boxSize.y;
+    _width = _nCols * _boxSize.x;
+    _height = _nFils * _boxSize.y;
 
     _pos = Vector3(_width / 2, 0.0f, _height / 2);
 }
@@ -65,31 +60,18 @@ Vector2 Labyrinth::getBlockPosition(Vector3 pos){
 }
 
 bool Labyrinth::getBlockType(Vector2 blockPos){
-	int i = 0;
-    //Buscamos el bloque que coincida con la pos dada
-    while (i < _labyrinth.size())
-    {
-        Vector2 auxPos = getBlockPosition(_labyrinth[i]->getPosition());
-        if (auxPos == blockPos)
-        {
-            std::cout << getBlockPosition(_labyrinth[i]->getPosition()) << _labyrinth[i]->isTraspasable() << std::endl;
-            return (_labyrinth[i]->isTraspasable());
-        }
-        i++;
-    }
 
-    std::cout << getBlockPosition(_labyrinth[i]->getPosition()) << _labyrinth[i]->isTraspasable() << std::endl;
+    //n fila + n columna + (n fila * n columnas del laberinto)
 
-    //Si no lo encuentra (condicion de seguridad)
-    return (_labyrinth[i]->isTraspasable());
+
 }
 
 void Labyrinth::canHeroGoForward() {
     // 1. Calculamos la pos en bloques del hero.
     Vector2 heroBlockPos = getBlockPosition(_hero->getPosition());
-
+    
     // 1. Calculamos el siguiente bloque en cuestion a la posicion y direccion de hero
-    Vector2 forwardBlock = Vector2(heroBlockPos.x + _hero->getDirection().x, heroBlockPos.y + _hero->getDirection().z);
+    Vector2 forwardBlock = Vector2(heroBlockPos.x + _hero->getDirection().z, heroBlockPos.y + _hero->getDirection().x);
 
     // 2. Miramos si es traspasable y lo seteamos.
     _hero->setCanGoForward(getBlockType(forwardBlock));

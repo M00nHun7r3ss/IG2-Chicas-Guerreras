@@ -23,7 +23,7 @@ void Hero::keyPressed(const OgreBites::KeyboardEvent evt){
     _direction = _newDirection;
 
     //Rota en la direccion que corresponde
-    this->rotate();
+    rotate();
 }
 
 void Hero::frameRendered(const Ogre::FrameEvent& evt){
@@ -41,7 +41,7 @@ void Hero::move(double t)
     //Si el siguiente bloque es traspasable, avanza
 	if (_canGoForward)
 	{
-		this->setPosition(this->getPosition() + HERO_SPEED * _direction * t);
+		setPosition(getPosition() + HERO_SPEED * _direction * t);
 	}
     //Si no, se para
     else
@@ -54,7 +54,7 @@ void Hero::move(double t)
 void Hero::rotate()
 {
     //Cogemos la rotacion que debe hacer entre la rotacion actual (orientation) y la nueva (_newDirection) 
-    Quaternion q = this->getOrientation().getRotationTo(_newDirection);
+    Quaternion q = getOrientation().getRotationTo(_newDirection);
 
     //Y rotamos en el eje y, solo la componente y de dicho quaternion
     yaw(q.getYaw());
