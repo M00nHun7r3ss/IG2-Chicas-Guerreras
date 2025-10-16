@@ -39,6 +39,8 @@ public:
     // settea en el player si WALL -> false, EMPTY -> true
     void canHeroGoForward();
 
+    void rotate();
+
 private:
     Hero* _hero;
 

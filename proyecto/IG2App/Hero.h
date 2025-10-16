@@ -30,6 +30,7 @@ public:
 
 	void setCanGoForward(bool _canGo) { _canGoForward = _canGo; }
 
+
 private:
 	int _lives;
 	int _points;

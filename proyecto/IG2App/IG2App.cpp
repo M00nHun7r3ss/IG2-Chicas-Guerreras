@@ -11,7 +11,7 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
     }
 
     _hero->keyPressed(evt);
-    std::cout << _lab->getBlockPosition(_hero->getPosition()) << std::endl;
+    //std::cout << _lab->getBlockPosition(_hero->getPosition()) << std::endl;
 
 	return true;
 }
@@ -109,8 +109,8 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
     //Update del Hero
     _hero->frameRendered(evt);
 
-    std::cout << _lab->getBlockPosition(_hero->getPosition()) << std::endl;
-    std::cout << _hero->getDirection() << std::endl;
+    //std::cout << _lab->getBlockPosition(_hero->getPosition()) << std::endl;
+    //std::cout << _hero->getDirection() << std::endl;
 }
 
 

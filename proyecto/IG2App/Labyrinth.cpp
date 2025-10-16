@@ -72,26 +72,25 @@ bool Labyrinth::getBlockType(Vector2 blockPos){
         Vector2 auxPos = getBlockPosition(_labyrinth[i]->getPosition());
         if (auxPos == blockPos)
         {
-            std::cout << _labyrinth[i]->isTraspasable() << std::endl;
+            std::cout << getBlockPosition(_labyrinth[i]->getPosition()) << _labyrinth[i]->isTraspasable() << std::endl;
             return (_labyrinth[i]->isTraspasable());
         }
         i++;
     }
 
-    std::cout << _labyrinth[i]->isTraspasable() << std::endl;
+    std::cout << getBlockPosition(_labyrinth[i]->getPosition()) << _labyrinth[i]->isTraspasable() << std::endl;
 
     //Si no lo encuentra (condicion de seguridad)
     return (_labyrinth[i]->isTraspasable());
 }
 
-void Labyrinth::canHeroGoForward(){
+void Labyrinth::canHeroGoForward() {
     // 1. Calculamos la pos en bloques del hero.
     Vector2 heroBlockPos = getBlockPosition(_hero->getPosition());
 
     // 1. Calculamos el siguiente bloque en cuestion a la posicion y direccion de hero
     Vector2 forwardBlock = Vector2(heroBlockPos.x + _hero->getDirection().x, heroBlockPos.y + _hero->getDirection().z);
-    
+
     // 2. Miramos si es traspasable y lo seteamos.
     _hero->setCanGoForward(getBlockType(forwardBlock));
 }
-

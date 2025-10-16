@@ -9,29 +9,21 @@ Hero::Hero(Vector3 initPos, SceneNode* node, SceneManager* sceneMng)
 void Hero::keyPressed(const OgreBites::KeyboardEvent evt){
     if (evt.keysym.sym == SDLK_UP) {
         _newDirection = Vector3(0, 0, 1);
-        std::cout << "UP" << std::endl;
-        this->mNode->setDirection(_newDirection);
     }
     else if (evt.keysym.sym == SDLK_DOWN) {
         _newDirection = Vector3(0, 0, -1);
-        std::cout << "DOWN" << std::endl;
-        this->mNode->setDirection(_newDirection);
     }
     else if (evt.keysym.sym == SDLK_LEFT) {
         _newDirection = Vector3(1, 0, 0);
-        std::cout << "LEFT" << std::endl;
-        this->mNode->setDirection(_newDirection);
     }
     else if (evt.keysym.sym == SDLK_RIGHT) {
         _newDirection = Vector3(-1, 0, 0);
-        std::cout << "RIGHT" << std::endl;
-        this->mNode->setDirection(_newDirection);
     }
 
     _direction = _newDirection;
 
-    //this->yaw(Degree(90.0f));
-    //std::cout << this->getOrientation() << std::endl;
+    //Rota en la direccion que corresponde
+    this->rotate();
 }
 
 void Hero::frameRendered(const Ogre::FrameEvent& evt){
@@ -61,5 +53,9 @@ void Hero::move(double t)
 
 void Hero::rotate()
 {
+    //Cogemos la rotacion que debe hacer entre la rotacion actual (orientation) y la nueva (_newDirection) 
     Quaternion q = this->getOrientation().getRotationTo(_newDirection);
+
+    //Y rotamos en el eje y, solo la componente y de dicho quaternion
+    yaw(q.getYaw());
 }
