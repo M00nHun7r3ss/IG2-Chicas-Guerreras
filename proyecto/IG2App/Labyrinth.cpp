@@ -62,16 +62,22 @@ Vector2 Labyrinth::getBlockPosition(Vector3 pos){
 bool Labyrinth::getBlockType(Vector2 blockPos){
 
     //n fila + n columna + (n fila * n columnas del laberinto)
-
-
+    IG2Object* block = _labyrinth[blockPos.x + blockPos.y + blockPos.x * (_nCols - 1)];
+    //std::cout << "El bloque que esta delante del Hero es: " << getBlockPosition(block->getPosition()) << std::endl;
+    std::cout << "¿El bloque es traspasble? " << block->isTraspasable() << std::endl;
+    return block->isTraspasable();
 }
 
 void Labyrinth::canHeroGoForward() {
     // 1. Calculamos la pos en bloques del hero.
     Vector2 heroBlockPos = getBlockPosition(_hero->getPosition());
+
+    //std::cout << "El Hero esta en: " << heroBlockPos << std::endl;
     
     // 1. Calculamos el siguiente bloque en cuestion a la posicion y direccion de hero
-    Vector2 forwardBlock = Vector2(heroBlockPos.x + _hero->getDirection().z, heroBlockPos.y + _hero->getDirection().x);
+    Vector2 forwardBlock = Vector2(heroBlockPos.x - _hero->getOrientation().z, heroBlockPos.y - _hero->getOrientation().x);
+
+    std::cout << "El bloque delante del Hero es: " << forwardBlock << std::endl;
 
     // 2. Miramos si es traspasable y lo seteamos.
     _hero->setCanGoForward(getBlockType(forwardBlock));

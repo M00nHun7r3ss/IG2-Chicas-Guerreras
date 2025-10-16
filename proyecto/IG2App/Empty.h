@@ -20,8 +20,7 @@
 class Empty : public  IG2Object {
 
 public:
-	explicit Empty(Vector3 initPos, SceneNode* node, SceneManager* sceneMng) : IG2Object(initPos, node, sceneMng)
-	{
+	explicit Empty(Vector3 initPos, SceneNode* node, SceneManager* sceneMng) : IG2Object(initPos, node, sceneMng){
 		_traspasable = true;
 	}
 };
