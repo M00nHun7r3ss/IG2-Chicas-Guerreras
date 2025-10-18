@@ -5,6 +5,7 @@
 #include "IG2Object.h"
 #include "Labyrinth.h"
 #include "Hero.h"
+#include "Villain.h"
 #include <OgreSceneManager.h>
 #include <OgreSceneNode.h>
 #include <OgreTrays.h>
@@ -46,6 +47,7 @@ protected:
     // Objects
     Hero* _hero = nullptr;
     Labyrinth* _lab = nullptr;
+    std::vector<Villain*> _villains;
 };
 
 #endif

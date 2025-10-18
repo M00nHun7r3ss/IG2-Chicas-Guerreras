@@ -5,13 +5,18 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Archivos de recursos">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Archivos de código fuente">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{9b581f92-6182-4c84-ae63-07f22acd3f98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Villain">
+      <UniqueIdentifier>{35607ff5-052d-4327-98d6-6f37883d9edc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Labyrinth">
+      <UniqueIdentifier>{e88347d7-2447-439e-812c-5a9a17ebd7e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,23 +29,35 @@
     <ClInclude Include="IG2Object.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Villain.h">
+      <Filter>Objects\Villain</Filter>
+    </ClInclude>
+    <ClInclude Include="VillainBody.h">
+      <Filter>Objects\Villain</Filter>
+    </ClInclude>
+    <ClInclude Include="VillainHead.h">
+      <Filter>Objects\Villain</Filter>
+    </ClInclude>
+    <ClInclude Include="VillainHelix.h">
+      <Filter>Objects\Villain</Filter>
+    </ClInclude>
     <ClInclude Include="Labyrinth.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Objects\Labyrinth</Filter>
     </ClInclude>
     <ClInclude Include="Wall.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Empty.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Character.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Hero.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Objects\Labyrinth</Filter>
     </ClInclude>
     <ClInclude Include="Floor.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Objects\Labyrinth</Filter>
+    </ClInclude>
+    <ClInclude Include="Empty.h">
+      <Filter>Objects\Labyrinth</Filter>
+    </ClInclude>
+    <ClInclude Include="Hero.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -56,20 +73,32 @@
     <ClCompile Include="IG2Object.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="Villain.cpp">
+      <Filter>Objects\Villain</Filter>
+    </ClCompile>
+    <ClCompile Include="VillainBody.cpp">
+      <Filter>Objects\Villain</Filter>
+    </ClCompile>
+    <ClCompile Include="VillainHead.cpp">
+      <Filter>Objects\Villain</Filter>
+    </ClCompile>
+    <ClCompile Include="VillainHelix.cpp">
+      <Filter>Objects\Villain</Filter>
+    </ClCompile>
     <ClCompile Include="Labyrinth.cpp">
-      <Filter>Archivos de código fuente</Filter>
+      <Filter>Objects\Labyrinth</Filter>
     </ClCompile>
     <ClCompile Include="Wall.cpp">
-      <Filter>Archivos de código fuente</Filter>
+      <Filter>Objects\Labyrinth</Filter>
     </ClCompile>
     <ClCompile Include="Empty.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Hero.cpp">
-      <Filter>Archivos de código fuente</Filter>
+      <Filter>Objects\Labyrinth</Filter>
     </ClCompile>
     <ClCompile Include="Floor.cpp">
-      <Filter>Archivos de código fuente</Filter>
+      <Filter>Objects\Labyrinth</Filter>
+    </ClCompile>
+    <ClCompile Include="Hero.cpp">
+      <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

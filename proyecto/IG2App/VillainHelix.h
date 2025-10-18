@@ -16,20 +16,11 @@
 #include <iomanip>
 #include <fstream>
 #include <vector>
+#include "Character.h"
 
-class Character : public IG2Object
+class VillainHelix : public IG2Object
 {
 public:
-	explicit Character(Vector3 initPos, SceneNode* node, SceneManager* sceneMng, String mesh) : IG2Object(initPos, node, sceneMng, mesh){
-		_traspasable = false;
-	}
-
-	explicit Character(Vector3 initPos, SceneNode* node, SceneManager* sceneMng) : IG2Object(initPos, node, sceneMng){
-		_traspasable = false;
-	}
-
-	virtual void move(double t) = 0;
-
-	virtual void rotate() = 0;
+	explicit VillainHelix(Vector3 initPos, SceneNode* node, SceneManager* sceneMng);
 };
 

@@ -127,6 +127,10 @@
     <ClInclude Include="IG2App.h" />
     <ClInclude Include="IG2Object.h" />
     <ClInclude Include="Labyrinth.h" />
+    <ClInclude Include="Villain.h" />
+    <ClInclude Include="VillainBody.h" />
+    <ClInclude Include="VillainHead.h" />
+    <ClInclude Include="VillainHelix.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +142,10 @@
     <ClCompile Include="IG2App.cpp" />
     <ClCompile Include="IG2Object.cpp" />
     <ClCompile Include="Labyrinth.cpp" />
+    <ClCompile Include="Villain.cpp" />
+    <ClCompile Include="VillainBody.cpp" />
+    <ClCompile Include="VillainHead.cpp" />
+    <ClCompile Include="VillainHelix.cpp" />
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
