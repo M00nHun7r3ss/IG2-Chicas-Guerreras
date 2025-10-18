@@ -92,6 +92,14 @@ void IG2App::setupScene(void){
     //Hero creation
     _hero = new Hero(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nSinbad"), mSM);
 
+    //------------------------------------------------------------------------
+	//Villain creation
+    //for (int i = 0; i < 10; i++)
+    {
+	    //_villains.push_back(new Villain(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nVillain"), mSM));
+    }
+    new Villain(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nVillain"), mSM);
+    std::cout << "SOY GILIPOLLAS";
 
     //------------------------------------------------------------------------
     //Labyrinth creation
