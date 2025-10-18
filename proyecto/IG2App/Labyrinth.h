@@ -23,12 +23,13 @@
 
 class Labyrinth : public OgreBites::IG2ApplicationContext, OgreBites::InputListener {
 public:
-    explicit Labyrinth(String file, SceneManager* sceneMng, Hero* h, std::vector<Villain*> v);
+    explicit Labyrinth(String file, SceneManager* sceneMng, Hero* h, std::vector<Villain*> v); // TODO probar a hacer luego por referencia en vez de getVillainVector();
 
     inline Vector3 getPos() { return _pos; }
     inline float getHeight() { return _height; }
     inline float getWidth() { return _width; }
     inline Vector3 getBoxSize() { return _boxSize; }
+    inline std::vector<Villain*> getVillainVector() { return _villains; }
 
     // le pasas una posicion del laberinto y te devuelve que bloque es.
     // ej.: de izq a der -> (0, 0), (1, 0), (2, 0) ...
@@ -49,8 +50,9 @@ private:
     std::vector<Villain*> _villains;
 
     //vector cajas
-    std::vector <IG2Object*> _labyrinth; 
+    std::vector <IG2Object*> _labyrinth;
 
+ 
     //ancho y alto del laberinto, en plano xz
     float _width;
     float _height;

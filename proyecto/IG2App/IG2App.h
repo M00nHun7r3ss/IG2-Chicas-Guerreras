@@ -47,7 +47,6 @@ protected:
     // Objects
     Hero* _hero = nullptr;
     Labyrinth* _lab = nullptr;
-    int nVillains;
     std::vector<Villain*> _villains;
 };
 

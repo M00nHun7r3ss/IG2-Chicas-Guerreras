@@ -92,19 +92,13 @@ void IG2App::setupScene(void){
     //Hero creation
     _hero = new Hero(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nSinbad"), mSM);
 
-    //------------------------------------------------------------------------
-	//Villain creation
-    //for (int i = 0; i < nVillains; i++)
-    {
-	    //_villains.push_back(new Villain(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nVillain"), mSM));
-    }
-    //new Villain(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nVillain"), mSM);
-
 
     //------------------------------------------------------------------------
     //Labyrinth creation
     _lab = new Labyrinth("stage1wv.txt", mSM, _hero, _villains);
-
+    //------------------------------------------------------------------------
+	//Villain creation
+    _villains = _lab->getVillainVector(); // TODO probar a hacer luego por referencia en vez de getVillainVector();
     //------------------------------------------------------------------------
     ////Floor
     //MeshManager::getSingleton().createPlane("mPlane1080x800",
@@ -127,8 +121,14 @@ void IG2App::setupScene(void){
 void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 {
     _lab->canHeroGoForward();
-    //Update del Hero
+    // updates
     _hero->frameRendered(evt);
+
+    for (int i = 0; i < _villains.size(); ++i)
+    {
+        std::cout << "bucleosis" << std::endl;
+        _villains[i]->frameRendered(evt);
+    }
 
     //std::cout << _lab->getBlockPosition(_hero->getPosition()) << std::endl;
     //std::cout << _hero->getDirection() << std::endl;

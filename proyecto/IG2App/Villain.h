@@ -41,7 +41,23 @@ private:
 	Entity* _vArm3R;
 	Entity* _vArm3L;
 
+	SceneNode* _nCuerpo;
+	SceneNode* _nFeet;
+	SceneNode* _nArm1R;
+	SceneNode* _nArm2R;
+	SceneNode* _nArm3R;
+	SceneNode* _nArm1L;
+	SceneNode* _nArm2L;
+	SceneNode* _nArm3L;
+
 	Timer* _timer;
+	bool _animDir;
+	double _angle;
+	void armsRotation();
+
+	SceneNode* createChildEntity(SceneNode* parentNode, std::string mesh,
+		Vector3 pos, Vector3 scale,
+		Degree angle = Degree(0), Vector3 rotateOn = Vector3(0, 0, 0));
 
 	// Elementos del movimiento del villano
 	Vector3 _direction;
@@ -49,7 +65,7 @@ private:
 
 	//bool _canGoForward; TODO quiza
 
+
 	void move(double t) override;
 	void rotate() override;
-
 };
