@@ -17,9 +17,6 @@
 #include <fstream>
 #include <vector>
 #include "Character.h"
-#include "VillainHead.h"
-#include "VillainBody.h"
-#include "VillainHelix.h"
 
 class Villain : public Character{
 public:
@@ -34,9 +31,9 @@ public:
 
 private:
 	// Elementos del cuerpo del villano
-	VillainHead* _vHead;
-	VillainBody* _vBody;
-	VillainHelix* _vHelix;
+	Entity* _vHead;
+	Entity* _vBody;
+	Entity* _vFeet;
 
 
 	// Elementos del movimiento del villano

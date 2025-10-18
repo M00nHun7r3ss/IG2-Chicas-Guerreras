@@ -19,6 +19,7 @@
 #include "Wall.h"
 #include "Empty.h"
 #include "Hero.h"
+#include "Villain.h"
 
 class Labyrinth : public OgreBites::IG2ApplicationContext, OgreBites::InputListener {
 public:
@@ -43,7 +44,10 @@ public:
     void rotate();
 
 private:
+    // Personajes.
     Hero* _hero;
+    int nVillains;
+    std::vector<Villain*> _villains;
 
     //vector cajas
     std::vector <IG2Object*> _labyrinth; 

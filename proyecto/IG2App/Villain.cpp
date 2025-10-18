@@ -4,12 +4,12 @@ Villain::Villain(Vector3 initPos, SceneNode* node, SceneManager* sceneMng) : Cha
 	// TODO gestionar como el traspasable afecta al villain ya que en si no tiene malla este objeto, sino que son tres externas.
 
 	//Nodo padre
-	auto mNodecuerpo = mNode->createChildSceneNode();
+	SceneNode* mNodecuerpo = mNode->createChildSceneNode();
 
 	//Entidad cuerpo
-	Entity* Cuerpo = mSM->createEntity("sphere.mesh");
-	mNodecuerpo->attachObject(Cuerpo);
-	//mNodecuerpo->setScale(3, 6, 0.7);
+	_vBody = mSM->createEntity("sphere.mesh");
+	mNodecuerpo->attachObject(_vBody);
+	mNodecuerpo->setScale(0.25, 0.25, 0.25); // si cambias este lo cambias todo.
 	//mNodecuerpo->setPosition(0, 0, -50);
 	//mNodecuerpo->yaw(Ogre::Degree(180));
 
@@ -28,17 +28,33 @@ Villain::Villain(Vector3 initPos, SceneNode* node, SceneManager* sceneMng) : Cha
 	SceneNode* mNodeFeet = mNodecuerpo->createChildSceneNode();  //nos interesa guardarlo
 
 	//Entidad Feet
-	Entity* Feet = mSM->createEntity("cube.mesh");
-	mNodeFeet->attachObject(Feet);
-	mNodeFeet->setScale(Vector3(1, 1, 1));
+	_vFeet = mSM->createEntity("cube.mesh");
+	mNodeFeet->attachObject(_vFeet);
+	mNodeFeet->setScale(Vector3(1.5, 1.5, 1.5));
 	//mNodeFeet->rotate(Quaternion(Radian(15), Vector3(1, 0, 1)));  //Lo giramos para que no esten exactamente iguales
-	mNodeFeet->setPosition(Vector3(0, -25, 0));
+	mNodeFeet->setPosition(Vector3(mNodecuerpo->getPosition().x, mNodecuerpo->getPosition().y -  50, mNodecuerpo->getPosition().z));
 
+	// nodo brazo 1.
+	SceneNode* mNodeArm1 = mNodecuerpo->createChildSceneNode();
 
+	// entidad brazo 1.
+	Entity* b1 = mSM->createEntity("cube.mesh");
+	mNodeArm1->attachObject(b1);
+	mNodeArm1->setScale(Vector3(1.5, 1.5, 1.5));
+	//mNodeFeet->rotate(Quaternion(Radian(15), Vector3(1, 0, 1)));  //Lo giramos para que no esten exactamente iguales
+	mNodeArm1->setPosition(Vector3(mNodecuerpo->getPosition().x, mNodecuerpo->getPosition().y - 50, mNodecuerpo->getPosition().z));
 
-	//_vBody = new VillainBody(Vector3(0, 0, 0), node, sceneMng);
-	//_vHead = new VillainHead(Vector3(0, _vBody->calculateBoxSize().y/2, 0), node, sceneMng);
-	//_vHelix = new VillainHelix(Vector3(0, -_vBody->calculateBoxSize().y / 2, 0), node, sceneMng);
+	// nodo brazo 2.
+	SceneNode* mNodeArm2 = mNodecuerpo->createChildSceneNode();
+
+	//// entidad brazo 2.
+	//Entity* b2 = mSM->createEntity("cube.mesh");
+	//mNodeArm2->attachObject(b2);
+	//mNodeArm2->setScale(Vector3(1.5, 1.5, 1.5));
+	////mNodeFeet->rotate(Quaternion(Radian(15), Vector3(1, 0, 1)));  //Lo giramos para que no esten exactamente iguales
+	//mNodeArm2->setPosition(Vector3(mNodecuerpo->getPosition().x, mNodecuerpo->getPosition().y - 50, mNodecuerpo->getPosition().z));
+
+	// TODO  a donde se attachan las demas partes, a los arms, al body, etc?? -> mirar folio
 }
 
 void Villain::frameRendered(const Ogre::FrameEvent& evt)

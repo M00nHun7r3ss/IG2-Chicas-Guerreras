@@ -9,7 +9,9 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h) : _hero(h)
         cout << "Error al abrir " << f << endl;
         exit(EXIT_FAILURE);
     }
-	
+
+    nVillains = 0; // inicialmente no hay villanos
+
     file >> _nFils >> _nCols;
 
     char lee;
@@ -27,22 +29,32 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h) : _hero(h)
         for (int j = 0; j < _nCols; j++) {
             file >> lee;
 
+            Vector3 actualPos = Vector3(_boxSize.x * j, 0, _boxSize.z * i);
+
             if (lee == 'x') {
                 // crea elemento muro
-                _labyrinth.push_back(new Wall(Vector3(_boxSize.x * j, 0, _boxSize.z * i), sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
+                _labyrinth.push_back(new Wall(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
             }
             else if (lee == 'o') {
                 // crea elemento vacio
-                _labyrinth.push_back(new Empty(Vector3(_boxSize.x * j, 0, _boxSize.z * i), sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
+                _labyrinth.push_back(new Empty(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
             }
             else if (lee == 'h') {
                 // crea elemento vacio
-                _labyrinth.push_back(new Empty(Vector3(_boxSize.x * j, 0, _boxSize.z * i), sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
+                _labyrinth.push_back(new Empty(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
                 // crea hero
-                _hero->setPosition(Vector3(_boxSize.x * j, 10, _boxSize.z * i));
+                _hero->setPosition(actualPos);
             	_hero->setScale(Vector3(_boxSize.x / _hero->calculateBoxSize().x, _boxSize.y / _hero->calculateBoxSize().y + 5, _boxSize.z / _hero->calculateBoxSize().z)/2);
                 _labyrinth.push_back(_hero);
                 addInputListener(_hero);
+            }
+            else if (lee == 'v' && nVillains < 10){
+                // crea elemento vacio
+                _labyrinth.push_back(new Empty(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
+
+                // crea villain.
+                _villains.push_back(new Villain(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
+                nVillains++;
             }
         }
     }
