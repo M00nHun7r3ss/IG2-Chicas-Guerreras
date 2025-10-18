@@ -34,7 +34,14 @@ private:
 	Entity* _vHead;
 	Entity* _vBody;
 	Entity* _vFeet;
+	Entity* _vArm1R;
+	Entity* _vArm1L;
+	Entity* _vArm2R;
+	Entity* _vArm2L;
+	Entity* _vArm3R;
+	Entity* _vArm3L;
 
+	Timer* _timer;
 
 	// Elementos del movimiento del villano
 	Vector3 _direction;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IG2ApplicationContext.h"
-#include "IG2Object.h"
 #include <OgreSceneManager.h>
 #include <OgreSceneNode.h>
 #include <OgreTrays.h>

@@ -23,7 +23,7 @@
 
 class Labyrinth : public OgreBites::IG2ApplicationContext, OgreBites::InputListener {
 public:
-    explicit Labyrinth(String file, SceneManager* sceneMng, Hero* h);
+    explicit Labyrinth(String file, SceneManager* sceneMng, Hero* h, std::vector<Villain*> v);
 
     inline Vector3 getPos() { return _pos; }
     inline float getHeight() { return _height; }
@@ -46,7 +46,6 @@ public:
 private:
     // Personajes.
     Hero* _hero;
-    int nVillains;
     std::vector<Villain*> _villains;
 
     //vector cajas

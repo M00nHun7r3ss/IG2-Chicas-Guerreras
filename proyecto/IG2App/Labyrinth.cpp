@@ -1,6 +1,6 @@
 #include "Labyrinth.h"
 
-Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h) : _hero(h)
+Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h, std::vector<Villain*> v) : _hero(h), _villains(v)
 {
     //Lectura archivo laberinto
     std::ifstream file(f);
@@ -9,8 +9,6 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h) : _hero(h)
         cout << "Error al abrir " << f << endl;
         exit(EXIT_FAILURE);
     }
-
-    nVillains = 0; // inicialmente no hay villanos
 
     file >> _nFils >> _nCols;
 
@@ -48,13 +46,12 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h) : _hero(h)
                 _labyrinth.push_back(_hero);
                 addInputListener(_hero);
             }
-            else if (lee == 'v' && nVillains < 10){
+            else if (lee == 'v' && _villains.size() < 10){
                 // crea elemento vacio
                 _labyrinth.push_back(new Empty(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
 
                 // crea villain.
                 _villains.push_back(new Villain(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
-                nVillains++;
             }
         }
     }
@@ -84,7 +81,7 @@ void Labyrinth::canHeroGoForward() {
     // 1. Calculamos la pos en bloques del hero.
     Vector2 heroBlockPos = getBlockPosition(_hero->getPosition());
 
-    std::cout << "El Hero esta en: " << heroBlockPos << std::endl;
+    //std::cout << "El Hero esta en: " << heroBlockPos << std::endl;
     
     // 1. Calculamos el siguiente bloque en cuestion a la posicion y direccion de hero
     Vector2 forwardBlock = Vector2(heroBlockPos.x - _hero->getOrientation().z, heroBlockPos.y - _hero->getOrientation().x);
