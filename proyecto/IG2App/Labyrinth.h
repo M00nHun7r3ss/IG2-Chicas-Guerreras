@@ -51,7 +51,6 @@ private:
 
     //vector cajas
     std::vector <IG2Object*> _labyrinth;
-
  
     //ancho y alto del laberinto, en plano xz
     float _width;
@@ -60,6 +59,10 @@ private:
     //filas y columnas del txt
     int _nFils; 
     int _nCols;
+
+    //materiales
+    std::string _wallMaterial;
+    std::string _floorMaterial;
 
     Vector3 _pos;
 

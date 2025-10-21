@@ -44,6 +44,11 @@ void IG2App::setup(void){
     mSM->addRenderQueueListener(mOverlaySystem);
     mTrayMgr = new OgreBites::TrayManager("TrayGUISystem", mWindow.render);
     mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
+
+    //UI DERECHA
+    mLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "Titulo", "Stage: 1");
+    mTextBox = mTrayMgr->createTextBox(OgreBites::TL_BOTTOMRIGHT, "Caja", "Game Info Here!", 250, 100);
+
     addInputListener(mTrayMgr);
     
     // Adds the listener for this object
@@ -92,13 +97,14 @@ void IG2App::setupScene(void){
     //Hero creation
     _hero = new Hero(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nSinbad"), mSM);
 
-
     //------------------------------------------------------------------------
     //Labyrinth creation
     _lab = new Labyrinth("stage1wv.txt", mSM, _hero, _villains);
+
     //------------------------------------------------------------------------
 	//Villain creation
     _villains = _lab->getVillainVector(); // TODO probar a hacer luego por referencia en vez de getVillainVector();
+
     //------------------------------------------------------------------------
     ////Floor
     //MeshManager::getSingleton().createPlane("mPlane1080x800",
@@ -126,9 +132,11 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 
     for (int i = 0; i < _villains.size(); ++i)
     {
-        std::cout << "bucleosis" << std::endl;
         _villains[i]->frameRendered(evt);
     }
+
+    //Actualizamos UI de vida y puntos
+    mTextBox->setText("Lives: " + std::to_string(_hero->getLives()) + "\nPoints: " + std::to_string(_hero->getPoints()));
 
     //std::cout << _lab->getBlockPosition(_hero->getPosition()) << std::endl;
     //std::cout << _hero->getDirection() << std::endl;

@@ -36,6 +36,9 @@ protected:
       
     Ogre::SceneManager* mSM = nullptr;
     OgreBites::TrayManager* mTrayMgr = nullptr;
+    //Para la ui de la vida y los puntos
+    OgreBites::TextBox* mTextBox = nullptr;
+    OgreBites::Label* mLabel = nullptr;
     
     Ogre::Light* light = nullptr;
     Ogre::SceneNode* mLightParent = nullptr;

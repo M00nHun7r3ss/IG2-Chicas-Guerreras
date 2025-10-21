@@ -12,6 +12,8 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h, std::vector<Vill
 
     file >> _nFils >> _nCols;
 
+    file >> _wallMaterial >> _floorMaterial;
+
     char lee;
 
     // tamanio entre cada espacio
@@ -31,7 +33,9 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h, std::vector<Vill
 
             if (lee == 'x') {
                 // crea elemento muro
-                _labyrinth.push_back(new Wall(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
+                Wall* x = new Wall(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng);
+                x->setMaterialName(_wallMaterial);
+                _labyrinth.push_back(x);
             }
             else if (lee == 'o') {
                 // crea elemento vacio
