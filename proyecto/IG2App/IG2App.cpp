@@ -76,26 +76,12 @@ void IG2App::setupScene(void){
     mCamMgr = new OgreBites::CameraMan(mCamNode);
     addInputListener(mCamMgr);
     mCamMgr->setStyle(OgreBites::CS_ORBIT);
-    
-    
-    //------------------------------------------------------------------------
-    // Creating the light
-    
-    mSM->setAmbientLight(ColourValue(0.7, 0.8, 0.9));
-    /*Light* luz = mSM->createLight("Luz");
-    luz->setType(Ogre::Light::LT_DIRECTIONAL);
-    luz->setDiffuseColour(0.75, 0.75, 0.75);*/
-
-    mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
-    //mLightNode = mCamNode->createChildSceneNode("nLuz");
-    //mLightNode->attachObject(luz);
-    //mLightNode->setDirection(Ogre::Vector3(0, 0, -1)); //Luz de frente
-    //mLightNode->setDirection(Ogre::Vector3(0, 1, 0)); //Luz de abajo
-    //mLightNode->setDirection(Ogre::Vector3(-1, -0.25, 0.25)); //Luz de lado
 
     //------------------------------------------------------------------------
     //Hero creation
     _hero = new Hero(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nSinbad"), mSM);
+    //El spotlight se crea encima del hero
+    //light->setPosition(_hero->getPosition().x, 50, _hero->getPosition().z);
 
     //------------------------------------------------------------------------
     //Labyrinth creation
@@ -122,6 +108,49 @@ void IG2App::setupScene(void){
     // TODO luego cambiar para que parezca un libro.
     mCamNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z);
     mCamNode->lookAt(_lab->getPos(), Ogre::Node::TS_WORLD);
+
+    //------------------------------------------------------------------------
+	// Creating the light
+    switch (_lab->getLightType())
+    {
+	    case 0:
+	        //Luz direccional
+		    mSM->setAmbientLight(ColourValue(0.7, 0.8, 0.9));
+		    light = mSM->createLight("Directional");
+		    light->setType(Ogre::Light::LT_DIRECTIONAL);
+		    light->setDiffuseColour(0.75, 0.75, 0.75);
+            // Node with the light attached
+		    mLightNode = mCamNode->createChildSceneNode("nLuz");
+		    mLightNode->attachObject(light);
+			break;
+        case 1:
+            //Luz spotlight
+		    light = mSM->createLight("spotLight");
+		    light->setType(Light::LT_SPOTLIGHT);
+		    light->setSpotlightInnerAngle(Ogre::Degree(5.0f));
+		    light->setSpotlightOuterAngle(Ogre::Degree(60.0f));
+		    light->setSpotlightFalloff(3.0f);
+		    light->setDiffuseColour(1.0f, 1.0f, 1.0f);
+		    // Node with the light attached
+		    mLightNode = mSM->getRootSceneNode()->createChildSceneNode();
+		    mLightNode->setPosition(_hero->getPosition().x, 800, _hero->getPosition().z);
+		    mLightNode->setDirection(Ogre::Vector3(0, -1, 0));
+    	    mLightNode->attachObject(light);
+            break;
+        case 2:
+            //Luz Point
+			light = mSM->createLight("pointLight");
+			light->setType(Light::LT_POINT);
+			light->setDiffuseColour(1.0f, 1.0f, 1.0f);
+			light->setAttenuation(3200, 1.0, 0.0014, 0.00000007);
+			// Node with the light attached
+			mLightNode = mSM->getRootSceneNode()->createChildSceneNode();
+			mLightNode->setPosition(_hero->getPosition());
+			mLightNode->attachObject(light);
+			break;
+        default:
+            break;
+    }
  
 }
 
@@ -138,6 +167,9 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 
     //Actualizamos UI de vida y puntos
     mTextBox->setText("Lives: " + std::to_string(_hero->getLives()) + "\nPoints: " + std::to_string(_hero->getPoints()));
+
+    //El spotlight se actualiza con la pos del player
+    mLightNode->setPosition(_hero->getPosition().x, 800, _hero->getPosition().z);
 
     //std::cout << _lab->getBlockPosition(_hero->getPosition()) << std::endl;
     //std::cout << _hero->getDirection() << std::endl;

@@ -10,9 +10,13 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h, std::vector<Vill
         exit(EXIT_FAILURE);
     }
     std::string wallMat;
-	//floorMat;
+    std::string light;
 
-    file >> _nFils >> _nCols >> wallMat >> _floorMat;
+    file >> _nFils >> _nCols >> wallMat >> _floorMat >> light;
+
+    if (light == "directional") { _lightType = 0; }
+    else if  (light == "spot") { _lightType = 1; }
+    else if (light == "point") { _lightType = 2; }
 
     char lee;
 

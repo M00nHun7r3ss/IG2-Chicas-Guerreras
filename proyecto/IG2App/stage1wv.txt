@@ -2,6 +2,7 @@
 19
 Labyrinth/Wall
 Labyrinth/Floor
+directional
 xxxxxxxxxxxxxxxxxxx
 xoovoooooxoooovooox
 xoxxoxxxoxoxxxoxxox
