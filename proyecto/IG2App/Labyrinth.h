@@ -30,6 +30,7 @@ public:
     inline float getWidth() { return _width; }
     inline Vector3 getBoxSize() { return _boxSize; }
     inline std::vector<Villain*> getVillainVector() { return _villains; }
+    inline std::string getFloorMaterial() { return _floorMat; }
 
     // le pasas una posicion del laberinto y te devuelve que bloque es.
     // ej.: de izq a der -> (0, 0), (1, 0), (2, 0) ...
@@ -60,11 +61,9 @@ private:
     int _nFils; 
     int _nCols;
 
-    //materiales
-    std::string _wallMaterial;
-    std::string _floorMaterial;
-
     Vector3 _pos;
+
+    std::string _floorMat;
 
     // es la posicion del bloque actual, ej.: (1, 5), (6, 18)...
     // son como el v.size(), si se desea sacar la posicion actual reste 1.
@@ -74,5 +73,7 @@ private:
 
     //tamanio bloque
     Vector3 _boxSize;
+
+    void createFloor(SceneManager* sm, std::string mat);
 };
 

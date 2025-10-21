@@ -9,10 +9,10 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h, std::vector<Vill
         cout << "Error al abrir " << f << endl;
         exit(EXIT_FAILURE);
     }
+    std::string wallMat;
+	//floorMat;
 
-    file >> _nFils >> _nCols;
-
-    file >> _wallMaterial >> _floorMaterial;
+    file >> _nFils >> _nCols >> wallMat >> _floorMat;
 
     char lee;
 
@@ -32,9 +32,9 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h, std::vector<Vill
             Vector3 actualPos = Vector3(_boxSize.x * j, 0, _boxSize.z * i);
 
             if (lee == 'x') {
-                // crea elemento muro
+                // crea elemento muro y le asigna el nombre del material
                 Wall* x = new Wall(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng);
-                x->setMaterialName(_wallMaterial);
+                x->setMaterialName(wallMat);
                 _labyrinth.push_back(x);
             }
             else if (lee == 'o') {
@@ -97,3 +97,17 @@ void Labyrinth::canHeroGoForward() {
     // 2. Miramos si es traspasable y lo seteamos.
     //_hero->setCanGoForward(getBlockType(forwardBlock));
 }
+
+void Labyrinth::createFloor(SceneManager* sm, std::string mat){
+   MeshManager::getSingleton().createPlane("mPlane1080x800",
+        ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        Plane(Vector3::UNIT_Y, 0),
+        getWidth(), getHeight(), 100, 80,
+        true, 1, 1.0, 1.0, Vector3::UNIT_Z);
+    Ogre::Entity* plane = sm->createEntity("mPlane1080x800");
+    Ogre::SceneNode* mSceneNewNode = sm->getRootSceneNode()->createChildSceneNode("floor");
+    mSceneNewNode->setPosition(getWidth() / 2, getBoxSize().y / 2, getHeight() / 2);
+    mSceneNewNode->attachObject(plane);
+    //plane->setMaterialName(mat);
+}
+

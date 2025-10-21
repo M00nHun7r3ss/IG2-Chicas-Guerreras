@@ -106,16 +106,17 @@ void IG2App::setupScene(void){
     _villains = _lab->getVillainVector(); // TODO probar a hacer luego por referencia en vez de getVillainVector();
 
     //------------------------------------------------------------------------
-    ////Floor
-    //MeshManager::getSingleton().createPlane("mPlane1080x800",
-    //    ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-    //    Plane(Vector3::UNIT_Y, 0),
-    //    _lab->getWidth(), _lab->getHeight(), 100, 80,
-    //    true, 1, 1.0, 1.0, Vector3::UNIT_Z);
-    //Ogre::Entity* plane = mSM->createEntity("mPlane1080x800");
-    //Ogre::SceneNode* mSceneNewNode = mSM->getRootSceneNode()->createChildSceneNode("floor");
-    //mSceneNewNode->setPosition(_lab->getWidth()/2 , -_lab->getBoxSize().y / 2, _lab->getHeight()/2);
-    //mSceneNewNode->attachObject(plane);
+    //Floor
+    MeshManager::getSingleton().createPlane("mPlane1080x800",
+        ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        Plane(Vector3::UNIT_Y, 0),
+        _lab->getWidth(), _lab->getHeight(), 100, 80,
+        true, 1, 1.0, 1.0, Vector3::UNIT_Z);
+    Ogre::Entity* plane = mSM->createEntity("mPlane1080x800");
+    Ogre::SceneNode* mSceneNewNode = mSM->getRootSceneNode()->createChildSceneNode("floor");
+    mSceneNewNode->setPosition(_lab->getWidth()/2 -20 , -_lab->getBoxSize().y / 2, _lab->getHeight()/2 - 20);
+    mSceneNewNode->attachObject(plane);
+    plane->setMaterialName(_lab->getFloorMaterial());
 
     //Movemos la camara para que mire al laberinto
     // TODO luego cambiar para que parezca un libro.

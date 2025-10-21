@@ -41,7 +41,8 @@ private:
 	Entity* _vArm3R;
 	Entity* _vArm3L;
 
-	SceneNode* _nCuerpo;
+	SceneNode* _nHead;
+	SceneNode* _nBody;
 	SceneNode* _nFeet;
 	SceneNode* _nArm1R;
 	SceneNode* _nArm2R;
