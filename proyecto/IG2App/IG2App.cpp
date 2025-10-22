@@ -156,13 +156,13 @@ void IG2App::setupScene(void){
 
 void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 {
-    _lab->canHeroGoForward();
     // updates
-    _hero->frameRendered(evt);
+    _hero->update(evt);
+    _lab->getHeroForwardBlock();
 
     for (int i = 0; i < _villains.size(); ++i)
     {
-        _villains[i]->frameRendered(evt);
+        _villains[i]->update(evt);
     }
 
     //Actualizamos UI de vida y puntos

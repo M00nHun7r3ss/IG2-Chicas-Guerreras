@@ -22,7 +22,7 @@ class Villain : public Character{
 public:
 	explicit Villain(Vector3 initPos, SceneNode* node, SceneManager* sceneMng);
 
-	void frameRendered(const Ogre::FrameEvent& evt) override; // update
+	void update(const Ogre::FrameEvent& evt); // update
 
 	Vector3 getDirection() { return _direction; }
 

@@ -26,13 +26,13 @@ void Hero::keyPressed(const OgreBites::KeyboardEvent evt){
     rotate();
 }
 
-void Hero::frameRendered(const Ogre::FrameEvent& evt){
+void Hero::update(const Ogre::FrameEvent& evt)
+{
     //evt.timeSinceLastFrame //TODO: PA K CONIO ES ESTO?
     //evita que se mueva al arrancar
     if (_newDirection != Vector3::ZERO) {
         move(evt.timeSinceLastFrame);
     }
-
 }
 
 void Hero::move(double t)

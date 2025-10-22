@@ -29,8 +29,9 @@ material Villain/Sphere
 
             texture_unit 
             {
-                spheremap.png
+                texture spheremap.png
                 colour_op modulate
+		env_map spherical
             }
         }
     }

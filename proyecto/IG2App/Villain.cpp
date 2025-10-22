@@ -112,7 +112,7 @@ Villain::Villain(Vector3 initPos, SceneNode* node, SceneManager* sceneMng) : Cha
 
 }
 
-void Villain::frameRendered(const Ogre::FrameEvent& evt){
+void Villain::update(const Ogre::FrameEvent& evt){
 	// cuando pasen dos segundos...
 	if (_timer->getMilliseconds() > 2000){
 		_timer->reset(); // resetea.

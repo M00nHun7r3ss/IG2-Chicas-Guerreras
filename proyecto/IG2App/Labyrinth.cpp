@@ -28,8 +28,8 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h, std::vector<Vill
     // tamanio vector cajas.
     _labyrinth.reserve(_nFils * _nCols);
 
-    // leemos cada fila
-    for (int i = 0; i < _nFils; i++) {
+    // leemos cada fila (nota: le hemos dado la vuelta al laberinto para que el 0 este en la esquina superior izquierda.
+    for (int i = _nFils; i > 0; i--) {
         for (int j = 0; j < _nCols; j++) {
             file >> lee;
 
@@ -73,33 +73,66 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h, std::vector<Vill
 Vector2 Labyrinth::getBlockPosition(Vector3 pos){
     int nBlocksWidth = _width / _boxSize.x;
     int nBlocksHeight = _height / _boxSize.z;
-    return Vector2((nBlocksWidth - 1) - int(pos.x / _boxSize.x), (nBlocksHeight - 1) - int(pos.z / _boxSize.z));
+    return Vector2((nBlocksWidth -1) - int(pos.x / _boxSize.x), (nBlocksHeight -1) - int(pos.z / _boxSize.z));
 }
 
 bool Labyrinth::getBlockType(Vector2 blockPos){
 
     //n fila + n columna + (n fila * n columnas del laberinto)
     IG2Object* block = _labyrinth[(blockPos.y) * _nCols + blockPos.x];
-    //std::cout << "El bloque que esta delante del Hero es: " << getBlockPosition(block->getPosition()) << std::endl;
-    //std::cout << "¿El bloque es traspasble? " << block->isTraspasable() << std::endl;
+    std::cout << "El bloque que esta delante del Hero es: " << getBlockPosition(block->getPosition()) << std::endl;
+    std::cout << "El bloque es traspasble? " << block->isTraspasable() << std::endl;
     return block->isTraspasable();
 }
 
-void Labyrinth::canHeroGoForward() {
+Vector2 Labyrinth::getHeroForwardBlock()
+{
     // 1. Calculamos la pos en bloques del hero.
     Vector2 heroBlockPos = getBlockPosition(_hero->getPosition());
+    std::cout << "El Hero esta en: " << heroBlockPos << std::endl;
 
-    //std::cout << "El Hero esta en: " << heroBlockPos << std::endl;
-    
+    //std::cout << "El Hero esta en [coords reales]: " << _hero->getPosition() << std::endl;
+
     // 1. Calculamos el siguiente bloque en cuestion a la posicion y direccion de hero
-    Vector2 forwardBlock = Vector2(heroBlockPos.x - _hero->getOrientation().z, heroBlockPos.y - _hero->getOrientation().x);
+    int proximaX = heroBlockPos.x - _hero->getOrientation().z;
+    int proximaY = heroBlockPos.y - _hero->getOrientation().x;
+    Vector2 forwardBlock = Vector2(proximaX , proximaY);
+    std::cout << "Bloque de delante del Hero: " << forwardBlock << std::endl;
+    std::cout << "Orientacion del heroe: " << _hero->getOrientation() << std::endl;
 
-    //std::cout << "Orientacion del heroe: " << _hero->getOrientation() << std::endl;
+    getBlockType(forwardBlock);
 
-    //std::cout << "El bloque delante del Hero es: " << forwardBlock << std::endl;
+    return forwardBlock;
+}
 
-    // 2. Miramos si es traspasable y lo seteamos.
+Vector2 Labyrinth::getHeroLeftBlock()
+{
+    //// 1. Calculamos la pos en bloques del hero.
+    //Vector2 heroBlockPos = getBlockPosition(_hero->getPosition());
+    //std::cout << "El Hero esta en: " << heroBlockPos << std::endl;
+
+    ////std::cout << "El Hero esta en [coords reales]: " << _hero->getPosition() << std::endl;
+
+    //// 1. Calculamos el siguiente bloque en cuestion a la posicion y direccion de hero
+    //Vector2 LeftBlock = Vector2(heroBlockPos.x, heroBlockPos.y + _hero->getOrientation().x);
+    //std::cout << "Bloque de delante del Hero: " << LeftBlock << std::endl;
+    ////std::cout << "Orientacion del heroe: " << _hero->getOrientation() << std::endl;
+
+    //getBlockType(LeftBlock);
+
+    //return LeftBlock;
+}
+
+Vector2 Labyrinth::getHeroRightBlock()
+{
+    return Vector2();
+}
+
+void Labyrinth::canHeroGoForward() {
+    
+    //// 2. Miramos si es traspasable y lo seteamos.
     //_hero->setCanGoForward(getBlockType(forwardBlock));
+    ////if (_hero->getCanGoForward() == false) _hero->setPosition(_hero->getPosition());
 }
 
 void Labyrinth::createFloor(SceneManager* sm, std::string mat){

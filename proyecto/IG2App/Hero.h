@@ -23,11 +23,12 @@ public:
 	explicit Hero(Vector3 initPos, SceneNode* node, SceneManager* sceneMng);
 
 	void keyPressed(const OgreBites::KeyboardEvent evt); // input
-	void frameRendered(const Ogre::FrameEvent& evt) override; // update
+	void update(const Ogre::FrameEvent& evt); // update
 
 	inline Vector3 getDirection() { return _direction; }
 	inline int getLives() { return _lives; }
 	inline int getPoints() { return _points; }
+	inline bool getCanGoForward() { return _canGoForward; }
 
 	inline void releaseLives() { if (_lives > 0) _lives--; else _lives = 0; }
 	inline void increasePoints(int newPoints) { _points += newPoints; }
