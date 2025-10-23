@@ -31,14 +31,14 @@ Villain::Villain(Vector3 initPos, SceneNode* node, SceneManager* sceneMng) : Cha
 
 	//Ncuerpo->showBoundingBox(true);
 
-	////Nodo Head
-	//_nHead = _nBody->createChildSceneNode();  //Vamos a rotar estos dos por lo que a lo mejor
+	//Nodo Head
+	_nHead = _nBody->createChildSceneNode();  //Vamos a rotar estos dos por lo que a lo mejor
 
-	////Entidad head
-	//_vHead = mSM->createEntity("ogrehead.mesh");
-	//_nHead->attachObject(_vHead);
-	//_nHead->setScale(Vector3(1, 1, 1));
-	//_nHead->setPosition(Vector3(0, 25, 0));
+	//Entidad head
+	_vHead = mSM->createEntity("ogrehead.mesh");
+	_nHead->attachObject(_vHead);
+	_nHead->setScale(Vector3(1, 1, 1));
+	_nHead->setPosition(Vector3(0, 25, 0));
 
 	//Nodo Feet
 	_nFeet = _nBody->createChildSceneNode();  //nos interesa guardarlo

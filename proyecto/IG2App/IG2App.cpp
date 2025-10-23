@@ -158,7 +158,11 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 {
     // updates
     _hero->update(evt);
-    _lab->getHeroForwardBlock();
+
+    //Mira el bloque de delante, ve si es traspasable, y lo setea en el hero
+    Vector2 nextBlock = _lab->getHeroForwardBlock();
+    bool next = _lab->getBlockType(nextBlock);
+    _hero->setCanGoForward(next);
 
     for (int i = 0; i < _villains.size(); ++i)
     {
