@@ -28,8 +28,15 @@ public:
 		_traspasable = false;
 	}
 
-	virtual void move(double t) = 0;
+	inline Vector3 getDirection() { return _direction; }
+	inline void setDirection(Vector3 d) { _direction = d; }
 
+protected:
+	Vector3 _direction;
+
+
+	virtual void move(double t) = 0;
 	virtual void rotate() = 0;
+
 };
 

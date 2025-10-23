@@ -25,7 +25,6 @@ public:
 	void keyPressed(const OgreBites::KeyboardEvent evt); // input
 	void update(const Ogre::FrameEvent& evt); // update
 
-	inline Vector3 getDirection() { return _direction; }
 	inline int getLives() { return _lives; }
 	inline int getPoints() { return _points; }
 	inline bool getCanGoForward() { return _canGoForward; }
@@ -39,7 +38,7 @@ public:
 private:
 	int _lives;
 	int _points;
-	Vector3 _direction;
+	
 	Vector3 _newDirection;
 	const double HERO_SPEED = 70.0;
 

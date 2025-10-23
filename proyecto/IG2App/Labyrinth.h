@@ -40,14 +40,15 @@ public:
     // devuelve el tipo de bloque en la posicion dada (Wall - false, Empty - true)
     bool getBlockType(Vector2 blockPos);
 
-    // devuelve el bloque que esta delante del heroe.
-    Vector2 getHeroForwardBlock();
-    Vector2 getHeroLeftBlock();
-    Vector2 getHeroRightBlock();
+    // devuelve los bloques contiguos.
+    Vector2 getCharacterForwardBlock(Character* c);
+    Vector2 getCharacterLeftBlock(Character* c);
+    Vector2 getCharacterRightBlock(Character* c);
 
-    // define si el hero puede avanzar a la siguiente casilla o no
-    // settea en el player si WALL -> false, EMPTY -> true
-    void canHeroGoForward();
+    // saca posibles dirs segun entorno.
+    std::vector<Vector3> _allDirs;
+    std::vector<Vector3> choosePossibleDirs(Character* c);
+    Vector3 calculateRandomDir(Character* c);
 
     void rotate();
 
@@ -78,6 +79,7 @@ private:
     //tamanio bloque
     Vector3 _boxSize;
 
+    void createLabyrinth(String f, SceneManager* sceneMng);
     void createFloor(SceneManager* sm, std::string mat);
 };
 

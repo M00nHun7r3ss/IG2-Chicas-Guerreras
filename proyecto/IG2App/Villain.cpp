@@ -1,6 +1,7 @@
 #include "Villain.h"
 
-Villain::Villain(Vector3 initPos, SceneNode* node, SceneManager* sceneMng) : Character(initPos, node, sceneMng){
+Villain::Villain(Vector3 initPos, SceneNode* node, SceneManager* sceneMng) : Character(initPos, node, sceneMng) 
+{
 	// TODO gestionar como el traspasable afecta al villain ya que en si no tiene malla este objeto, sino que son tres externas.
 
 	//Timer para cambiar direccion giro partes moviles
@@ -8,6 +9,45 @@ Villain::Villain(Vector3 initPos, SceneNode* node, SceneManager* sceneMng) : Cha
 	_animDir = false; // false, por ejemplo
 	_angle = 0.0; // inicialmente 0.
 
+	createVillainParts();
+}
+
+void Villain::update(const Ogre::FrameEvent& evt){
+	// cuando pasen dos segundos...
+	if (_timer->getMilliseconds() > 2000){
+		_timer->reset(); // resetea.
+		_animDir = !_animDir; // invierte la direccion.
+		_angle = 0; // restea el angulo 
+	}
+	armsRotation();
+
+	move(evt.timeSinceLastFrame);
+}
+
+void Villain::armsRotation(){
+	_angle = _angle + 0.05;
+	
+	if (_animDir) {
+		_nArm1R->rotate(Quaternion(Radian(Degree(_angle)), Vector3(1, 0, 0)));
+		_nArm1L->rotate(Quaternion(Radian(Degree(-_angle)), Vector3(1, 0, 0)));
+	}
+	else {
+		_nArm1R->rotate(Quaternion(Radian(Degree(-_angle)), Vector3(1, 0, 0)));
+		_nArm1L->rotate(Quaternion(Radian(Degree(_angle)), Vector3(1, 0, 0)));
+	}
+}
+
+
+void Villain::move(double t){
+	setPosition(getPosition() + VILLAIN_SPEED * _direction * t);
+}
+
+void Villain::rotate()
+{
+}
+
+void Villain::createVillainParts()
+{
 	/*
 	 Esquema nodos:
 	 Padre: Cuerpo [0]
@@ -15,7 +55,7 @@ Villain::Villain(Vector3 initPos, SceneNode* node, SceneManager* sceneMng) : Cha
 			-> Pies
 			-> Brazo 1
 				-> Brazo 2
-					-> Brazo 3 
+					-> Brazo 3
 	 */
 
 # pragma region Elementos centrales
@@ -109,48 +149,4 @@ Villain::Villain(Vector3 initPos, SceneNode* node, SceneManager* sceneMng) : Cha
 	_nArm3L->setPosition(Vector3(_nArm2L->getPosition().x + 80, _nArm2L->getPosition().y + 150, _nArm2L->getPosition().z));
 	_vArm3L->setMaterialName("Villain/Sphere");
 #pragma endregion
-
-}
-
-void Villain::update(const Ogre::FrameEvent& evt){
-	// cuando pasen dos segundos...
-	if (_timer->getMilliseconds() > 2000){
-		_timer->reset(); // resetea.
-		_animDir = !_animDir; // invierte la direccion.
-		_angle = 0; // restea el angulo 
-	}
-	armsRotation();
-}
-
-void Villain::armsRotation(){
-	_angle = _angle + 0.05;
-	
-	if (_animDir) {
-		_nArm1R->rotate(Quaternion(Radian(Degree(_angle)), Vector3(1, 0, 0)));
-		_nArm1L->rotate(Quaternion(Radian(Degree(-_angle)), Vector3(1, 0, 0)));
-	}
-	else {
-		_nArm1R->rotate(Quaternion(Radian(Degree(-_angle)), Vector3(1, 0, 0)));
-		_nArm1L->rotate(Quaternion(Radian(Degree(_angle)), Vector3(1, 0, 0)));
-	}
-}
-
-SceneNode* Villain::createChildEntity(SceneNode* parentNode, std::string mesh, Vector3 pos, Vector3 scale, Degree angle, Vector3 rotateOn){
-	SceneNode* child = parentNode->createChildSceneNode();
-
-	Entity* ent = mSM->createEntity(mesh);
-	child->attachObject(ent);
-	child->setScale(scale);
-	child->rotate(Quaternion(Radian(Degree(angle)), rotateOn));
-	child->setPosition(pos);
-
-	return child;
-}
-
-void Villain::move(double t)
-{
-}
-
-void Villain::rotate()
-{
 }
