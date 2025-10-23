@@ -61,7 +61,7 @@ bool Labyrinth::getBlockType(Vector2 blockPos){
 
     //Miramos fuera de rango
     if (col < 0 || col >= _nCols || row < 0 || row >= _nFils) {
-        std::cout << "getBlockType: indices fuera de rango (" << col << "," << row << ")\n";
+        //std::cout << "getBlockType: indices fuera de rango (" << col << "," << row << ")\n";
         return false; // fuera del laberinto se considera NO traspasable
     }
 
@@ -95,7 +95,7 @@ Vector2 Labyrinth::getCharacterForwardBlock(Character* c)
 
     Vector2 forwardBlock(blockPos.x + dCol, blockPos.y + dRow);
 
-    std::cout << "Hero esta en celda: " << blockPos << " y su celda delante: " << forwardBlock << std::endl;
+    //std::cout << "Hero esta en celda: " << blockPos << " y su celda delante: " << forwardBlock << std::endl;
 
     //Forzamos la posicion de hero en el centro de la casilla
     //_hero->setPosition(Vector3(forwardBlock.x * _boxSize.x/2, _hero->getPosition().y, forwardBlock.y * _boxSize.z / 2));
@@ -134,7 +134,7 @@ Vector2 Labyrinth::getCharacterLeftBlock(Character* c)
 
     Vector2 leftBlock(heroBlockPos.x + dCol, heroBlockPos.y + dRow);
 
-    std::cout << "Hero celda izquierda: " << leftBlock << std::endl;
+    //std::cout << "Hero celda izquierda: " << leftBlock << std::endl;
     return leftBlock;
 }
 
@@ -154,7 +154,7 @@ Vector2 Labyrinth::getCharacterRightBlock(Character* c)
 
     Vector2 rightBlock(heroBlockPos.x + dCol, heroBlockPos.y + dRow);
 
-    std::cout << "Hero celda derecha: " << rightBlock << std::endl;
+    //std::cout << "Hero celda derecha: " << rightBlock << std::endl;
     return rightBlock;
 }
 
@@ -233,6 +233,7 @@ void Labyrinth::createLabyrinth(String f, SceneManager* sceneMng)
                 _labyrinth.push_back(new Empty(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng));
                 // crea hero
                 _hero->setPosition(actualPos);
+                _hero->setFirstPos(actualPos);
                 _hero->setScale(Vector3(_boxSize.x / _hero->calculateBoxSize().x, _boxSize.y / _hero->calculateBoxSize().y + 5, _boxSize.z / _hero->calculateBoxSize().z) / 2);
             }
             else if (lee == 'v' && _villains.size() < 10) {

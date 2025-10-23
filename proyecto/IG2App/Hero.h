@@ -29,16 +29,30 @@ public:
 	inline int getPoints() { return _points; }
 	inline bool getCanGoForward() { return _canGoForward; }
 
-	inline void releaseLives() { if (_lives > 0) _lives--; else _lives = 0; }
 	inline void increasePoints(int newPoints) { _points += newPoints; }
 
 	void setCanGoForward(bool _canGo) { _canGoForward = _canGo; }
+	void setFirstPos(Vector3 initPos) { _initialPos = initPos; }
+
+	inline void damagePlayer()
+	{
+		std::cout << "Posicion anterior: " << getPosition() << std::endl;
+		//std::cout << _initialPos << std::endl;
+		//Lo movemos a la posicion inicial
+		setPosition(_initialPos);
+		std::cout << "Posicion actual: " << getPosition() << std::endl;
+		//Quitamos una vida
+		releaseLives();
+		//avisamos por consola
+		std::cout << "Hero ha perdido una vida." << std::endl;
+	}
 
 
 private:
 	int _lives;
 	int _points;
-	
+
+	Vector3 _initialPos;
 	Vector3 _newDirection;
 	const double HERO_SPEED = 70.0;
 
@@ -46,5 +60,7 @@ private:
 
 	void move(double t) override;
 	void rotate() override;
+
+	inline void releaseLives() {  _lives--; }
 };
 

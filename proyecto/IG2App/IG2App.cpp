@@ -10,6 +10,11 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
         getRoot()->queueEndRendering();
     }
 
+    if (evt.keysym.sym == SDLK_d)
+    {
+        _hero->damagePlayer();
+    }
+
     _hero->keyPressed(evt);
     //std::cout << _lab->getBlockPosition(_hero->getPosition()) << std::endl;
 
@@ -177,6 +182,27 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 
     //std::cout << _lab->getBlockPosition(_hero->getPosition()) << std::endl;
     //std::cout << _hero->getDirection() << std::endl;
+}
+
+void IG2App::checkCollisions()
+{
+    AxisAlignedBox heroAABox = _hero->getAABB();
+    bool collides = false;
+
+    for (int i = 0; i < _villains.size(); ++i) {
+        collides = heroAABox.intersects(_villains[i]->getAABB());
+    }
+
+    //Si colisionan
+    if (collides && _hero->getLives() > 0)
+    {
+        _hero->damagePlayer();
+    }
+
+    if (_hero->getLives() == 0)
+    {
+        std::cout << "Fin de juego. Has muerto" << std::endl;
+    }
 }
 
 

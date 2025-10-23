@@ -33,6 +33,7 @@ protected:
     virtual void shutdown();
     virtual void setupScene();
     virtual void frameRendered(const Ogre::FrameEvent& evt);
+    void checkCollisions();
       
     Ogre::SceneManager* mSM = nullptr;
     OgreBites::TrayManager* mTrayMgr = nullptr;
