@@ -1,9 +1,9 @@
 #include "Labyrinth.h"
 
-Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h, std::vector<Villain*> v) : _hero(h), _villains(v)
-{
+Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h, std::vector<Villain*>& v) : _hero(h), _villains(v) {
     createLabyrinth(f, sceneMng);
 
+    // tamanio del laberinto (en distancia).
     _width = _nCols * _boxSize.x;
     _height = _nFils * _boxSize.y;
 
@@ -17,64 +17,48 @@ Labyrinth::Labyrinth(String f, SceneManager* sceneMng, Hero* h, std::vector<Vill
     };
 }
 
-Vector2 Labyrinth::getBlockPosition(Vector3 pos){
-    /*int nBlocksWidth = _width / _boxSize.x;
-    int nBlocksHeight = _height / _boxSize.z;
-    return Vector2((nBlocksWidth -1) - int(pos.x / _boxSize.x), (nBlocksHeight -1) - int(pos.z / _boxSize.z));*/
+Vector2 Labyrinth::getBlockPosition(Vector3 pos, Vector3 dir){
+    // esto sirve para centrar al personaje segun el bloque dependiendo de la direccion (prueba y error), viendo el margen.
+    float marginCols = 0;
+    float marginFils = 0;
 
-    //DENISA AQUI
-    // Usamos el centro del bloque como referencia
-    float halfX = _boxSize.x * 0.5f;
-    float halfZ = _boxSize.z * 0.5f;
+    // hoy hemos aprendido que no se puede hacer switch de vector3
+    if (dir == _allDirs[0]) { // left
+        marginCols = _boxSize.x * 0.05f;
+    }
+    else if (dir == _allDirs[1]) { // right
+        marginCols = _boxSize.x * 0.95f;
+    }
+    else if (dir == _allDirs[2]) { // up 
+        marginFils = _boxSize.z * 0.05f;
+    }
+    else if (dir == _allDirs[3]) { // down
+        marginFils = _boxSize.z * 0.95f;
+    }
 
-    // Posición relativa y redondeamos a la celda más cercana
-	//Explicación: ponemos pos.x + halfX para que si el héroe está a mitad entre dos bordes, vaya a la celda más intuitiva(redondeo al centro)
-    // columna: x crece hacia la derecha -> col 0 = izquierda
-    int col = _nCols - 1 - int(std::floor((pos.x + halfX) / _boxSize.x)); // 0 = izquierda
-
-    // fila: queremos row 0 = fila superior del fichero.
-    // La lectura del fichero usó i desde _nFils..1 y puso z = boxSize.z * i,
-    // así que las filas superiores tienen z más grande.
-    // Primero calculamos la fila "desde abajo" y luego invertimos:
-    int row = _nFils - int(std::floor((pos.z + halfZ) / _boxSize.z));  // 0 = arriba
-
-    // Clamp para que no salte fuera de rango
-    if (col < 0) col = 0;
-    if (col >= _nCols) col = _nCols - 1;
-    if (row < 0) row = 0;
-    if (row >= _nFils) row = _nFils - 1;
+    // posicion en casillas, teselas, celdas... (como si fuera matriz).
+    int col = _nCols - 1 - int((pos.x+ marginCols)  / _boxSize.x); // 0 = izquierda
+    int row = _nFils - int(((pos.z+ marginFils) / _boxSize.z));  // 0 = arriba
 
     return Vector2(col, row); // x = columna, y = fila
 }
 
 bool Labyrinth::getBlockType(Vector2 blockPos){
 
-    ////n fila + n columna + (n fila * n columnas del laberinto)
-    //IG2Object* block = _labyrinth[(blockPos.y) * _nCols + blockPos.x];
-    //std::cout << "El bloque que esta delante del Hero es: " << getBlockPosition(block->getPosition()) << std::endl;
-    //std::cout << "El bloque es traspasble? " << block->isTraspasable() << std::endl;
-    //return block->isTraspasable();
+    // sacamos el bloque concreto que le hemos pasado
+    IG2Object* block = _labyrinth[blockPos.y * _nCols + blockPos.x];
 
-    //Forzamos int
-    int col = (int)blockPos.x;
-    int row = (int)blockPos.y;
+    std::cout << "El bloque en (" << blockPos.x << "," << blockPos.y << ") es traspasable? " << block->isTraspasable() << std::endl;
 
-    //Miramos fuera de rango
-    if (col < 0 || col >= _nCols || row < 0 || row >= _nFils) {
-        //std::cout << "getBlockType: indices fuera de rango (" << col << "," << row << ")\n";
-        return false; // fuera del laberinto se considera NO traspasable
-    }
-
-    //Sacamos el bloque concreto 
-    IG2Object* block = _labyrinth[row * _nCols + col];
-    //std::cout << "El bloque en (" << col << "," << row << ") es traspasable? " << block->isTraspasable() << std::endl;
     return block->isTraspasable();
 }
 
 Vector2 Labyrinth::getCharacterForwardBlock(Character* c)
 {
     // 1. Posicion actual del hero en la cuadricula
-    Vector2 blockPos = getBlockPosition(c->getPosition());
+    Vector2 blockPos = getBlockPosition(c->getPosition(), c->getOrientation());
+
+    //std::cout << "El Hero esta en: " << getBlockPosition(_hero->getPosition(), _hero->getOrientation()) << std::endl;
 
     // 2. Direccion de movimiento actual del hero (en mundo)
     Vector3 dir = c->getOrientation();
@@ -106,8 +90,8 @@ Vector2 Labyrinth::getCharacterForwardBlock(Character* c)
 Vector2 Labyrinth::getCharacterLeftBlock(Character* c)
 {
     //// 1. Calculamos la pos en bloques del hero.
-    //Vector2 heroBlockPos = getBlockPosition(_hero->getPosition());
-    //std::cout << "El Hero esta en: " << heroBlockPos << std::endl;
+    ////Vector2 heroBlockPos = getBlockPosition(_hero->getPosition());
+    
 
     ////std::cout << "El Hero esta en [coords reales]: " << _hero->getPosition() << std::endl;
 
@@ -120,7 +104,7 @@ Vector2 Labyrinth::getCharacterLeftBlock(Character* c)
 
     //return LeftBlock;
 
-    Vector2 heroBlockPos = getBlockPosition(_hero->getPosition());
+    Vector2 heroBlockPos = getBlockPosition(_hero->getPosition(), _hero->getOrientation());
     Vector3 dir = _hero->getDirection();
 
     int dCol = 0;
@@ -140,7 +124,7 @@ Vector2 Labyrinth::getCharacterLeftBlock(Character* c)
 
 Vector2 Labyrinth::getCharacterRightBlock(Character* c)
 {
-    Vector2 heroBlockPos = getBlockPosition(_hero->getPosition());
+    Vector2 heroBlockPos = getBlockPosition(_hero->getPosition(), _hero->getOrientation());
     Vector3 dir = _hero->getDirection();
 
     int dCol = 0;

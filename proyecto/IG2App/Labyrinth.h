@@ -23,13 +23,14 @@
 
 class Labyrinth : public OgreBites::IG2ApplicationContext, OgreBites::InputListener {
 public:
-    explicit Labyrinth(String file, SceneManager* sceneMng, Hero* h, std::vector<Villain*> v); // TODO probar a hacer luego por referencia en vez de getVillainVector();
+    explicit Labyrinth(String file, SceneManager* sceneMng, Hero* h, std::vector<Villain*>& v); // TODO probar a hacer luego por referencia en vez de getVillainVector();
+
+    Vector2 getBlockPosition(Vector3 pos, Vector3 dir = Vector3(0.0f));
 
     inline Vector3 getPos() { return _pos; }
     inline float getHeight() { return _height; }
     inline float getWidth() { return _width; }
     inline Vector3 getBoxSize() { return _boxSize; }
-    inline std::vector<Villain*> getVillainVector() { return _villains; }
     inline std::string getFloorMaterial() { return _floorMat; }
     inline int getLightType() { return _lightType; }
 
@@ -50,17 +51,16 @@ public:
     std::vector<Vector3> choosePossibleDirs(Character* c);
     Vector3 calculateRandomDir(Character* c);
 
-    void rotate();
 
 private:
     // Personajes.
     Hero* _hero;
-    std::vector<Villain*> _villains;
+    std::vector<Villain*>& _villains;
 
     //vector cajas
     std::vector <IG2Object*> _labyrinth;
  
-    //ancho y alto del laberinto, en plano xz
+    //ancho y alto del laberinto (en distancia)
     float _width;
     float _height;
 

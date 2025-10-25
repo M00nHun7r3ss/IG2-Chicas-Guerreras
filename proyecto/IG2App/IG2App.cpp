@@ -89,13 +89,8 @@ void IG2App::setupScene(void){
     //light->setPosition(_hero->getPosition().x, 50, _hero->getPosition().z);
 
     //------------------------------------------------------------------------
-    //Labyrinth creation
+    //Labyrinth and villains creation
     _lab = new Labyrinth("stage1wv.txt", mSM, _hero, _villains);
-
-    //------------------------------------------------------------------------
-	//Villain creation
-    _villains = _lab->getVillainVector(); // TODO probar a hacer luego por referencia en vez de getVillainVector();
-
     //------------------------------------------------------------------------
     //Floor
     MeshManager::getSingleton().createPlane("mPlane1080x800",
