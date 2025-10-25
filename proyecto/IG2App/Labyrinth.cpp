@@ -48,97 +48,95 @@ bool Labyrinth::getBlockType(Vector2 blockPos){
     // sacamos el bloque concreto que le hemos pasado
     IG2Object* block = _labyrinth[blockPos.y * _nCols + blockPos.x];
 
-    std::cout << "El bloque en (" << blockPos.x << "," << blockPos.y << ") es traspasable? " << block->isTraspasable() << std::endl;
-
     return block->isTraspasable();
 }
 
 Vector2 Labyrinth::getCharacterForwardBlock(Character* c)
 {
-    // 1. Posicion actual del hero en la cuadricula
-    Vector2 blockPos = getBlockPosition(c->getPosition(), c->getOrientation());
-
-    //std::cout << "El Hero esta en: " << getBlockPosition(_hero->getPosition(), _hero->getOrientation()) << std::endl;
-
-    // 2. Direccion de movimiento actual del hero (en mundo)
+    // Cogemos la direccion del personaje
     Vector3 dir = c->getOrientation();
 
-    // 3. Convertimos direccion mundo a desplazamiento en celdas (top-left origin)
+    // Miramos su posicion actual en la cuadricula
+    Vector2 blockPos = getBlockPosition(c->getPosition(), dir);
+
+    // Convertimos direccion a desplazamiento en celdas
     // En la cuadricula:
-    //  - derecha = +1 columna
-    //  - izquierda = -1 columna
-    //  - arriba (hacia el norte, z mayor) = -1 fila
-    //  - abajo (hacia el sur, z menor) = +1 fila
-    int dCol = 0;
-    int dRow = 0;
-
-    if (dir.x > 0.5f) dCol = -1;         // derecha
-    else if (dir.x < -0.5f) dCol = +1;   // izquierda
-    else if (dir.z > 0.5f) dRow = -1;    // arriba
-    else if (dir.z < -0.5f) dRow = +1;   // abajo
-
-    Vector2 forwardBlock(blockPos.x + dCol, blockPos.y + dRow);
-
-    //std::cout << "Hero esta en celda: " << blockPos << " y su celda delante: " << forwardBlock << std::endl;
-
-    //Forzamos la posicion de hero en el centro de la casilla
-    //_hero->setPosition(Vector3(forwardBlock.x * _boxSize.x/2, _hero->getPosition().y, forwardBlock.y * _boxSize.z / 2));
+    //  - derecha = -1 columna
+    //  - izquierda = +1 columna
+    //  - arriba = -1 fila
+    //  - abajo = +1 fila
+    Vector2 forwardBlock(blockPos.x - dir.x, blockPos.y - dir.z);
 
     return forwardBlock;
 }
 
 Vector2 Labyrinth::getCharacterLeftBlock(Character* c)
 {
-    //// 1. Calculamos la pos en bloques del hero.
-    ////Vector2 heroBlockPos = getBlockPosition(_hero->getPosition());
-    
+    // Cogemos la direccion del personaje
+    Vector3 dir = c->getOrientation();
 
-    ////std::cout << "El Hero esta en [coords reales]: " << _hero->getPosition() << std::endl;
+    // Miramos su posicion actual en la cuadricula
+    Vector2 blockPos = getBlockPosition(c->getPosition(), dir);
 
-    //// 1. Calculamos el siguiente bloque en cuestion a la posicion y direccion de hero
-    //Vector2 LeftBlock = Vector2(heroBlockPos.x, heroBlockPos.y + _hero->getOrientation().x);
-    //std::cout << "Bloque de delante del Hero: " << LeftBlock << std::endl;
-    ////std::cout << "Orientacion del heroe: " << _hero->getOrientation() << std::endl;
-
-    //getBlockType(LeftBlock);
-
-    //return LeftBlock;
-
-    Vector2 heroBlockPos = getBlockPosition(_hero->getPosition(), _hero->getOrientation());
-    Vector3 dir = _hero->getDirection();
-
+    // Convertimos direccion a desplazamiento en celdas
+	// En la cuadricula, las izquierdas de las direcciones son:
+	//  - izquierda -> abajo (0, 0, 1)
+	//  - derecha -> arriba (0, 0, -1)
+	//  - arriba -> izquierda (-1, 0, 0)
+	//  - abajo -> derecha (1, 0, 0)
     int dCol = 0;
-    int dRow = 0;
+    int dFil = 0;
 
-    // Giramos 90° a la izquierda (desde la dirección actual)
-    if (dir.x > 0.5f) { dRow = -1; } // derecha - arriba
-    else if (dir.x < -0.5f) { dRow = +1; } // izquierda - abajo
-    else if (dir.z > 0.5f) { dCol = -1; } // arriba - izquierda
-    else if (dir.z < -0.5f) { dCol = +1; } // abajo - derecha
+    if (dir == _allDirs[0]) { // left
+        dFil = 1;
+    }
+    else if (dir == _allDirs[1]) { // right
+        dFil = -1;
+    }
+    else if (dir == _allDirs[2]) { // up 
+        dCol = -1;
+    }
+    else if (dir == _allDirs[3]) { // down
+        dCol = 1;
+    }
 
-    Vector2 leftBlock(heroBlockPos.x + dCol, heroBlockPos.y + dRow);
+    Vector2 leftBlock(blockPos.x + dCol, blockPos.y + dFil);
 
-    //std::cout << "Hero celda izquierda: " << leftBlock << std::endl;
     return leftBlock;
 }
 
 Vector2 Labyrinth::getCharacterRightBlock(Character* c)
 {
-    Vector2 heroBlockPos = getBlockPosition(_hero->getPosition(), _hero->getOrientation());
-    Vector3 dir = _hero->getDirection();
+    // Cogemos la direccion del personaje
+    Vector3 dir = c->getOrientation();
 
+    // Miramos su posicion actual en la cuadricula
+    Vector2 blockPos = getBlockPosition(c->getPosition(), dir);
+
+    // Convertimos direccion a desplazamiento en celdas
+    // En la cuadricula, las derechas de las direcciones son:
+    //  - izquierda -> arriba (0, 0, -1)
+    //  - derecha -> abajo (0, 0, 1)
+    //  - arriba -> derecha (1, 0, 0)
+    //  - abajo -> izquierda (-1, 0, 0)
     int dCol = 0;
-    int dRow = 0;
+    int dFil = 0;
 
-    // Giramos 90° a la derecha (desde la dirección actual)
-    if (dir.x > 0.5f) { dRow = +1; } // derecha - abajo
-    else if (dir.x < -0.5f) { dRow = -1; } // izquierda - arriba
-    else if (dir.z > 0.5f) { dCol = +1; } // arriba - derecha
-    else if (dir.z < -0.5f) { dCol = -1; } // abajo - izquierda
+    if (dir == _allDirs[0]) { // left
+        dFil = -1;
+    }
+    else if (dir == _allDirs[1]) { // right
+        dFil = 1;
+    }
+    else if (dir == _allDirs[2]) { // up 
+        dCol = 1;
+    }
+    else if (dir == _allDirs[3]) { // down
+        dCol = -1;
+    }
 
-    Vector2 rightBlock(heroBlockPos.x + dCol, heroBlockPos.y + dRow);
+    Vector2 rightBlock(blockPos.x + dCol, blockPos.y + dFil);
 
-    //std::cout << "Hero celda derecha: " << rightBlock << std::endl;
     return rightBlock;
 }
 

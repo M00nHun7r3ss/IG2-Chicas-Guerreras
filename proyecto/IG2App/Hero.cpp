@@ -1,7 +1,5 @@
 #include "Hero.h"
 
-#include "Labyrinth.h"
-
 Hero::Hero(Vector3 initPos, SceneNode* node, SceneManager* sceneMng)
 : Character(initPos, node, sceneMng, "Sinbad.mesh"), _lives(3), _points(0), _newDirection(Vector3::ZERO), _canGoForward(true) {
     _direction = Vector3::ZERO;
@@ -9,16 +7,16 @@ Hero::Hero(Vector3 initPos, SceneNode* node, SceneManager* sceneMng)
 
 void Hero::keyPressed(const OgreBites::KeyboardEvent evt){
     if (evt.keysym.sym == SDLK_UP) {
-        _newDirection = Vector3(0, 0, 1);
+        _newDirection = Vector3::UNIT_Z;
     }
     else if (evt.keysym.sym == SDLK_DOWN) {
-        _newDirection = Vector3(0, 0, -1);
+        _newDirection = Vector3::NEGATIVE_UNIT_Z;
     }
     else if (evt.keysym.sym == SDLK_LEFT) {
-        _newDirection = Vector3(1, 0, 0);
+        _newDirection = Vector3::UNIT_X;
     }
     else if (evt.keysym.sym == SDLK_RIGHT) {
-        _newDirection = Vector3(-1, 0, 0);
+        _newDirection = Vector3::NEGATIVE_UNIT_X;
     }
 
     _direction = _newDirection;
@@ -29,7 +27,6 @@ void Hero::keyPressed(const OgreBites::KeyboardEvent evt){
 
 void Hero::update(const Ogre::FrameEvent& evt)
 {
-    //evt.timeSinceLastFrame //TODO: PA K CONIO ES ESTO?
     //evita que se mueva al arrancar
     if (_newDirection != Vector3::ZERO) {
         move(evt.timeSinceLastFrame);
@@ -38,7 +35,6 @@ void Hero::update(const Ogre::FrameEvent& evt)
 
 void Hero::move(double t)
 {
-    //std::cout << _canGoForward << std::endl;
     //Si el siguiente bloque es traspasable, avanza
 	if (_canGoForward)
 	{
@@ -47,8 +43,7 @@ void Hero::move(double t)
     //Si no, se para
     else
     {
-        _newDirection = Vector3::ZERO;
-    	_direction = _newDirection;
+    	_direction = Vector3::ZERO;
     }
 }
 

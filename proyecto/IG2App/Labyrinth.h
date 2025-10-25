@@ -2,19 +2,9 @@
 
 #include "IG2ApplicationContext.h"
 #include "IG2Object.h"
-#include <OgreSceneManager.h>
-#include <OgreSceneNode.h>
-#include <OgreTrays.h>
-#include <OgreCameraMan.h>
 #include <OgreEntity.h>
 #include <OgreInput.h>
-#include <SDL_keycode.h>
-#include <OgreMeshManager.h>
-#include <sstream>
-#include <iostream>
 #include <string>
-#include <iomanip>
-#include <fstream>
 #include <vector>
 #include "Wall.h"
 #include "Empty.h"
@@ -23,7 +13,7 @@
 
 class Labyrinth : public OgreBites::IG2ApplicationContext, OgreBites::InputListener {
 public:
-    explicit Labyrinth(String file, SceneManager* sceneMng, Hero* h, std::vector<Villain*>& v); // TODO probar a hacer luego por referencia en vez de getVillainVector();
+    explicit Labyrinth(String file, SceneManager* sceneMng, Hero* h, std::vector<Villain*>& v);
 
     Vector2 getBlockPosition(Vector3 pos, Vector3 dir = Vector3(0.0f));
 
@@ -43,8 +33,8 @@ public:
 
     // devuelve los bloques contiguos.
     Vector2 getCharacterForwardBlock(Character* c);
-    Vector2 getCharacterLeftBlock(Character* c);
-    Vector2 getCharacterRightBlock(Character* c);
+    Vector2 getCharacterLeftBlock(Character* c); //TODO ver si se puede comprimir el calculo en vez de ifs
+    Vector2 getCharacterRightBlock(Character* c); //TODO ver si se puede comprimir el calculo en vez de ifs
 
     // saca posibles dirs segun entorno.
     std::vector<Vector3> _allDirs;

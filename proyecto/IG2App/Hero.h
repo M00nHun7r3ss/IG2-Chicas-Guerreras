@@ -1,20 +1,9 @@
 #pragma once
 
 #include "IG2ApplicationContext.h"
-#include <OgreSceneManager.h>
-#include <OgreSceneNode.h>
-#include <OgreTrays.h>
-#include <OgreCameraMan.h>
-#include <OgreEntity.h>
 #include <OgreInput.h>
-#include <SDL_keycode.h>
 #include <OgreMeshManager.h>
-#include <sstream>
 #include <iostream>
-#include <string>
-#include <iomanip>
-#include <fstream>
-#include <vector>
 #include "Character.h"
 
 class Hero : public Character
@@ -61,6 +50,6 @@ private:
 	void move(double t) override;
 	void rotate() override;
 
-	inline void releaseLives() {  _lives--; }
+	inline void releaseLives() { _lives--; }
 };
 
