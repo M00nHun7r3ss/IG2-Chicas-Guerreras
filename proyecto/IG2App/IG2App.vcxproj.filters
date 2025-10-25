@@ -32,9 +32,6 @@
     <ClInclude Include="Wall.h">
       <Filter>Objects\Labyrinth</Filter>
     </ClInclude>
-    <ClInclude Include="Floor.h">
-      <Filter>Objects\Labyrinth</Filter>
-    </ClInclude>
     <ClInclude Include="Empty.h">
       <Filter>Objects\Labyrinth</Filter>
     </ClInclude>
@@ -62,15 +59,6 @@
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
     <ClCompile Include="Labyrinth.cpp">
-      <Filter>Objects\Labyrinth</Filter>
-    </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>Objects\Labyrinth</Filter>
-    </ClCompile>
-    <ClCompile Include="Empty.cpp">
-      <Filter>Objects\Labyrinth</Filter>
-    </ClCompile>
-    <ClCompile Include="Floor.cpp">
       <Filter>Objects\Labyrinth</Filter>
     </ClCompile>
     <ClCompile Include="Hero.cpp">

@@ -23,18 +23,7 @@ public:
 	void setCanGoForward(bool _canGo) { _canGoForward = _canGo; }
 	void setFirstPos(Vector3 initPos) { _initialPos = initPos; }
 
-	inline void damagePlayer()
-	{
-		std::cout << "Posicion anterior: " << getPosition() << std::endl;
-		//std::cout << _initialPos << std::endl;
-		//Lo movemos a la posicion inicial
-		setPosition(_initialPos);
-		std::cout << "Posicion actual: " << getPosition() << std::endl;
-		//Quitamos una vida
-		releaseLives();
-		//avisamos por consola
-		std::cout << "Hero ha perdido una vida." << std::endl;
-	}
+	void damagePlayer();
 
 
 private:

@@ -10,17 +10,17 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
         getRoot()->queueEndRendering();
     }
 
-    if (evt.keysym.sym == SDLK_d)
-    {
+    if (evt.keysym.sym == SDLK_p) {// p de pegar
         _hero->damagePlayer();
     }
 
     _hero->keyPressed(evt);
-    //std::cout << _lab->getBlockPosition(_hero->getPosition()) << std::endl;
 
 	return true;
 }
 
+// TODO tener en cuenta que igual hay que eliminar todos los objetos aqui llamando a sus destructoras.
+// TODO hacer destructoras tambien
 void IG2App::shutdown(){
     
   mShaderGenerator->removeSceneManager(mSM);
@@ -61,38 +61,25 @@ void IG2App::setup(void){
     setupScene();
 }
 
-void IG2App::setupScene(void){
-    
-    //------------------------------------------------------------------------
-    // Creating the camera
-    
+void IG2App::createCamera(){
     Camera* cam = mSM->createCamera("Cam");
     cam->setNearClipDistance(1);
     cam->setFarClipDistance(10000);
     cam->setAutoAspectRatio(true);
     //cam->setPolygonMode(Ogre::PM_WIREFRAME);
-            
+
     mCamNode = mSM->getRootSceneNode()->createChildSceneNode("nCam");
     mCamNode->attachObject(cam);
-    
+
     // and tell it to render into the main window
     Viewport* vp = getRenderWindow()->addViewport(cam);
-    
+
     mCamMgr = new OgreBites::CameraMan(mCamNode);
     addInputListener(mCamMgr);
     mCamMgr->setStyle(OgreBites::CS_ORBIT);
+}
 
-    //------------------------------------------------------------------------
-    //Hero creation
-    _hero = new Hero(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nSinbad"), mSM);
-    //El spotlight se crea encima del hero
-    //light->setPosition(_hero->getPosition().x, 50, _hero->getPosition().z);
-
-    //------------------------------------------------------------------------
-    //Labyrinth and villains creation
-    _lab = new Labyrinth("stage1wv.txt", mSM, _hero, _villains);
-    //------------------------------------------------------------------------
-    //Floor
+void IG2App::createPlane(){
     MeshManager::getSingleton().createPlane("mPlane1080x800",
         ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
         Plane(Vector3::UNIT_Y, 0),
@@ -100,9 +87,61 @@ void IG2App::setupScene(void){
         true, 1, 1.0, 1.0, Vector3::UNIT_Z);
     Ogre::Entity* plane = mSM->createEntity("mPlane1080x800");
     Ogre::SceneNode* mSceneNewNode = mSM->getRootSceneNode()->createChildSceneNode("floor");
-    mSceneNewNode->setPosition(_lab->getWidth()/2 -20 , -_lab->getBoxSize().y / 2, _lab->getHeight()/2 - 20);
+    mSceneNewNode->setPosition(_lab->getWidth() / 2 - 20, -_lab->getBoxSize().y / 2, _lab->getHeight() / 2 - 20);
     mSceneNewNode->attachObject(plane);
     plane->setMaterialName(_lab->getFloorMaterial());
+}
+
+void IG2App::createDirectionalLight() {
+    mSM->setAmbientLight(ColourValue(0.7, 0.8, 0.9));
+    light = mSM->createLight("Directional");
+    light->setType(Ogre::Light::LT_DIRECTIONAL);
+    light->setDiffuseColour(0.75, 0.75, 0.75);
+    // Node with the light attached
+    mLightNode = mCamNode->createChildSceneNode("nLuz");
+    mLightNode->attachObject(light);
+}
+
+void IG2App::createSpotLight() {
+    //Luz spotlight
+    light = mSM->createLight("spotLight");
+    light->setType(Light::LT_SPOTLIGHT);
+    light->setSpotlightInnerAngle(Ogre::Degree(5.0f));
+    light->setSpotlightOuterAngle(Ogre::Degree(60.0f));
+    light->setSpotlightFalloff(3.0f);
+    light->setDiffuseColour(1.0f, 1.0f, 1.0f);
+    // Node with the light attached
+    mLightNode = mSM->getRootSceneNode()->createChildSceneNode();
+    mLightNode->setPosition(_hero->getPosition().x, 800, _hero->getPosition().z);
+    mLightNode->setDirection(Ogre::Vector3(0, -1, 0));
+    mLightNode->attachObject(light);
+}
+
+void IG2App::createPointLight() {
+    //Luz Point
+    light = mSM->createLight("pointLight");
+    light->setType(Light::LT_POINT);
+    light->setDiffuseColour(1.0f, 1.0f, 1.0f);
+    light->setAttenuation(3200, 1.0, 0.0014, 0.00000007);
+    // Node with the light attached
+    mLightNode = mSM->getRootSceneNode()->createChildSceneNode();
+    mLightNode->setPosition(_hero->getPosition());
+    mLightNode->attachObject(light);
+}
+
+void IG2App::setupScene(void){
+    // Creating the camera
+    createCamera();
+
+    // Hero creation
+    _hero = new Hero(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nSinbad"), mSM);
+    _hero->getNode()->showBoundingBox(true);
+
+    // Labyrinth and villains creation
+    _lab = new Labyrinth("stage1wv.txt", mSM, _hero, _villains);
+    
+    //Floor
+    createPlane();
 
     //Movemos la camara para que mire al laberinto
     // TODO luego cambiar para que parezca un libro.
@@ -111,52 +150,18 @@ void IG2App::setupScene(void){
 
     //------------------------------------------------------------------------
 	// Creating the light
-    switch (_lab->getLightType())
-    {
-	    case 0:
-	        //Luz direccional
-		    mSM->setAmbientLight(ColourValue(0.7, 0.8, 0.9));
-		    light = mSM->createLight("Directional");
-		    light->setType(Ogre::Light::LT_DIRECTIONAL);
-		    light->setDiffuseColour(0.75, 0.75, 0.75);
-            // Node with the light attached
-		    mLightNode = mCamNode->createChildSceneNode("nLuz");
-		    mLightNode->attachObject(light);
-			break;
-        case 1:
-            //Luz spotlight
-		    light = mSM->createLight("spotLight");
-		    light->setType(Light::LT_SPOTLIGHT);
-		    light->setSpotlightInnerAngle(Ogre::Degree(5.0f));
-		    light->setSpotlightOuterAngle(Ogre::Degree(60.0f));
-		    light->setSpotlightFalloff(3.0f);
-		    light->setDiffuseColour(1.0f, 1.0f, 1.0f);
-		    // Node with the light attached
-		    mLightNode = mSM->getRootSceneNode()->createChildSceneNode();
-		    mLightNode->setPosition(_hero->getPosition().x, 800, _hero->getPosition().z);
-		    mLightNode->setDirection(Ogre::Vector3(0, -1, 0));
-    	    mLightNode->attachObject(light);
-            break;
-        case 2:
-            //Luz Point
-			light = mSM->createLight("pointLight");
-			light->setType(Light::LT_POINT);
-			light->setDiffuseColour(1.0f, 1.0f, 1.0f);
-			light->setAttenuation(3200, 1.0, 0.0014, 0.00000007);
-			// Node with the light attached
-			mLightNode = mSM->getRootSceneNode()->createChildSceneNode();
-			mLightNode->setPosition(_hero->getPosition());
-			mLightNode->attachObject(light);
-			break;
-        default:
-            break;
+    switch (_lab->getLightType()) {
+	    case 0: createDirectionalLight(); break;
+        case 1: createSpotLight(); break;
+        case 2: createPointLight(); break;
+        default: break;
     }
- 
 }
 
 void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 {
     // updates
+    checkCollisions();
     _hero->update(evt);
 
     //Mira el bloque de delante, ve si es traspasable, y lo setea en el hero
@@ -169,19 +174,16 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
     //Mira el bloque de la derecha //Funciona bien
     //Vector2 rightBlock = _lab->getCharacterRightBlock(_hero);
 
-    /*for (int i = 0; i < _villains.size(); ++i){
-        _villains[i]->setDirection(_lab->calculateRandomDir(_villains[i]));
+    for (int i = 0; i < _villains.size(); ++i){
+        //_villains[i]->setDirection(_lab->calculateRandomDir(_villains[i]));
         _villains[i]->update(evt);
-    }*/
+    }
 
     //Actualizamos UI de vida y puntos
     mTextBox->setText("Lives: " + std::to_string(_hero->getLives()) + "\nPoints: " + std::to_string(_hero->getPoints()));
 
     //El spotlight se actualiza con la pos del player
     mLightNode->setPosition(_hero->getPosition().x, 800, _hero->getPosition().z);
-
-    //std::cout << _lab->getBlockPosition(_hero->getPosition()) << std::endl;
-    //std::cout << _hero->getDirection() << std::endl;
 }
 
 void IG2App::checkCollisions()
@@ -189,15 +191,14 @@ void IG2App::checkCollisions()
     AxisAlignedBox heroAABox = _hero->getAABB();
     bool collides = false;
 
-    for (int i = 0; i < _villains.size(); ++i) {
-        collides = heroAABox.intersects(_villains[i]->getAABB());
+    int i = 0;
+    while (i < _villains.size() && !collides) {
+	    collides = heroAABox.intersects(_villains[i]->getAABB());
+        i++;
     }
 
-    //Si colisionan
-    if (collides && _hero->getLives() > 0)
-    {
-        _hero->damagePlayer();
-    }
+    //Si colisionan y aun quedan vidas...
+    if (collides && _hero->getLives() > 0) { _hero->damagePlayer(); }
 
     if (_hero->getLives() == 0)
     {

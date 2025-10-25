@@ -31,15 +31,12 @@ protected:
     virtual bool keyPressed(const OgreBites::KeyboardEvent& evt);  // InputListener
     virtual void setup();
     virtual void shutdown();
+  
     virtual void setupScene();
     virtual void frameRendered(const Ogre::FrameEvent& evt);
-    void checkCollisions();
       
     Ogre::SceneManager* mSM = nullptr;
     OgreBites::TrayManager* mTrayMgr = nullptr;
-    //Para la ui de la vida y los puntos
-    OgreBites::TextBox* mTextBox = nullptr;
-    OgreBites::Label* mLabel = nullptr;
     
     Ogre::Light* light = nullptr;
     Ogre::SceneNode* mLightParent = nullptr;
@@ -48,10 +45,22 @@ protected:
     Ogre::SceneNode* mCamNode = nullptr;
     OgreBites::CameraMan* mCamMgr = nullptr;
 
+private:
     // Objects
     Hero* _hero = nullptr;
     Labyrinth* _lab = nullptr;
     std::vector<Villain*> _villains;
+
+    //Para la ui de la vida y los puntos
+    OgreBites::TextBox* mTextBox = nullptr;
+    OgreBites::Label* mLabel = nullptr;
+
+    void checkCollisions(); // TODO arreglar
+    void createCamera();
+    void createPlane();
+    void createDirectionalLight();
+    void createSpotLight();
+    void createPointLight();
 };
 
 #endif

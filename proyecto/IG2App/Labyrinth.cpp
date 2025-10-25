@@ -224,23 +224,10 @@ void Labyrinth::createLabyrinth(String f, SceneManager* sceneMng)
                 // crea villain.
                 Villain* v = new Villain(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng);
                 v->setScale(Vector3(0.75));
+                v->getNode()->showBoundingBox(true);
                 //v->setDirection(calculateRandomDir(v));
                 _villains.push_back(v);
             }
         }
     }
 }
-
-void Labyrinth::createFloor(SceneManager* sm, std::string mat){
-   MeshManager::getSingleton().createPlane("mPlane1080x800",
-        ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-        Plane(Vector3::UNIT_Y, 0),
-        getWidth(), getHeight(), 100, 80,
-        true, 1, 1.0, 1.0, Vector3::UNIT_Z);
-    Ogre::Entity* plane = sm->createEntity("mPlane1080x800");
-    Ogre::SceneNode* mSceneNewNode = sm->getRootSceneNode()->createChildSceneNode("floor");
-    mSceneNewNode->setPosition(getWidth() / 2, getBoxSize().y / 2, getHeight() / 2);
-    mSceneNewNode->attachObject(plane);
-    //plane->setMaterialName(mat);
-}
-

@@ -70,6 +70,5 @@ private:
     Vector3 _boxSize;
 
     void createLabyrinth(String f, SceneManager* sceneMng);
-    void createFloor(SceneManager* sm, std::string mat);
 };
 

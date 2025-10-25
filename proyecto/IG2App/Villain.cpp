@@ -1,9 +1,6 @@
 #include "Villain.h"
 
-Villain::Villain(Vector3 initPos, SceneNode* node, SceneManager* sceneMng) : Character(initPos, node, sceneMng) 
-{
-	// TODO gestionar como el traspasable afecta al villain ya que en si no tiene malla este objeto, sino que son tres externas.
-
+Villain::Villain(Vector3 initPos, SceneNode* node, SceneManager* sceneMng) : Character(initPos, node, sceneMng) {
 	//Timer para cambiar direccion giro partes moviles
 	_timer = new Timer();
 	_animDir = false; // false, por ejemplo
@@ -25,18 +22,18 @@ void Villain::update(const Ogre::FrameEvent& evt){
 }
 
 void Villain::armsRotation(){
+	// TODO investigar si se puede reducir.
 	_angle = _angle + 0.05;
 	
 	if (_animDir) {
-		_nArm1R->rotate(Quaternion(Radian(Degree(_angle)), Vector3(1, 0, 0)));
-		_nArm1L->rotate(Quaternion(Radian(Degree(-_angle)), Vector3(1, 0, 0)));
+		_bodyNodes[3]->rotate(Quaternion(Radian(Degree(_angle)), Vector3(1, 0, 0)));
+		_bodyNodes[6]->rotate(Quaternion(Radian(Degree(-_angle)), Vector3(1, 0, 0)));
 	}
 	else {
-		_nArm1R->rotate(Quaternion(Radian(Degree(-_angle)), Vector3(1, 0, 0)));
-		_nArm1L->rotate(Quaternion(Radian(Degree(_angle)), Vector3(1, 0, 0)));
+		_bodyNodes[3]->rotate(Quaternion(Radian(Degree(-_angle)), Vector3(1, 0, 0)));
+		_bodyNodes[6]->rotate(Quaternion(Radian(Degree(_angle)), Vector3(1, 0, 0)));
 	}
 }
-
 
 void Villain::move(double t){
 	setPosition(getPosition() + VILLAIN_SPEED * _direction * t);
@@ -52,101 +49,102 @@ void Villain::createVillainParts()
 	 Esquema nodos:
 	 Padre: Cuerpo [0]
 			-> Cabeza [1]
-			-> Pies
-			-> Brazo 1
-				-> Brazo 2
-					-> Brazo 3
+			-> Pies [2]
+			-> Brazo 1 R [3]
+				-> Brazo 2 R [4]
+					-> Brazo 3 R [5]
+			-> Brazo 1 L [6]
+				-> Brazo 2 L [7]
+					-> Brazo 3 L [8]
 	 */
 
 # pragma region Elementos centrales
-	//Nodo padre
-	_nBody = mNode->createChildSceneNode();
-	//Entidad cuerpo
-	_vBody = mSM->createEntity("sphere.mesh");
-	_nBody->attachObject(_vBody);
-	_nBody->setScale(0.3, 0.3, 0.3); // si cambias este lo cambias todo.
-	_vBody->setMaterialName("Villain/Sphere");
-	//mNodecuerpo->setPosition(0, 0, -50);
-	//mNodecuerpo->yaw(Ogre::Degree(180));
+	
 
-	//Ncuerpo->showBoundingBox(true);
+	//Nodo padre (cuerpo)
+	_bodyNodes.push_back(mNode->createChildSceneNode());
+	//Entidad cuerpo
+	_bodyEntities.push_back(mSM->createEntity("sphere.mesh"));
+	_bodyNodes[0]->attachObject(_bodyEntities[0]);
+	_bodyNodes[0]->setScale(0.3, 0.3, 0.3); // si cambias este lo cambias todo.
+	_bodyEntities[0]->setMaterialName("Villain/Sphere");
 
 	//Nodo Head
-	_nHead = _nBody->createChildSceneNode();  //Vamos a rotar estos dos por lo que a lo mejor
+	_bodyNodes.push_back(_bodyNodes[0]->createChildSceneNode());  //Vamos a rotar estos dos por lo que a lo mejor
 
 	//Entidad head
-	_vHead = mSM->createEntity("ogrehead.mesh");
-	_nHead->attachObject(_vHead);
-	_nHead->setScale(Vector3(1, 1, 1));
-	_nHead->setPosition(Vector3(0, 25, 0));
+	_bodyEntities.push_back(mSM->createEntity("ogrehead.mesh"));
+	_bodyNodes[1]->attachObject(_bodyEntities[1]);
+	_bodyNodes[1]->setScale(Vector3(1, 1, 1));
+	_bodyNodes[1]->setPosition(Vector3(0, 25, 0));
 
 	//Nodo Feet
-	_nFeet = _nBody->createChildSceneNode();  //nos interesa guardarlo
+	_bodyNodes.push_back(_bodyNodes[0]->createChildSceneNode());  //nos interesa guardarlo
 	//Entidad Feet
-	_vFeet = mSM->createEntity("cube.mesh");
-	_nFeet->attachObject(_vFeet);
-	_nFeet->setScale(Vector3(1, 1, 1));
-	_nFeet->setPosition(Vector3(_nBody->getPosition().x, _nBody->getPosition().y - 150, _nBody->getPosition().z));
-	_vFeet->setMaterialName("Villain/Body");
+	_bodyEntities.push_back(mSM->createEntity("cube.mesh"));
+	_bodyNodes[2]->attachObject(_bodyEntities[2]);
+	_bodyNodes[2]->setScale(Vector3(1, 1, 1));
+	_bodyNodes[2]->setPosition(Vector3(_bodyNodes[0]->getPosition().x, _bodyNodes[0]->getPosition().y - 150, _bodyNodes[0]->getPosition().z));
+	_bodyEntities[2]->setMaterialName("Villain/Body");
 #pragma endregion
 
 #pragma region Brazo derecho
 	//Nodo Arm 1
-	_nArm1R = _nBody->createChildSceneNode();
+	_bodyNodes.push_back(_bodyNodes[0]->createChildSceneNode());
 	//Entidad Arm 1 RIGHT
-	_vArm1R = mSM->createEntity("cube.mesh");
-	_nArm1R->attachObject(_vArm1R);
-	_nArm1R->setScale(Vector3(1, 0.25, 0.25));
-	_nArm1R->setPosition(Vector3(_nBody->getPosition().x + 120, _nBody->getPosition().y, _nBody->getPosition().z));
-	_vArm1R->setMaterialName("Villain/Body");
+	_bodyEntities.push_back(mSM->createEntity("cube.mesh"));
+	_bodyNodes[3]->attachObject(_bodyEntities[3]);
+	_bodyNodes[3]->setScale(Vector3(1, 0.25, 0.25));
+	_bodyNodes[3]->setPosition(Vector3(_bodyNodes[0]->getPosition().x + 120, _bodyNodes[0]->getPosition().y, _bodyNodes[0]->getPosition().z));
+	_bodyEntities[3]->setMaterialName("Villain/Body");
 
 	//Nodo Arm 2
-	_nArm2R = _nArm1R->createChildSceneNode();
+	_bodyNodes.push_back(_bodyNodes[3]->createChildSceneNode());
 	//Entidad Arm 2 RIGHT
-	_vArm2R = mSM->createEntity("cube.mesh");
-	_nArm2R->attachObject(_vArm2R);
-	_nArm2R->setScale(Vector3(1, 1, 1));
-	_nArm2R->rotate(Quaternion(Radian(Degree(90)), Vector3(0, 0, 1)));
-	_nArm2R->setPosition(Vector3(_nArm1R->getPosition().x - 80, _nArm1R->getPosition().y + 150, _nArm1R->getPosition().z));
-	_vArm2R->setMaterialName("Villain/Body");
+	_bodyEntities.push_back(mSM->createEntity("cube.mesh"));
+	_bodyNodes[4]->attachObject(_bodyEntities[4]);
+	_bodyNodes[4]->setScale(Vector3(1, 1, 1));
+	_bodyNodes[4]->rotate(Quaternion(Radian(Degree(90)), Vector3(0, 0, 1)));
+	_bodyNodes[4]->setPosition(Vector3(_bodyNodes[3]->getPosition().x - 80, _bodyNodes[3]->getPosition().y + 150, _bodyNodes[3]->getPosition().z));
+	_bodyEntities[4]->setMaterialName("Villain/Body");
 
 	//Nodo Arm 3
-	_nArm3R = _nArm2R->createChildSceneNode();
+	_bodyNodes.push_back(_bodyNodes[4]->createChildSceneNode());
 	//Entidad Arm 3 RIGHT
-	_vArm3R = mSM->createEntity("sphere.mesh");
-	_nArm3R->attachObject(_vArm3R);
-	_nArm3R->setScale(Vector3(0.25, 1, 1));
-	_nArm3R->setPosition(Vector3(_nArm2R->getPosition().x + 20, _nArm2R->getPosition().y - 150, _nArm2R->getPosition().z));
-	_vArm3R->setMaterialName("Villain/Sphere");
+	_bodyEntities.push_back(mSM->createEntity("sphere.mesh"));
+	_bodyNodes[5]->attachObject(_bodyEntities[5]);
+	_bodyNodes[5]->setScale(Vector3(0.25, 1, 1));
+	_bodyNodes[5]->setPosition(Vector3(_bodyNodes[4]->getPosition().x + 20, _bodyNodes[4]->getPosition().y - 150, _bodyNodes[4]->getPosition().z));
+	_bodyEntities[5]->setMaterialName("Villain/Sphere");
 #pragma endregion
 
 #pragma region Brazo Izquierdo
 	//Nodo Arm 1.
-	_nArm1L = _nBody->createChildSceneNode();
+	_bodyNodes.push_back(_bodyNodes[0]->createChildSceneNode());
 	//Entidad Arm 1 LEFT
-	_vArm1L = mSM->createEntity("cube.mesh");
-	_nArm1L->attachObject(_vArm1L);
-	_nArm1L->setScale(Vector3(1, 0.25, 0.25));
-	_nArm1L->setPosition(Vector3(_nBody->getPosition().x - 120, _nBody->getPosition().y, _nBody->getPosition().z));
-	_vArm1L->setMaterialName("Villain/Body");
+	_bodyEntities.push_back(mSM->createEntity("cube.mesh"));
+	_bodyNodes[6]->attachObject(_bodyEntities[6]);
+	_bodyNodes[6]->setScale(Vector3(1, 0.25, 0.25));
+	_bodyNodes[6]->setPosition(Vector3(_bodyNodes[0]->getPosition().x - 120, _bodyNodes[0]->getPosition().y, _bodyNodes[0]->getPosition().z));
+	_bodyEntities[6]->setMaterialName("Villain/Body");
 
 	//Nodo Arm 2
-	_nArm2L = _nArm1L->createChildSceneNode();
+	_bodyNodes.push_back(_bodyNodes[6]->createChildSceneNode());
 	//Entidad Arm 2 LEFT
-	_vArm2L = mSM->createEntity("cube.mesh");
-	_nArm2L->attachObject(_vArm2L);
-	_nArm2L->setScale(Vector3(1, 1, 1));
-	_nArm2L->rotate(Quaternion(Radian(Degree(-90)), Vector3(0, 0, 1)));
-	_nArm2L->setPosition(Vector3(_nArm1L->getPosition().x + 80, _nArm1L->getPosition().y - 150, _nArm1L->getPosition().z));
-	_vArm2L->setMaterialName("Villain/Body");
+	_bodyEntities.push_back(mSM->createEntity("cube.mesh"));
+	_bodyNodes[7]->attachObject(_bodyEntities[7]);
+	_bodyNodes[7]->setScale(Vector3(1, 1, 1));
+	_bodyNodes[7]->rotate(Quaternion(Radian(Degree(-90)), Vector3(0, 0, 1)));
+	_bodyNodes[7]->setPosition(Vector3(_bodyNodes[6]->getPosition().x + 80, _bodyNodes[6]->getPosition().y - 150, _bodyNodes[6]->getPosition().z));
+	_bodyEntities[7]->setMaterialName("Villain/Body");
 
 	//Nodo Arm 3
-	_nArm3L = _nArm2L->createChildSceneNode();
+	_bodyNodes.push_back(_bodyNodes[7]->createChildSceneNode());
 	//Entidad Arm 3 LEFT
-	_vArm3L = mSM->createEntity("sphere.mesh");
-	_nArm3L->attachObject(_vArm3L);
-	_nArm3L->setScale(Vector3(0.25, 1, 1));
-	_nArm3L->setPosition(Vector3(_nArm2L->getPosition().x + 80, _nArm2L->getPosition().y + 150, _nArm2L->getPosition().z));
-	_vArm3L->setMaterialName("Villain/Sphere");
+	_bodyEntities.push_back(mSM->createEntity("sphere.mesh"));
+	_bodyNodes[8]->attachObject(_bodyEntities[8]);
+	_bodyNodes[8]->setScale(Vector3(0.25, 1, 1));
+	_bodyNodes[8]->setPosition(Vector3(_bodyNodes[7]->getPosition().x + 80, _bodyNodes[7]->getPosition().y + 150, _bodyNodes[7]->getPosition().z));
+	_bodyEntities[8]->setMaterialName("Villain/Sphere");
 #pragma endregion
 }
