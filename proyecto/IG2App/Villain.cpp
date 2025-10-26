@@ -41,6 +41,11 @@ void Villain::move(double t){
 
 void Villain::rotate()
 {
+	//Cogemos la rotacion que debe hacer entre la rotacion actual (orientation) y la nueva (_newDirection) 
+	Quaternion q = getOrientation().getRotationTo(_newDirection);
+
+	//Y rotamos en el eje y, solo la componente y de dicho quaternion
+	yaw(q.getYaw());
 }
 
 void Villain::createVillainParts()

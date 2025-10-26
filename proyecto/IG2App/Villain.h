@@ -16,6 +16,7 @@ private:
 	double _angle;
 	void armsRotation();
 
+	Vector3 _newDirection;
 	const double VILLAIN_SPEED = 50.0;
 
 	void move(double t) override;

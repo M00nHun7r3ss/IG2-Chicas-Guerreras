@@ -14,6 +14,8 @@ public:
 		_traspasable = false;
 	}
 
+	void setDirection(Vector3 newDir) { _direction = newDir; }
+
 protected:
 	Vector3 _direction;
 

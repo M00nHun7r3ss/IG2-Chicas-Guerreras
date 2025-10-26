@@ -64,6 +64,7 @@ private:
     //Lights
     int _lightType;
 
+    //Posicion del laberinto
     Vector3 _pos;
 
     //tamanio bloque

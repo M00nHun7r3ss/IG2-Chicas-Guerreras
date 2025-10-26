@@ -174,10 +174,10 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
     //Mira el bloque de la derecha //Funciona bien
     //Vector2 rightBlock = _lab->getCharacterRightBlock(_hero);
 
-    for (int i = 0; i < _villains.size(); ++i){
-        //_villains[i]->setDirection(_lab->calculateRandomDir(_villains[i]));
-        _villains[i]->update(evt);
-    }
+    //for (int i = 0; i < _villains.size(); ++i){
+        _villains[1]->setDirection(_lab->calculateRandomDir(_villains[1]));
+        //_villains[1]->update(evt);
+    //}
 
     //Actualizamos UI de vida y puntos
     mTextBox->setText("Lives: " + std::to_string(_hero->getLives()) + "\nPoints: " + std::to_string(_hero->getPoints()));

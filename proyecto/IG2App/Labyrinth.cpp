@@ -144,10 +144,33 @@ std::vector<Vector3> Labyrinth::choosePossibleDirs(Character* c)
 {
     std::vector<Vector3> possibleDirs; // aux
 
-    if (!getBlockType(getCharacterLeftBlock(c))) possibleDirs.push_back(_allDirs[0]); // izq
-    else if (!getBlockType(getCharacterRightBlock(c))) possibleDirs.push_back(_allDirs[1]); // der
-    else if (!getBlockType(getCharacterForwardBlock(c))) possibleDirs.push_back(_allDirs[2]); // forward
-    else possibleDirs.push_back(_allDirs[3]); // atras
+    //Izquierda, derecha y atras calculados con la regla de la mano derecha y crossProduct
+    //El laberinto esta al reves, y por tanto hay que darle la vuelta a left y a right
+    Vector3 left = c->getOrientation().crossProduct(Vector3::UNIT_Y);
+    Vector3 right = c->getOrientation().crossProduct(Vector3::NEGATIVE_UNIT_Y);
+    Vector3 back = left.crossProduct(Vector3::UNIT_Y);
+
+    if (!getBlockType(getCharacterLeftBlock(c))) {
+    	possibleDirs.push_back(left); // izq
+    }
+
+	if (!getBlockType(getCharacterRightBlock(c))) {
+        possibleDirs.push_back(right); // der
+    }
+
+	if (!getBlockType(getCharacterForwardBlock(c))) {
+    	possibleDirs.push_back(c->getOrientation()); // forward (la direccion actual)
+    }
+
+    //Esta siempre estara disponible
+	possibleDirs.push_back(back); // atras (contrario de la direccion actual)
+
+    std::cout << "El enemigo tiene las siguientes direcciones disponibles: ";
+    for (int i = 0; i < possibleDirs.size(); i++)
+    {
+        std::cout << possibleDirs[i] << ", ";
+    }
+    std::cout << std::endl;
 
     // devuelve las posibles direcciones a las que puedes ir en este instante.
     return possibleDirs;
@@ -161,8 +184,19 @@ Vector3 Labyrinth::calculateRandomDir(Character* c)
     // direcciones posibles en este instante
     std::vector<Vector3> vDirs = choosePossibleDirs(c);
 
-    // random dir between 0 and v.size()-1
-	return vDirs[std::rand() % vDirs.size()];
+    //La direccion atras siempre esta disponible
+    //Si hay mas direcciones que para atras
+    if (vDirs.size() > 1)
+    {
+        // random dir between 0 and v.size() - 2 para evitar la direccion de atras
+        return vDirs[std::rand() % (vDirs.size() - 1)];
+    }
+    //Si la unica direccion que hay es atras
+    else
+    {
+	    //elige atras
+        return vDirs.back();
+    }
 }
 
 void Labyrinth::createLabyrinth(String f, SceneManager* sceneMng)
@@ -225,7 +259,7 @@ void Labyrinth::createLabyrinth(String f, SceneManager* sceneMng)
                 Villain* v = new Villain(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng);
                 v->setScale(Vector3(0.75));
                 v->getNode()->showBoundingBox(true);
-                //v->setDirection(calculateRandomDir(v));
+                v->setDirection(calculateRandomDir(v));
                 _villains.push_back(v);
             }
         }
