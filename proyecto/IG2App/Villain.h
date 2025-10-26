@@ -7,6 +7,7 @@ public:
 	explicit Villain(Vector3 initPos, SceneNode* node, SceneManager* sceneMng);
 
 	void update(const Ogre::FrameEvent& evt); // update
+	void rotate() override;
 private:
 	std::vector<Entity*> _bodyEntities;
 	std::vector<SceneNode*> _bodyNodes;
@@ -20,7 +21,6 @@ private:
 	const double VILLAIN_SPEED = 50.0;
 
 	void move(double t) override;
-	void rotate() override;
 
 	void createVillainParts();
 };

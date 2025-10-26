@@ -1,8 +1,7 @@
 #include "Hero.h"
 
 Hero::Hero(Vector3 initPos, SceneNode* node, SceneManager* sceneMng)
-: Character(initPos, node, sceneMng, "Sinbad.mesh"), _lives(3), _points(0), _newDirection(Vector3::ZERO), _canGoForward(true) {
-    _direction = Vector3::ZERO;
+: Character(initPos, node, sceneMng, "Sinbad.mesh"), _lives(3), _points(0), _newDirection(_direction), _canGoForward(true) {
 }
 
 void Hero::keyPressed(const OgreBites::KeyboardEvent evt){

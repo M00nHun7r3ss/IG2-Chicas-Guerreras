@@ -87,7 +87,7 @@ void IG2App::createPlane(){
         true, 1, 1.0, 1.0, Vector3::UNIT_Z);
     Ogre::Entity* plane = mSM->createEntity("mPlane1080x800");
     Ogre::SceneNode* mSceneNewNode = mSM->getRootSceneNode()->createChildSceneNode("floor");
-    mSceneNewNode->setPosition(_lab->getWidth() / 2 - 20, -_lab->getBoxSize().y / 2, _lab->getHeight() / 2 - 20);
+    mSceneNewNode->setPosition(_lab->getWidth() / 2 - 50, -_lab->getBoxSize().y / 2, _lab->getHeight() / 2 + 20);
     mSceneNewNode->attachObject(plane);
     plane->setMaterialName(_lab->getFloorMaterial());
 }
@@ -145,7 +145,7 @@ void IG2App::setupScene(void){
 
     //Movemos la camara para que mire al laberinto
     // TODO luego cambiar para que parezca un libro.
-    mCamNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z);
+    mCamNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z  + 1250);
     mCamNode->lookAt(_lab->getPos(), Ogre::Node::TS_WORLD);
 
     //------------------------------------------------------------------------
@@ -175,7 +175,9 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
     //Vector2 rightBlock = _lab->getCharacterRightBlock(_hero);
 
     //for (int i = 0; i < _villains.size(); ++i){
-        _villains[1]->setDirection(_lab->calculateRandomDir(_villains[1]));
+        //std::cout << "Orientation: " << _villains[1]->getOrientation() << " Dir: " << _villains[1]->getDirection() << std::endl;
+        //_villains[1]->setDirection(_lab->calculateRandomDir(_villains[1]));
+        //_villains[1]->rotate();
         //_villains[1]->update(evt);
     //}
 

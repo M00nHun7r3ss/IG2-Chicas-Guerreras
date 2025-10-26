@@ -150,6 +150,10 @@ std::vector<Vector3> Labyrinth::choosePossibleDirs(Character* c)
     Vector3 right = c->getOrientation().crossProduct(Vector3::NEGATIVE_UNIT_Y);
     Vector3 back = left.crossProduct(Vector3::UNIT_Y);
 
+
+	if (!getBlockType(getCharacterForwardBlock(c))) {
+    	possibleDirs.push_back(c->getOrientation()); // forward (la direccion actual)
+    }
     if (!getBlockType(getCharacterLeftBlock(c))) {
     	possibleDirs.push_back(left); // izq
     }
@@ -158,16 +162,11 @@ std::vector<Vector3> Labyrinth::choosePossibleDirs(Character* c)
         possibleDirs.push_back(right); // der
     }
 
-	if (!getBlockType(getCharacterForwardBlock(c))) {
-    	possibleDirs.push_back(c->getOrientation()); // forward (la direccion actual)
-    }
-
     //Esta siempre estara disponible
 	possibleDirs.push_back(back); // atras (contrario de la direccion actual)
 
     std::cout << "El enemigo tiene las siguientes direcciones disponibles: ";
-    for (int i = 0; i < possibleDirs.size(); i++)
-    {
+    for (int i = 0; i < possibleDirs.size(); i++){
         std::cout << possibleDirs[i] << ", ";
     }
     std::cout << std::endl;
@@ -184,19 +183,29 @@ Vector3 Labyrinth::calculateRandomDir(Character* c)
     // direcciones posibles en este instante
     std::vector<Vector3> vDirs = choosePossibleDirs(c);
 
+    Vector3 vReturn;
+
     //La direccion atras siempre esta disponible
     //Si hay mas direcciones que para atras
     if (vDirs.size() > 1)
     {
         // random dir between 0 and v.size() - 2 para evitar la direccion de atras
-        return vDirs[std::rand() % (vDirs.size() - 1)];
+        vReturn = vDirs[std::rand() % (vDirs.size() - 1)];
     }
     //Si la unica direccion que hay es atras
     else
     {
-	    //elige atras
-        return vDirs.back();
+	    //elige atras (la ultima)
+        vReturn = vDirs.back();
     }
+
+    //Cogemos la rotacion que debe hacer entre la rotacion actual (orientation) y la nueva (_newDirection) 
+    Quaternion q = c->getOrientation().getRotationTo(vReturn);
+
+    //Y rotamos en el eje y, solo la componente y de dicho quaternion
+    c->yaw(q.getYaw());
+
+    return vReturn;
 }
 
 void Labyrinth::createLabyrinth(String f, SceneManager* sceneMng)
@@ -259,7 +268,6 @@ void Labyrinth::createLabyrinth(String f, SceneManager* sceneMng)
                 Villain* v = new Villain(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng);
                 v->setScale(Vector3(0.75));
                 v->getNode()->showBoundingBox(true);
-                v->setDirection(calculateRandomDir(v));
                 _villains.push_back(v);
             }
         }
