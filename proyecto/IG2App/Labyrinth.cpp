@@ -165,12 +165,6 @@ std::vector<Vector3> Labyrinth::choosePossibleDirs(Character* c)
     //Esta siempre estara disponible
 	possibleDirs.push_back(back); // atras (contrario de la direccion actual)
 
-    std::cout << "El enemigo tiene las siguientes direcciones disponibles: ";
-    for (int i = 0; i < possibleDirs.size(); i++){
-        std::cout << possibleDirs[i] << ", ";
-    }
-    std::cout << std::endl;
-
     // devuelve las posibles direcciones a las que puedes ir en este instante.
     return possibleDirs;
 }
@@ -267,7 +261,6 @@ void Labyrinth::createLabyrinth(String f, SceneManager* sceneMng)
                 // crea villain.
                 Villain* v = new Villain(actualPos, sceneMng->getRootSceneNode()->createChildSceneNode(), sceneMng);
                 v->setScale(Vector3(0.75));
-                v->getNode()->showBoundingBox(true);
                 _villains.push_back(v);
             }
         }
