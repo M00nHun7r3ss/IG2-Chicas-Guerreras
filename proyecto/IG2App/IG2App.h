@@ -1,30 +1,34 @@
 #ifndef __IG2App_H__
 #define __IG2App_H__
 
-#include "IG2ApplicationContext.h"
-#include "IG2Object.h"
-#include "Labyrinth.h"
-#include "Hero.h"
-#include "Villain.h"
+#include <OgreApplicationContext.h>
 #include <OgreSceneManager.h>
+#include <OgreRTShaderSystem.h>  
 #include <OgreSceneNode.h>
 #include <OgreTrays.h>
 #include <OgreCameraMan.h>
 #include <OgreEntity.h>
 #include <OgreInput.h>
-#include <SDL_keycode.h>
 #include <OgreMeshManager.h>
 #include <sstream>
 #include <iostream>
 #include <string>
+#include "Ogre.h"
 #include <iomanip>
 #include <fstream>
+#include <SDL_keycode.h>
+#include <OgreWindowEventUtilities.h>
 #include <vector>
 
-class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener{
+#include "IG2Object.h"
+#include "Labyrinth.h"
+#include "Hero.h"
+#include "Villain.h"
+
+class IG2App : public  OgreBites::ApplicationContext, OgreBites::InputListener{
 
 public:
-    explicit IG2App() : IG2ApplicationContext("IG2App") { };  // new -> setup()
+    explicit IG2App() : ApplicationContext("IG2App") { };  // new -> setup()
     virtual ~IG2App() { };                                    // delete -> shutdown()
  
 protected:
