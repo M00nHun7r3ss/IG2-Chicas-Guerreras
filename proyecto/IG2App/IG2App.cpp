@@ -1,5 +1,7 @@
 #include "IG2App.h"
 
+#include "Bomb.h"
+
 using namespace Ogre;
 using namespace std;
 
@@ -147,6 +149,14 @@ void IG2App::setupScene(void){
     //Floor
     createPlane();
 
+    //BOOOOOMBAAAA
+    bomba = new Bomb(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
+    bomba->setScale(Vector3(1, 1, 1));
+    ParticleSystem* pSys = mSM->createParticleSystem("bombaSmoke", "ParticleSystem/smokeParticle");
+    pSys->setEmitting(true);
+    bomba->getNode()->attachObject(pSys);
+
+
     //Movemos la camara para que mire al laberinto
     mCamNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z  - 1250);
     mCamNode->lookAt(_lab->getPos(), Ogre::Node::TS_WORLD);
@@ -177,6 +187,9 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
         //_villains[1]->rotate();
         _villains[i]->update(evt);
     }
+
+    //Bombas
+    bomba->update(evt);
 
     //Actualizamos UI de vida y puntos
     mTextBox->setText("Lives: " + std::to_string(_hero->getLives()) + "\nPoints: " + std::to_string(_hero->getPoints()));

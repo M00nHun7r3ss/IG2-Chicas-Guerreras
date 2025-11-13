@@ -12,4 +12,15 @@ private:
 	int const EXPLOSION_TIME = 5000; // tiempo que tarda en explotar la bomba
 
 	void createBombParts();
+	//Nodos
+	SceneNode* ball;
+	SceneNode* rope;
+	//Entidades
+	Entity* ballEntity;
+	Entity* ropeEntity;
+
+	Timer* _timer;
+	bool _animDir;
+	double _scale;
+	void scaleBomb();
 };

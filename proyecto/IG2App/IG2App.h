@@ -20,6 +20,10 @@
 #include <iomanip>
 #include <fstream>
 #include <vector>
+#include "OgreBillboardSet.h"
+#include "OgreParticleSystem.h"
+
+#include "Bomb.h"
 
 class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener{
 
@@ -50,6 +54,9 @@ private:
     Hero* _hero = nullptr;
     Labyrinth* _lab = nullptr;
     std::vector<Villain*> _villains;
+    Bomb* bomba;
+
+    Ogre::SceneNode* mPSNode;
 
     //Para la ui de la vida y los puntos
     OgreBites::TextBox* mTextBox = nullptr;
