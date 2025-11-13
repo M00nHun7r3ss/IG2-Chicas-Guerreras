@@ -19,6 +19,8 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
 	return true;
 }
 
+// TODO tener en cuenta que igual hay que eliminar todos los objetos aqui llamando a sus destructoras.
+// TODO hacer destructoras tambien
 void IG2App::shutdown(){
     
   mShaderGenerator->removeSceneManager(mSM);
@@ -28,13 +30,6 @@ void IG2App::shutdown(){
 
   delete mTrayMgr;  mTrayMgr = nullptr;
   delete mCamMgr; mCamMgr = nullptr;
-  delete _lab; _lab = nullptr;
-  //delete _hero; _hero = nullptr;
-  /*for (Villain* v : _villains) {
-      delete v;
-      v = nullptr;
-  }
-  _villains.clear();*/
   
   // do not forget to call the base 
   IG2ApplicationContext::shutdown(); 
@@ -85,14 +80,14 @@ void IG2App::createCamera(){
 }
 
 void IG2App::createPlane(){
-   MeshManager::getSingleton().createPlane("mPlane1080x800",
+    MeshManager::getSingleton().createPlane("mPlane1080x800",
         ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
         Plane(Vector3::UNIT_Y, 0),
         _lab->getWidth(), _lab->getHeight(), 100, 80,
         true, 1, 1.0, 1.0, Vector3::UNIT_Z);
     Ogre::Entity* plane = mSM->createEntity("mPlane1080x800");
     Ogre::SceneNode* mSceneNewNode = mSM->getRootSceneNode()->createChildSceneNode("floor");
-    mSceneNewNode->setPosition(_lab->getWidth() / 2 - 50, -_lab->getBoxSize().y / 2, _lab->getHeight() / 2 + 50);
+    mSceneNewNode->setPosition(_lab->getWidth() / 2 - 50, -_lab->getBoxSize().y / 2, _lab->getHeight() / 2 + 20);
     mSceneNewNode->attachObject(plane);
     plane->setMaterialName(_lab->getFloorMaterial());
 }
@@ -140,6 +135,7 @@ void IG2App::setupScene(void){
 
     // Hero creation
     _hero = new Hero(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nSinbad"), mSM);
+    _hero->getNode()->showBoundingBox(true);
 
     // Labyrinth and villains creation
     _lab = new Labyrinth("stage1wv.txt", mSM, _hero, _villains);
@@ -148,7 +144,8 @@ void IG2App::setupScene(void){
     createPlane();
 
     //Movemos la camara para que mire al laberinto
-    mCamNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z  - 1250);
+    // TODO luego cambiar para que parezca un libro.
+    mCamNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z  + 1250);
     mCamNode->lookAt(_lab->getPos(), Ogre::Node::TS_WORLD);
 
     //------------------------------------------------------------------------
@@ -172,11 +169,17 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
     bool next = _lab->getBlockType(nextBlock);
     _hero->setCanGoForward(next);
 
-    for (int i = 0; i < _villains.size(); ++i){
+    //Mira el bloque de la izquierda //Funciona bien
+    //Vector2 leftBlock = _lab->getCharacterLeftBlock(_hero);
+    //Mira el bloque de la derecha //Funciona bien
+    //Vector2 rightBlock = _lab->getCharacterRightBlock(_hero);
+
+    //for (int i = 0; i < _villains.size(); ++i){
+        //std::cout << "Orientation: " << _villains[1]->getOrientation() << " Dir: " << _villains[1]->getDirection() << std::endl;
         //_villains[1]->setDirection(_lab->calculateRandomDir(_villains[1]));
         //_villains[1]->rotate();
-        _villains[i]->update(evt);
-    }
+        //_villains[1]->update(evt);
+    //}
 
     //Actualizamos UI de vida y puntos
     mTextBox->setText("Lives: " + std::to_string(_hero->getLives()) + "\nPoints: " + std::to_string(_hero->getPoints()));
@@ -199,8 +202,9 @@ void IG2App::checkCollisions()
     //Si colisionan y aun quedan vidas...
     if (collides && _hero->getLives() > 0) { _hero->damagePlayer(); }
 
-    if (_hero->getLives() == 0){
-        getRoot()->queueEndRendering();
+    if (_hero->getLives() == 0)
+    {
+        std::cout << "Fin de juego. Has muerto" << std::endl;
     }
 }
 

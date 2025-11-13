@@ -22,6 +22,7 @@ void Villain::update(const Ogre::FrameEvent& evt){
 }
 
 void Villain::armsRotation(){
+	// TODO investigar si se puede reducir.
 	_angle = _angle + 0.05;
 	
 	if (_animDir) {
@@ -79,8 +80,8 @@ void Villain::createVillainParts()
 	//Entidad head
 	_bodyEntities.push_back(mSM->createEntity("ogrehead.mesh"));
 	_bodyNodes[1]->attachObject(_bodyEntities[1]);
-	_bodyNodes[1]->setScale(Vector3(2, 2, 2));
-	_bodyNodes[1]->setPosition(Vector3(0, 125, 0));
+	_bodyNodes[1]->setScale(Vector3(1, 1, 1));
+	_bodyNodes[1]->setPosition(Vector3(0, 25, 0));
 
 	//Nodo Feet
 	_bodyNodes.push_back(_bodyNodes[0]->createChildSceneNode());  //nos interesa guardarlo
