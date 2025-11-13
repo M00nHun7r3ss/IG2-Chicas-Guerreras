@@ -119,6 +119,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bomb.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Empty.h" />
     <ClInclude Include="Hero.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="IG2ApplicationContext.cpp" />
     <ClCompile Include="IG2Main.cpp" />

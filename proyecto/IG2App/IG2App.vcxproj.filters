@@ -44,6 +44,9 @@
     <ClInclude Include="Villain.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IG2ApplicationContext.cpp">
@@ -65,6 +68,9 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Villain.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Bomb.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
