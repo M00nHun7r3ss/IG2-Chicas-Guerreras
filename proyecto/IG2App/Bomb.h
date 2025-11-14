@@ -1,5 +1,7 @@
 #pragma once
 #include <OgreTrays.h>
+#include "OgreBillboardSet.h"
+#include "OgreParticleSystem.h"
 #include "Character.h"
 
 class Bomb : public IG2Object {
@@ -13,14 +15,19 @@ private:
 
 	void createBombParts();
 	//Nodos
-	SceneNode* ball;
-	SceneNode* rope;
+	SceneNode* _ball;
+	SceneNode* _rope;
+	SceneNode* _smokeParticles;
+	SceneNode* _explosionParticles;
+
 	//Entidades
-	Entity* ballEntity;
-	Entity* ropeEntity;
+	Entity* _ballEntity;
+	Entity* _ropeEntity;
 
 	Timer* _timer;
+	Timer* _explosionTimer;
 	bool _animDir;
 	double _scale;
 	void scaleBomb();
+	void createExplosion();
 };

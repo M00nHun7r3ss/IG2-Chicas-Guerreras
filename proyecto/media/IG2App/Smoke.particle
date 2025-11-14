@@ -1,19 +1,19 @@
 particle_system ParticleSystem/smokeParticle{
 	billboard_type point
-	particle_width 35
-	particle_height 35
-	quota 20
+	particle_width 10
+	particle_height 10
+	quota 500
 	material Smoke/body
 	emitter Point{
 		direction 0 1 0
-		position 0 0 0
-		angle 180
-		emission_rate 5
-		time_to_live 5
+		position 0 300 0
+		angle 15
+		emission_rate 20
+		time_to_live 2
 		velocity_min 50
 		velocity_max 80
 		colour 0.4 0.4 0.4 0.4
-		duration 2
+		duration 100
 	}
 	affector ColourFader{
 		red 0.06
@@ -21,12 +21,43 @@ particle_system ParticleSystem/smokeParticle{
 		blue 0.06
 		alpha 0.06
 	}
+
   	affector LinearForce
     	{
         	force_vector 0 100 0   
+			force_application add
     	}
 
 	affector ColourImage{
  		image smokecolors.png
+	}
+
+	affector Scaler{
+ 		rate 75
+		scale_range 1 1
+	}
+}
+
+particle_system ParticleSystem/explosionParticle{
+	billboard_type point
+	particle_width 30
+	particle_height 30
+	quota 500
+	material Smoke/body
+	emitter Point{
+		direction 1 1 1
+		position 0 0 0
+		angle 360
+		emission_rate 20
+		time_to_live 2
+		velocity_min 50
+		velocity_max 80
+		colour 0.4 0.4 0.4 0.4
+		duration 100
+	}
+
+	affector Scaler{
+ 		rate 75
+		scale_range 1 1
 	}
 }

@@ -3,6 +3,7 @@
 Bomb::Bomb(Vector3 pos, SceneNode* node, SceneManager* sceneMng) : IG2Object(pos, node, sceneMng) {
 	//Timer para cambiar direccion giro partes moviles
 	_timer = new Timer();
+	_explosionTimer = new Timer();
 	_animDir = false; // false, por ejemplo
 	_scale = 0.0; // inicialmente 0.
 
@@ -15,30 +16,49 @@ void Bomb::update(const Ogre::FrameEvent& evt)
 	if (_timer->getMilliseconds() > 1000) {
 		_timer->reset(); // resetea.
 		_animDir = !_animDir; // invierte la direccion.
-		//_scale = 0; // restea la escala
 	}
-	scaleBomb();
+
+	// explota.
+	if (_explosionTimer->getMilliseconds() >= EXPLOSION_TIME){
+		_explosionTimer->reset();
+		createExplosion();
+	}
+	else{
+		std::cout << _explosionTimer->getMilliseconds() << std::endl;
+		_smokeParticles->translate(Vector3(0, -1, 0));
+		scaleBomb();
+	}
+	
+	
 }
 
 void Bomb::createBombParts()
 {
 	//Nodo padre (cuerpo)
-	ball = mNode->createChildSceneNode();
+	_ball = mNode->createChildSceneNode();
 	//Entidad cuerpo
-	ballEntity = mSM->createEntity("sphere.mesh");
-	ball->attachObject(ballEntity);
-	ball->setScale(0.3, 0.3, 0.3); // si cambias este lo cambias todo.
-	ballEntity->setMaterialName("Bomb/Body"); // TODO cambiar
+	_ballEntity = mSM->createEntity("sphere.mesh");
+	_ball->attachObject(_ballEntity);
+	_ball->setScale(0.3, 0.3, 0.3); // si cambias este lo cambias todo.
+	_ballEntity->setMaterialName("Bomb/Body"); // TODO cambiar
 
 	//Nodo cuerda
-	rope = ball->createChildSceneNode();  //Vamos a rotar estos dos por lo que a lo mejor
-
+	_rope = _ball->createChildSceneNode();  //Vamos a rotar estos dos por lo que a lo mejor
 	//Entidad cuerda
-	ropeEntity = mSM->createEntity("column.mesh");
-	rope->attachObject(ropeEntity);
-	rope->setScale(Vector3(0.5, 0.3, 0.5));
-	rope->setPosition(Vector3(0, 125, 0));
-	ropeEntity->setMaterialName("Bomb/Rope"); // TODO cambiar
+	_ropeEntity = mSM->createEntity("column.mesh");
+	_rope->attachObject(_ropeEntity);
+	_rope->setScale(Vector3(0.5, 0.3, 0.5));
+	_rope->setPosition(Vector3(0, 125, 0));
+	_ropeEntity->setMaterialName("Bomb/Rope"); // TODO cambiar
+
+	// Nodo mecha.
+	_smokeParticles = _rope->createChildSceneNode();
+	_rope->setScale(Vector3(0.5, 0.3, 0.5));
+	_rope->setPosition(Vector3(0, 125, 0));
+
+	ParticleSystem* pSys = mSM->createParticleSystem("mechaSmoke", "ParticleSystem/smokeParticle");
+	pSys->setEmitting(true);
+	_smokeParticles->attachObject(pSys);
 }
 
 void Bomb::scaleBomb()
@@ -53,6 +73,22 @@ void Bomb::scaleBomb()
 
 	if (_scale <= 0.2) _scale = 0.2;
 
-	ball->setScale(Vector3(_scale, _scale, _scale));
-	rope->setScale(Vector3(_scale, _scale, _scale));
+	_ball->setScale(Vector3(_scale, _scale, _scale));
+	_rope->setScale(Vector3(_scale, _scale, _scale));
+}
+
+void Bomb::createExplosion() {
+	// va escondiendo.
+	_smokeParticles->setVisible(false);
+	_ropeEntity->setVisible(false);
+	_rope->setVisible(false);
+	_ballEntity->setVisible(false);
+	_ball->setVisible(false);
+
+	_explosionParticles = _ball->createChildSceneNode();
+	_ball->setScale(0.3, 0.3, 0.3);
+	ParticleSystem* pSys = mSM->createParticleSystem("explosionSmoke", "ParticleSystem/explosionParticle");
+	pSys->setEmitting(true);
+	_smokeParticles->attachObject(pSys);
+
 }

@@ -152,10 +152,6 @@ void IG2App::setupScene(void){
     //BOOOOOMBAAAA
     bomba = new Bomb(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
     bomba->setScale(Vector3(1, 1, 1));
-    ParticleSystem* pSys = mSM->createParticleSystem("bombaSmoke", "ParticleSystem/smokeParticle");
-    pSys->setEmitting(true);
-    bomba->getNode()->attachObject(pSys);
-
 
     //Movemos la camara para que mire al laberinto
     mCamNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z  - 1250);
