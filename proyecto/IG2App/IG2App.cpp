@@ -150,8 +150,7 @@ void IG2App::setupScene(void){
     createPlane();
 
     //BOOOOOMBAAAA
-    bomba = new Bomb(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
-    bomba->setScale(Vector3(1, 1, 1));
+    //bomba = new Bomb(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
 
     //Movemos la camara para que mire al laberinto
     mCamNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z  - 1250);
@@ -185,7 +184,11 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
     }
 
     //Bombas
-    bomba->update(evt);
+	for (int i = 0; i < _hero->activeBombs.size(); i++)
+	{
+        _hero->activeBombs[i]->update(evt);
+	}
+    //bomba->update(evt);
 
     //Actualizamos UI de vida y puntos
     mTextBox->setText("Lives: " + std::to_string(_hero->getLives()) + "\nPoints: " + std::to_string(_hero->getPoints()));

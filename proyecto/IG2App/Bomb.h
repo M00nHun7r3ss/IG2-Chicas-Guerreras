@@ -2,15 +2,15 @@
 #include <OgreTrays.h>
 #include "OgreBillboardSet.h"
 #include "OgreParticleSystem.h"
-#include "Character.h"
+#include "IG2Object.h"
 
 class Bomb : public IG2Object {
 public:
-	explicit Bomb(Vector3 pos, SceneNode* node, SceneManager* sceneMng);
+	explicit Bomb(Vector3 pos, SceneNode* node, SceneManager* sceneMng, int index);
 
 	void update(const Ogre::FrameEvent& evt); // update
 private:
-	int const EXPLOSION_RADIUS = 3; // radio de la explosion
+	int const EXPLOSION_RADIUS = 5; // radio de la explosion
 	int const EXPLOSION_TIME = 5000; // tiempo que tarda en explotar la bomba
 
 	void createBombParts();
@@ -25,9 +25,12 @@ private:
 	Entity* _ropeEntity;
 
 	Timer* _timer;
-	Timer* _explosionTimer;
+	Timer* _untilExplosionTimer;
+	Timer* _explosionDurationTimer;
 	bool _animDir;
 	double _scale;
 	void scaleBomb();
 	void createExplosion();
+
+	int _index;
 };

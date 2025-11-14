@@ -1,9 +1,13 @@
 #include "Bomb.h"
 
-Bomb::Bomb(Vector3 pos, SceneNode* node, SceneManager* sceneMng) : IG2Object(pos, node, sceneMng) {
+Bomb::Bomb(Vector3 pos, SceneNode* node, SceneManager* sceneMng, int index) : IG2Object(pos, node, sceneMng), _index(index) {
 	//Timer para cambiar direccion giro partes moviles
 	_timer = new Timer();
-	_explosionTimer = new Timer();
+	//Timer para iniciar explosion
+	_untilExplosionTimer = new Timer();
+	//Timer para quitar explosion
+	_explosionDurationTimer = new Timer();
+
 	_animDir = false; // false, por ejemplo
 	_scale = 0.0; // inicialmente 0.
 
@@ -19,12 +23,11 @@ void Bomb::update(const Ogre::FrameEvent& evt)
 	}
 
 	// explota.
-	if (_explosionTimer->getMilliseconds() >= EXPLOSION_TIME){
-		_explosionTimer->reset();
+	if (_untilExplosionTimer->getMilliseconds() >= EXPLOSION_TIME){
+		_untilExplosionTimer->reset();
 		createExplosion();
 	}
 	else{
-		std::cout << _explosionTimer->getMilliseconds() << std::endl;
 		_smokeParticles->translate(Vector3(0, -1, 0));
 		scaleBomb();
 	}
@@ -56,7 +59,7 @@ void Bomb::createBombParts()
 	_rope->setScale(Vector3(0.5, 0.3, 0.5));
 	_rope->setPosition(Vector3(0, 125, 0));
 
-	ParticleSystem* pSys = mSM->createParticleSystem("mechaSmoke", "ParticleSystem/smokeParticle");
+	ParticleSystem* pSys = mSM->createParticleSystem("mechaSmoke" + _index, "ParticleSystem/smokeParticle");
 	pSys->setEmitting(true);
 	_smokeParticles->attachObject(pSys);
 }
@@ -86,9 +89,8 @@ void Bomb::createExplosion() {
 	_ball->setVisible(false);
 
 	_explosionParticles = _ball->createChildSceneNode();
-	_ball->setScale(0.3, 0.3, 0.3);
-	ParticleSystem* pSys = mSM->createParticleSystem("explosionSmoke", "ParticleSystem/explosionParticle");
+	ParticleSystem* pSys = mSM->createParticleSystem("explosionSmoke" + _index, "ParticleSystem/explosionParticle");
 	pSys->setEmitting(true);
-	_smokeParticles->attachObject(pSys);
+	_explosionParticles->attachObject(pSys);
 
 }

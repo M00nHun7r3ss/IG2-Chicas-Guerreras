@@ -5,6 +5,7 @@
 #include <OgreMeshManager.h>
 #include <iostream>
 #include "Character.h"
+#include "Bomb.h"
 
 class Hero : public Character
 {
@@ -25,10 +26,15 @@ public:
 
 	void damagePlayer();
 
+	void setBomb();
+
+	std::vector<Bomb*> activeBombs;
 
 private:
 	int _lives;
 	int _points;
+	const int MAX_BOMBS = 5;
+	int _bombs;
 
 	Vector3 _initialPos;
 	Vector3 _newDirection;
