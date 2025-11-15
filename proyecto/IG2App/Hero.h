@@ -46,5 +46,17 @@ private:
 	void rotate() override;
 
 	inline void releaseLives() { _lives--; }
+
+
+	// Animation state
+	Ogre::AnimationState* animationState;
+
+	// Animation states for Sinbad
+	Ogre::AnimationState* animationStateRunBase;
+	Ogre::AnimationState* animationStateRunTop;
+
+	// Flags to control the animations
+	bool isDancing = false;
+	bool isRunning = false;
 };
 

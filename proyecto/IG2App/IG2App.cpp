@@ -210,8 +210,92 @@ void IG2App::createIntroScene()
     createPlane("Intro/Floor", planePos, 1080, 800);
 
     // Movemos la camara para que mire a la animacion
-    mCamNode->setPosition(0, 100, -300);
-    mCamNode->lookAt(planePos, Ogre::Node::TS_WORLD);
+    mCamNode->setPosition(0, -100, -500);
+    mCamNode->lookAt(Vector3(planePos.x, planePos.y + 50, planePos.z), Ogre::Node::TS_WORLD);
+
+    // Creating Sinbad
+    Entity* sinbadEnt = mSM->createEntity("Sinbad.mesh");
+    SceneNode* sinbadNode = mSM->getRootSceneNode()->createChildSceneNode();
+    sinbadNode->attachObject(sinbadEnt);
+    sinbadNode->scale(20, 20, 20);
+    sinbadNode->setPosition(0, -200, 0);
+    sinbadNode->yaw(Ogre::Degree(180));
+    sinbadNode->setInitialState();
+
+    // Obtain the names of all the animations in Sinbad.mesh
+//    AnimationStateSet * aux = sinbadEnt->getAllAnimationStates();
+//    auto it = aux->getAnimationStateIterator().begin();
+//    while (it != aux->getAnimationStateIterator().end()){
+//        auto s = it->first;
+//        ++it;
+//        cout << "Animation name (Sinbad.mesh): " << s << endl;
+//    }
+
+    // Obtain the names of all the bones in Sinbad.mesh
+//    SkeletonInstance * skeleton = sinbadEnt->getSkeleton();
+//    int numBones = skeleton->getNumBones();
+//    for (int i=0; i<numBones; i++){
+//        cout << "Bone name (Sinbad.mesh): " << skeleton->getBone(i)->getName() << endl;
+//    }
+
+    // Creating two swords
+    Entity* swordLeftEnt = mSM->createEntity("Sword.mesh");
+    Entity* swordRightEnt = mSM->createEntity("Sword.mesh");
+
+    int movementLength = 50;
+    Real duration = 21.0;
+    Vector3 keyframePos(0, 0, 0);
+    Real durStep = duration / 3.0;
+
+    // Create the animation and track
+    Animation* animation = mSM->createAnimation("sinbadWalking", duration);
+    animation->setInterpolationMode(Ogre::Animation::IM_SPLINE);
+    NodeAnimationTrack* track = animation->createNodeTrack(0);
+    track->setAssociatedNode(sinbadNode);
+    TransformKeyFrame* kf;
+
+    // Keyframe 0 (Init state) //Baila
+    kf = track->createNodeKeyFrame(durStep * 0);
+    kf->setTranslate(keyframePos);
+    // Keyframe 1: Go to the right
+    kf = track->createNodeKeyFrame(durStep * 1);
+    keyframePos += Ogre::Vector3::UNIT_X * movementLength;
+    kf->setTranslate(keyframePos);
+    // Keyframe 3: Go to the origin
+    kf = track->createNodeKeyFrame(durStep * 2);
+    keyframePos += Ogre::Vector3::NEGATIVE_UNIT_X * movementLength;
+    kf->setTranslate(keyframePos);
+    // Keyframe 4: Go to the left
+    kf = track->createNodeKeyFrame(durStep * 3);
+    keyframePos += Ogre::Vector3::NEGATIVE_UNIT_X * movementLength;
+    kf->setTranslate(keyframePos);
+    // Keyframe 5: Go to the origin
+    kf = track->createNodeKeyFrame(durStep * 3);
+    keyframePos += Ogre::Vector3::UNIT_X * movementLength;
+    kf->setTranslate(keyframePos);
+    // Keyframe 6 (Init state) //Baila
+    kf = track->createNodeKeyFrame(durStep * 0);
+    kf->setTranslate(keyframePos);
+
+    // Our defined animation
+    animationState = mSM->createAnimationState("sinbadWalking");
+    animationState->setLoop(true);
+    animationState->setEnabled(true);
+
+
+    //------------------------------------------------------------------------
+// Animation of Sinbad
+// TODO...
+
+// Set keyframes here...
+// TODO...
+
+// Our defined animation
+// TODO...
+
+// Animations for running and dancing...
+// TODO...
+
 }
 
 void IG2App::setupScene(void){

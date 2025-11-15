@@ -23,6 +23,11 @@
 #include "OgreBillboardSet.h"
 #include "OgreParticleSystem.h"
 
+#include "OgreAnimation.h"
+#include <OgreSkeletonInstance.h>
+#include <OgreBone.h>
+#include <OgreKeyFrame.h>
+
 #include "Bomb.h"
 
 class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener{
@@ -73,6 +78,21 @@ private:
     void updateGameScene(const Ogre::FrameEvent& evt);
     void createIntroScene();
     void updateIntroScene(const Ogre::FrameEvent& evt);
+
+
+
+    //TODO: LIMPIAR COSAS DE LA INTRO
+
+    // Animation state
+    Ogre::AnimationState* animationState;
+
+    // Animation states for Sinbad
+    Ogre::AnimationState* animationStateRunBase;
+    Ogre::AnimationState* animationStateRunTop;
+
+    // Flags to control the animations
+    bool isDancing = false;
+    bool isRunning = false;
 };
 
 #endif
