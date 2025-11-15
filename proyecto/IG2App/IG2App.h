@@ -64,11 +64,15 @@ private:
 
     void checkCollisions(); // TODO arreglar
     void createCamera();
-    void createPlane();
+    void createPlane(string mat, Vector3 pos, float width, float height);
     void createDirectionalLight();
     void createSpotLight();
     void createPointLight();
     void createSkybox();
+    void createGameScene();
+    void updateGameScene(const Ogre::FrameEvent& evt);
+    void createIntroScene();
+    void updateIntroScene(const Ogre::FrameEvent& evt);
 };
 
 #endif

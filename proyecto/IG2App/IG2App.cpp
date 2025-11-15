@@ -86,17 +86,17 @@ void IG2App::createCamera(){
     mCamMgr->setStyle(OgreBites::CS_ORBIT);
 }
 
-void IG2App::createPlane(){
+void IG2App::createPlane(string mat, Vector3 pos, float width, float height){
    MeshManager::getSingleton().createPlane("mPlane1080x800",
         ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
         Plane(Vector3::UNIT_Y, 0),
-        _lab->getWidth(), _lab->getHeight(), 100, 80,
+        width, height, 100, 80,
         true, 1, 1.0, 1.0, Vector3::UNIT_Z);
     Ogre::Entity* plane = mSM->createEntity("mPlane1080x800");
     Ogre::SceneNode* mSceneNewNode = mSM->getRootSceneNode()->createChildSceneNode("floor");
-    mSceneNewNode->setPosition(_lab->getWidth() / 2 - 50, -_lab->getBoxSize().y / 2, _lab->getHeight() / 2 + 50);
+    mSceneNewNode->setPosition(pos);
     mSceneNewNode->attachObject(plane);
-    plane->setMaterialName(_lab->getFloorMaterial());
+    plane->setMaterialName(mat);
 }
 
 void IG2App::createDirectionalLight() {
@@ -143,9 +143,8 @@ void IG2App::createSkybox(){
     mSM->setSkyPlane(true, plane, "Labyrinth/Skybox", 1500, 25, true, 1.5, 50, 50);
 }
 
-void IG2App::setupScene(void){
-    // Creating the camera and the sky
-    createCamera();
+void IG2App::createGameScene() {
+    // Creating the sky
     createSkybox();
 
     // Hero creation
@@ -153,25 +152,27 @@ void IG2App::setupScene(void){
 
     // Labyrinth and villains creation
     _lab = new Labyrinth("stage1wv.txt", mSM, _hero, _villains);
-    
+
     //Floor
-    createPlane();
+    createPlane(_lab->getFloorMaterial(),                                                                    // material
+        Vector3(_lab->getWidth() / 2 - 50, -_lab->getBoxSize().y / 2, _lab->getHeight() / 2 + 50), // pos
+        _lab->getWidth(), _lab->getHeight());                                                               // width height
 
     //Movemos la camara para que mire al laberinto
-    mCamNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z  - 1250);
+    mCamNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z - 1250);
     mCamNode->lookAt(_lab->getPos(), Ogre::Node::TS_WORLD);
 
     //------------------------------------------------------------------------
-	// Creating the light
+    // Creating the light
     switch (_lab->getLightType()) {
-	    case 0: createDirectionalLight(); break;
-        case 1: createSpotLight(); break;
-        case 2: createPointLight(); break;
-        default: break;
+    case 0: createDirectionalLight(); break;
+    case 1: createSpotLight(); break;
+    case 2: createPointLight(); break;
+    default: break;
     }
 }
 
-void IG2App::frameRendered(const Ogre::FrameEvent& evt)
+void IG2App::updateGameScene(const Ogre::FrameEvent& evt)
 {
     // updates
     checkCollisions();
@@ -182,17 +183,17 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
     bool next = _lab->getBlockType(nextBlock);
     _hero->setCanGoForward(next);
 
-    for (int i = 0; i < _villains.size(); ++i){
+    for (int i = 0; i < _villains.size(); ++i) {
         //_villains[1]->setDirection(_lab->calculateRandomDir(_villains[1]));
         //_villains[1]->rotate();
         _villains[i]->update(evt);
     }
 
     //Bombas
-	for (int i = 0; i < _hero->activeBombs.size(); i++)
-	{
+    for (int i = 0; i < _hero->activeBombs.size(); i++)
+    {
         _hero->activeBombs[i]->update(evt);
-	}
+    }
     //bomba->update(evt);
 
     //Actualizamos UI de vida y puntos
@@ -200,6 +201,28 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 
     //El spotlight se actualiza con la pos del player
     mLightNode->setPosition(_hero->getPosition().x, 800, _hero->getPosition().z);
+}
+
+void IG2App::createIntroScene()
+{
+    createDirectionalLight();
+    Vector3 planePos = Vector3(0, -300, 0);
+    createPlane("Intro/Floor", planePos, 1080, 800);
+
+    // Movemos la camara para que mire a la animacion
+    mCamNode->setPosition(0, 100, -300);
+    mCamNode->lookAt(planePos, Ogre::Node::TS_WORLD);
+}
+
+void IG2App::setupScene(void){
+    createCamera();
+    createIntroScene();
+}
+
+void IG2App::frameRendered(const Ogre::FrameEvent& evt)
+{
+    //updateGameScene(evt);
+    
 }
 
 void IG2App::checkCollisions()
