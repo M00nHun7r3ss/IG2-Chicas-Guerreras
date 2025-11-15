@@ -136,9 +136,17 @@ void IG2App::createPointLight() {
     mLightNode->attachObject(light);
 }
 
+void IG2App::createSkybox(){
+	Plane plane;
+    plane.d = 1000;
+    plane.normal = Vector3::UNIT_Y;
+    mSM->setSkyPlane(true, plane, "Labyrinth/Skybox", 1500, 25, true, 1.5, 50, 50);
+}
+
 void IG2App::setupScene(void){
-    // Creating the camera
+    // Creating the camera and the sky
     createCamera();
+    createSkybox();
 
     // Hero creation
     _hero = new Hero(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode("nSinbad"), mSM);
@@ -148,9 +156,6 @@ void IG2App::setupScene(void){
     
     //Floor
     createPlane();
-
-    //BOOOOOMBAAAA
-    //bomba = new Bomb(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
 
     //Movemos la camara para que mire al laberinto
     mCamNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z  - 1250);

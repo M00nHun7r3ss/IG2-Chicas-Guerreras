@@ -68,6 +68,7 @@ private:
     void createDirectionalLight();
     void createSpotLight();
     void createPointLight();
+    void createSkybox();
 };
 
 #endif

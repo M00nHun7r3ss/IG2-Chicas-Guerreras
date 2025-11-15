@@ -31,8 +31,7 @@ void Bomb::update(const Ogre::FrameEvent& evt)
 		_smokeParticles->translate(Vector3(0, -1, 0));
 		scaleBomb();
 	}
-	
-	
+
 }
 
 void Bomb::createBombParts()

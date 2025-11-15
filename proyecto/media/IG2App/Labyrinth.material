@@ -13,6 +13,11 @@ material Labyrinth/Floor
                 texture grass.PNG
                 colour_op modulate
             }
+
+            texture_unit {
+                texture lightMap.jpg
+                colour_op modulate
+            }
         }
     }
 }
@@ -35,4 +40,21 @@ material Labyrinth/Wall
         }
     }
 
+}
+
+material Labyrinth/Skybox
+{
+    technique
+    {
+        pass 
+        {
+            lighting off
+            texture_unit 
+            {
+                texture spaceSky.jpg
+            }
+
+
+        }
+    }
 }
