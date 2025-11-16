@@ -27,6 +27,8 @@
 #include <OgreSkeletonInstance.h>
 #include <OgreBone.h>
 #include <OgreKeyFrame.h>
+#include "Scene.h"
+#include "IntroScene.h"
 
 #include "Bomb.h"
 
@@ -43,18 +45,18 @@ protected:
   
     virtual void setupScene();
     virtual void frameRendered(const Ogre::FrameEvent& evt);
-      
+
+private:
     Ogre::SceneManager* mSM = nullptr;
     OgreBites::TrayManager* mTrayMgr = nullptr;
-    
+
     Ogre::Light* light = nullptr;
     Ogre::SceneNode* mLightParent = nullptr;
     Ogre::SceneNode* mLightNode = nullptr;
-    
+
     Ogre::SceneNode* mCamNode = nullptr;
     OgreBites::CameraMan* mCamMgr = nullptr;
 
-private:
     // Objects
     Hero* _hero = nullptr;
     Labyrinth* _lab = nullptr;
@@ -67,32 +69,16 @@ private:
     OgreBites::TextBox* mTextBox = nullptr;
     OgreBites::Label* mLabel = nullptr;
 
+    IntroScene* _introScene;
+
     void checkCollisions(); // TODO arreglar
     void createCamera();
-    void createPlane(string mat, Vector3 pos, float width, float height);
     void createDirectionalLight();
     void createSpotLight();
     void createPointLight();
     void createSkybox();
     void createGameScene();
     void updateGameScene(const Ogre::FrameEvent& evt);
-    void createIntroScene();
-    void updateIntroScene(const Ogre::FrameEvent& evt);
-
-
-
-    //TODO: LIMPIAR COSAS DE LA INTRO
-
-    // Animation state
-    Ogre::AnimationState* animationState;
-
-    // Animation states for Sinbad
-    Ogre::AnimationState* animationStateRunBase;
-    Ogre::AnimationState* animationStateRunTop;
-
-    // Flags to control the animations
-    bool isDancing = false;
-    bool isRunning = false;
 };
 
 #endif

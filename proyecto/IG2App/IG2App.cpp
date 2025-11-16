@@ -12,10 +12,6 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
         getRoot()->queueEndRendering();
     }
 
-    if (evt.keysym.sym == SDLK_p) {// p de pegar
-        _hero->damagePlayer();
-    }
-
     _hero->keyPressed(evt);
 
 	return true;
@@ -86,19 +82,6 @@ void IG2App::createCamera(){
     mCamMgr->setStyle(OgreBites::CS_ORBIT);
 }
 
-void IG2App::createPlane(string mat, Vector3 pos, float width, float height){
-   MeshManager::getSingleton().createPlane("mPlane1080x800",
-        ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-        Plane(Vector3::UNIT_Y, 0),
-        width, height, 100, 80,
-        true, 1, 1.0, 1.0, Vector3::UNIT_Z);
-    Ogre::Entity* plane = mSM->createEntity("mPlane1080x800");
-    Ogre::SceneNode* mSceneNewNode = mSM->getRootSceneNode()->createChildSceneNode("floor");
-    mSceneNewNode->setPosition(pos);
-    mSceneNewNode->attachObject(plane);
-    plane->setMaterialName(mat);
-}
-
 void IG2App::createDirectionalLight() {
     mSM->setAmbientLight(ColourValue(0.7, 0.8, 0.9));
     light = mSM->createLight("Directional");
@@ -154,9 +137,17 @@ void IG2App::createGameScene() {
     _lab = new Labyrinth("stage1wv.txt", mSM, _hero, _villains);
 
     //Floor
-    createPlane(_lab->getFloorMaterial(),                                                                    // material
-        Vector3(_lab->getWidth() / 2 - 50, -_lab->getBoxSize().y / 2, _lab->getHeight() / 2 + 50), // pos
-        _lab->getWidth(), _lab->getHeight());                                                               // width height
+   // TODO pasar a GameScene
+    MeshManager::getSingleton().createPlane("mPlane1080x800",
+        ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        Plane(Vector3::UNIT_Y, 0),
+        _lab->getWidth(), _lab->getHeight(), 100, 80,
+        true, 1, 1.0, 1.0, Vector3::UNIT_Z);
+    Ogre::Entity* plane = mSM->createEntity("mPlane1080x800");
+    Ogre::SceneNode* mSceneNewNode = mSM->getRootSceneNode()->createChildSceneNode("floor");
+    mSceneNewNode->setPosition(Vector3(_lab->getWidth() / 2 - 50, -_lab->getBoxSize().y / 2, _lab->getHeight() / 2 + 50));
+    mSceneNewNode->attachObject(plane);
+    plane->setMaterialName(_lab->getFloorMaterial());
 
     //Movemos la camara para que mire al laberinto
     mCamNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z - 1250);
@@ -203,108 +194,14 @@ void IG2App::updateGameScene(const Ogre::FrameEvent& evt)
     mLightNode->setPosition(_hero->getPosition().x, 800, _hero->getPosition().z);
 }
 
-void IG2App::createIntroScene()
-{
-    createDirectionalLight();
-    Vector3 planePos = Vector3(0, -300, 0);
-    createPlane("Intro/Floor", planePos, 1080, 800);
-
-    // Movemos la camara para que mire a la animacion
-    mCamNode->setPosition(0, -100, -500);
-    mCamNode->lookAt(Vector3(planePos.x, planePos.y + 50, planePos.z), Ogre::Node::TS_WORLD);
-
-    // Creating Sinbad
-    Entity* sinbadEnt = mSM->createEntity("Sinbad.mesh");
-    SceneNode* sinbadNode = mSM->getRootSceneNode()->createChildSceneNode();
-    sinbadNode->attachObject(sinbadEnt);
-    sinbadNode->scale(20, 20, 20);
-    sinbadNode->setPosition(0, -200, 0);
-    sinbadNode->yaw(Ogre::Degree(180));
-    sinbadNode->setInitialState();
-
-    // Obtain the names of all the animations in Sinbad.mesh
-//    AnimationStateSet * aux = sinbadEnt->getAllAnimationStates();
-//    auto it = aux->getAnimationStateIterator().begin();
-//    while (it != aux->getAnimationStateIterator().end()){
-//        auto s = it->first;
-//        ++it;
-//        cout << "Animation name (Sinbad.mesh): " << s << endl;
-//    }
-
-    // Obtain the names of all the bones in Sinbad.mesh
-//    SkeletonInstance * skeleton = sinbadEnt->getSkeleton();
-//    int numBones = skeleton->getNumBones();
-//    for (int i=0; i<numBones; i++){
-//        cout << "Bone name (Sinbad.mesh): " << skeleton->getBone(i)->getName() << endl;
-//    }
-
-    // Creating two swords
-    Entity* swordLeftEnt = mSM->createEntity("Sword.mesh");
-    Entity* swordRightEnt = mSM->createEntity("Sword.mesh");
-
-    int movementLength = 50;
-    Real duration = 21.0;
-    Vector3 keyframePos(0, 0, 0);
-    Real durStep = duration / 3.0;
-
-    // Create the animation and track
-    Animation* animation = mSM->createAnimation("sinbadWalking", duration);
-    animation->setInterpolationMode(Ogre::Animation::IM_SPLINE);
-    NodeAnimationTrack* track = animation->createNodeTrack(0);
-    track->setAssociatedNode(sinbadNode);
-    TransformKeyFrame* kf;
-
-    // Keyframe 0 (Init state) //Baila
-    kf = track->createNodeKeyFrame(durStep * 0);
-    kf->setTranslate(keyframePos);
-    // Keyframe 1: Go to the right
-    kf = track->createNodeKeyFrame(durStep * 1);
-    keyframePos += Ogre::Vector3::UNIT_X * movementLength;
-    kf->setTranslate(keyframePos);
-    // Keyframe 3: Go to the origin
-    kf = track->createNodeKeyFrame(durStep * 2);
-    keyframePos += Ogre::Vector3::NEGATIVE_UNIT_X * movementLength;
-    kf->setTranslate(keyframePos);
-    // Keyframe 4: Go to the left
-    kf = track->createNodeKeyFrame(durStep * 3);
-    keyframePos += Ogre::Vector3::NEGATIVE_UNIT_X * movementLength;
-    kf->setTranslate(keyframePos);
-    // Keyframe 5: Go to the origin
-    kf = track->createNodeKeyFrame(durStep * 3);
-    keyframePos += Ogre::Vector3::UNIT_X * movementLength;
-    kf->setTranslate(keyframePos);
-    // Keyframe 6 (Init state) //Baila
-    kf = track->createNodeKeyFrame(durStep * 0);
-    kf->setTranslate(keyframePos);
-
-    // Our defined animation
-    animationState = mSM->createAnimationState("sinbadWalking");
-    animationState->setLoop(true);
-    animationState->setEnabled(true);
-
-
-    //------------------------------------------------------------------------
-// Animation of Sinbad
-// TODO...
-
-// Set keyframes here...
-// TODO...
-
-// Our defined animation
-// TODO...
-
-// Animations for running and dancing...
-// TODO...
-
-}
-
 void IG2App::setupScene(void){
     createCamera();
-    createIntroScene();
+    _introScene = new IntroScene(mSM, mTrayMgr, light, mLightParent, mLightNode, mCamNode, mCamMgr);
 }
 
 void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 {
+    _introScene->update(evt);
     //updateGameScene(evt);
     
 }
