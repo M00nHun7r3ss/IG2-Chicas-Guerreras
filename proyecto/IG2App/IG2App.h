@@ -2,10 +2,7 @@
 #define __IG2App_H__
 
 #include "IG2ApplicationContext.h"
-#include "IG2Object.h"
-#include "Labyrinth.h"
-#include "Hero.h"
-#include "Villain.h"
+//#include "OgreApplicationContext.h"
 #include <OgreSceneManager.h>
 #include <OgreSceneNode.h>
 #include <OgreTrays.h>
@@ -20,17 +17,10 @@
 #include <iomanip>
 #include <fstream>
 #include <vector>
-#include "OgreBillboardSet.h"
-#include "OgreParticleSystem.h"
 
-#include "OgreAnimation.h"
-#include <OgreSkeletonInstance.h>
-#include <OgreBone.h>
-#include <OgreKeyFrame.h>
 #include "Scene.h"
 #include "IntroScene.h"
-
-#include "Bomb.h"
+#include "GameScene.h"
 
 class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener{
 
@@ -57,28 +47,11 @@ private:
     Ogre::SceneNode* mCamNode = nullptr;
     OgreBites::CameraMan* mCamMgr = nullptr;
 
-    // Objects
-    Hero* _hero = nullptr;
-    Labyrinth* _lab = nullptr;
-    std::vector<Villain*> _villains;
-    Bomb* bomba;
-
-    Ogre::SceneNode* mPSNode;
-
-    //Para la ui de la vida y los puntos
-    OgreBites::TextBox* mTextBox = nullptr;
-    OgreBites::Label* mLabel = nullptr;
-
+    //Escenas TODO: Gestion paso de escenas con la s
     IntroScene* _introScene;
+    GameScene* _gameScene;
 
-    void checkCollisions(); // TODO arreglar
     void createCamera();
-    void createDirectionalLight();
-    void createSpotLight();
-    void createPointLight();
-    void createSkybox();
-    void createGameScene();
-    void updateGameScene(const Ogre::FrameEvent& evt);
 };
 
 #endif

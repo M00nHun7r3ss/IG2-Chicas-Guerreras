@@ -26,6 +26,8 @@
 #include <OgreBone.h>
 #include <OgreKeyFrame.h>
 
+#include "OgreTimer.h"
+
 #include "Bomb.h"
 
 #include "Scene.h"
@@ -49,12 +51,15 @@ private:
     Entity* _swordRightEnt;
 
     // consts
-    const int MOVEMENT_LENGTH = 50;
+    const int MOVEMENT_LENGTH = 100;
     const double DURATION = 21.0;
-    const Vector3 KEY_FRAME_POS = Vector3(0, 0, 0);
-    const double DURATION_STEP = DURATION / 3.0;
+    const double DURATION_STEP = DURATION / 9.0;
+
+    Vector3 _keyFramePos;
 
     void createCamera();
+
+    Timer* _timer = 0;
 
     // Animation state
     AnimationState* _animationState;
@@ -65,6 +70,6 @@ private:
     AnimationState* _animRunArms;
 
     // Flags to control the animations
-    bool isDancing = false;
-    bool isRunning = false;
+    bool _isDancing = false;
+    bool _isRunning = false;
 };

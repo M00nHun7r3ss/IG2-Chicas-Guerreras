@@ -26,9 +26,3 @@ void Scene::createDirectionalLight() {
     _lightNode = _camNode->createChildSceneNode("nLuz");
     _lightNode->attachObject(_light);
 }
-
-void Scene::createSpotLight() {
-}
-
-void Scene::createPointLight() {
-}

@@ -50,8 +50,7 @@ protected:
 
     void createPlane(string mat, Vector3 pos, float width, float height);
 
+    //Directional la comparten tanto la intro como el juego, asi que es general
     void createDirectionalLight();
-    void createSpotLight();
-    void createPointLight();
 
 };
