@@ -58,14 +58,16 @@ private:
     const double DURATION = 21.0;
     const double DURATION_STEP = DURATION / 9.0;
 
-    Vector3 _keyFramePos;
+    Vector3 _sinbadKeyFramePos;
+    Vector3 _ogreheadKeyFramePos;
 
     void createCamera();
 
     Timer* _timer = 0;
 
     // Animation state
-    AnimationState* _animationState;
+    AnimationState* _sinbadAnimationState;
+    AnimationState* _ogreheadAnimationState;
 
     // Animation states for Sinbad
     AnimationState* _animStateDance;
