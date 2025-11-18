@@ -54,7 +54,9 @@ material Labyrinth/Skybox
                 texture spaceSky.jpg
             }
 
-
+            texture_unit {
+                texture lightMap.jpg
+            }
         }
     }
 }

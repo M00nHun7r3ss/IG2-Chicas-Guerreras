@@ -53,10 +53,6 @@ void IG2App::setup(void){
     mTrayMgr = new OgreBites::TrayManager("TrayGUISystem", mWindow.render);
     mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
 
-    //UI DERECHA
-    //mLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "Titulo", "Stage: 1");
-    //mTextBox = mTrayMgr->createTextBox(OgreBites::TL_BOTTOMRIGHT, "Caja", "Game Info Here!", 250, 100);
-
     addInputListener(mTrayMgr);
     
     // Adds the listener for this object
@@ -85,12 +81,13 @@ void IG2App::createCamera(){
 void IG2App::setupScene(void){
     createCamera();
     _introScene = new IntroScene(mSM, mTrayMgr, light, mLightParent, mLightNode, mCamNode, mCamMgr);
+    //_gameScene = new GameScene(mSM, mTrayMgr, light, mLightParent, mLightNode, mCamNode, mCamMgr);
 }
 
 void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 {
     _introScene->update(evt);
-    //updateGameScene(evt);
+    //_gameScene->update(evt);
 
     //if (gameScene.getendGame) getRoot()->queueEndRendering();
 }

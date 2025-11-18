@@ -50,6 +50,9 @@ private:
     Entity* _swordLeftEnt;
     Entity* _swordRightEnt;
 
+    Entity* _ogreHeadEnt;
+    SceneNode* _ogreHeadNode;
+
     // consts
     const int MOVEMENT_LENGTH = 100;
     const double DURATION = 21.0;
@@ -73,4 +76,8 @@ private:
     bool _isDancing;
     bool _isRunning;
     bool _areSwordsAttached;
+
+    void createSinbadAnim();
+    void createOgreheadAnim();
+    void addKeyFrame(double duration, Quaternion rot, Vector3 pos);
 };

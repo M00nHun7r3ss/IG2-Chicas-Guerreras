@@ -6,6 +6,10 @@ GameScene::GameScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, Sce
     // Creating the sky
     createSkybox();
 
+    //UI DERECHA
+   mLabel = _trayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "Titulo", "Stage: 1");
+   mTextBox = _trayMgr->createTextBox(OgreBites::TL_BOTTOMRIGHT, "Caja", "Game Info Here!", 250, 100);
+
     // Hero creation
     _hero = new Hero(Vector3::ZERO, _sceneMgr->getRootSceneNode()->createChildSceneNode("nSinbad"), _sceneMgr);
 

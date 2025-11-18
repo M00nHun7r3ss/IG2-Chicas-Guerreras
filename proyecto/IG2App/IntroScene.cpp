@@ -13,6 +13,65 @@ IntroScene::IntroScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, S
 	_camNode->setPosition(0, -100, -500);
 	_camNode->lookAt(Vector3(planePos.x, planePos.y + 50, planePos.z), Ogre::Node::TS_WORLD);
 
+	createSinbadAnim();
+	createOgreheadAnim();
+}
+
+void IntroScene::update(const Ogre::FrameEvent& evt)
+{
+	//Si esta bailando y pasa el tiempo de bailar (Solo el primer frame)
+	if (_timer->getMilliseconds() > DURATION_STEP * 1000 && _isDancing)
+	{
+		//Se pone a andar
+		_animStateDance->setEnabled(false);
+		_animRunLegs->setEnabled(true);
+		_animRunArms->setEnabled(true);
+
+		_isDancing = false;
+		_isRunning = true;
+	}
+
+	// Saca espadas.
+	if (_timer->getMilliseconds() > 4 * DURATION_STEP * 1000 && !_areSwordsAttached){
+		_sinbadEnt->attachObjectToBone("Handle.L", _swordLeftEnt);
+		_sinbadEnt->attachObjectToBone("Handle.R", _swordRightEnt);
+		_areSwordsAttached = true;
+	}
+
+	//Si esta corriendo (Frames de 2 a 9)
+	if (_timer->getMilliseconds() > 9 * DURATION_STEP * 1000 && _isRunning)
+	{
+		//Se para
+		_animStateDance->setEnabled(true);
+		_animRunLegs->setEnabled(false);
+		_animRunArms->setEnabled(false);
+
+		_isDancing = true;
+		_isRunning = false;
+
+		// Quita espadas.
+		if (_areSwordsAttached) {
+			_sinbadEnt->detachObjectFromBone(_swordLeftEnt);
+			_sinbadEnt->detachObjectFromBone(_swordRightEnt);
+			_areSwordsAttached = false;
+		}
+		
+
+		//Reseteamos el tiempo al acabar
+		_timer->reset();
+	}
+
+	_animationState->addTime(evt.timeSinceLastFrame);
+	_animStateDance->addTime(evt.timeSinceLastFrame);
+	_animRunArms->addTime(evt.timeSinceLastFrame);
+	_animRunLegs->addTime(evt.timeSinceLastFrame);
+}
+
+void IntroScene::addKeyFrame(double duration, Quaternion rot, Vector3 pos)
+{
+}
+
+void IntroScene::createSinbadAnim() {
 	// Creating Sinbad
 	_sinbadEnt = _sceneMgr->createEntity("Sinbad.mesh");
 	_sinbadNode = _sceneMgr->getRootSceneNode()->createChildSceneNode();
@@ -39,7 +98,8 @@ IntroScene::IntroScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, S
 
 	TransformKeyFrame* kf;
 
-	// Keyframe 0 (Init state) //Baila
+	// Keyframe 0 (Init state) //Baile
+	//addKeyFrame(DURATION_STEP, setrotation, settranslate)
 	kf = track->createNodeKeyFrame(DURATION_STEP);
 	kf->setTranslate(_keyFramePos);
 
@@ -111,65 +171,71 @@ IntroScene::IntroScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, S
 	_animRunLegs->setEnabled(false);
 	_animRunArms->setEnabled(false);
 	_isDancing = true;
-
-	_sinbadEnt->detachAllObjectsFromBone();
-
-	// Obtain the names of all the bones in Sinbad.mesh
-	SkeletonInstance* skeleton = _sinbadEnt->getSkeleton();
-	int numBones = skeleton->getNumBones();
-	for (int i = 0; i < numBones; i++) {
-		cout << "Bone name (Sinbad.mesh): " << skeleton->getBone(i)->getName() << endl;
-	}
 }
 
-void IntroScene::update(const Ogre::FrameEvent& evt)
+void IntroScene::createOgreheadAnim()
 {
-	//Si esta bailando y pasa el tiempo de bailar (Solo el primer frame)
-	if (_timer->getMilliseconds() > DURATION_STEP * 1000 && _isDancing)
-	{
-		//Se pone a andar
-		_animStateDance->setEnabled(false);
-		_animRunLegs->setEnabled(true);
-		_animRunArms->setEnabled(true);
+	// Creating Head
+	_ogreHeadEnt = _sceneMgr->createEntity("ogrehead.mesh");
+	_ogreHeadNode = _sceneMgr->getRootSceneNode()->createChildSceneNode();
+	_ogreHeadNode->scale(3, 3, 3);
+	_ogreHeadNode->setPosition(375, -220, 0);
+	_ogreHeadNode->yaw(Ogre::Degree(-90));
+	_ogreHeadNode->attachObject(_ogreHeadEnt);
 
-		_isDancing = false;
-		_isRunning = true;
+	//Creamos la animacion de ogrehead
+	Animation* ogreHeadAnim = _sceneMgr->createAnimation("ogreIntro", DURATION);
+	ogreHeadAnim->setInterpolationMode(Animation::IM_SPLINE);
+	NodeAnimationTrack* track = ogreHeadAnim->createNodeTrack(0);
+	track->setAssociatedNode(_ogreHeadNode);
 
-	}
+	// -----------------------------------------
 
-	// Saca espadas.
-	if (_timer->getMilliseconds() > 4 * DURATION_STEP * 1000 && !_areSwordsAttached){
-		_sinbadEnt->attachObjectToBone("Handle.L", _swordLeftEnt);
-		_sinbadEnt->attachObjectToBone("Handle.R", _swordRightEnt);
-		_areSwordsAttached = true;
-	}
+	TransformKeyFrame* kf;
 
-	//Si esta corriendo (Frames de 2 a 9)
-	if (_timer->getMilliseconds() > 9 * DURATION_STEP * 1000 && _isRunning)
-	{
-		//Se para
-		_animStateDance->setEnabled(true);
-		_animRunLegs->setEnabled(false);
-		_animRunArms->setEnabled(false);
+	// Keyframe 2: Go to the right
+	kf = track->createNodeKeyFrame(DURATION_STEP);
+	_keyFramePos += Ogre::Vector3::NEGATIVE_UNIT_X * MOVEMENT_LENGTH * 2;
+	//Se mueve
+	kf->setTranslate(_keyFramePos);
+	//Sigue mirando a derecha
+	kf->setRotation(Quaternion(Degree(-90), Vector3(0, 1, 0)));
 
-		_isDancing = true;
-		_isRunning = false;
+	// Keyframe 3: Look to the left
+	kf = track->createNodeKeyFrame(DURATION_STEP * 2);
+	//Mantiene la posicion
+	kf->setTranslate(_keyFramePos);
+	//Mira a izquierda
+	kf->setRotation(Quaternion(Degree(90), Vector3(0, 1, 0)));
 
-		// Quita espadas.
-		if (_areSwordsAttached) {
-			_sinbadEnt->detachObjectFromBone(_swordLeftEnt);
-			_sinbadEnt->detachObjectFromBone(_swordRightEnt);
-			_areSwordsAttached = false;
-		}
-		
+	// Keyframe 5: Go to the left
+	kf = track->createNodeKeyFrame(DURATION_STEP * 3);
+	_keyFramePos += Ogre::Vector3::UNIT_X * MOVEMENT_LENGTH * 2;
+	//Se mueve
+	kf->setTranslate(_keyFramePos);
+	//Sigue mirando a izquierda
+	kf->setRotation(Quaternion(Degree(90), Vector3(0, 1, 0)));
 
-		//Reseteamos el tiempo al acabar
-		_timer->reset();
-	}
+	// Keyframe 6: Look to the right
+	kf = track->createNodeKeyFrame(DURATION_STEP * 4);
+	//Mantiene la posicion
+	kf->setTranslate(_keyFramePos);
+	//Mira a derecha
+	kf->setRotation(Quaternion(Degree(-90), Vector3(0, 1, 0)));
 
-	_animationState->addTime(evt.timeSinceLastFrame);
-	_animStateDance->addTime(evt.timeSinceLastFrame);
-	_animRunArms->addTime(evt.timeSinceLastFrame);
-	_animRunLegs->addTime(evt.timeSinceLastFrame);
+	// Keyframe 7: Go to the right
+	kf = track->createNodeKeyFrame(DURATION_STEP * 8);
+	_keyFramePos += Ogre::Vector3::NEGATIVE_UNIT_X * MOVEMENT_LENGTH;
+	//Se mueve
+	kf->setTranslate(_keyFramePos);
+	//Sigue mirando a derecha
+	kf->setRotation(Quaternion(Degree(90), Vector3(0, 1, 0)));
+	//Se va haciendo pequenio
+	kf->setScale(kf->getScale() * 0.9);
+
+	// Our defined animation
+	_animationState = _sceneMgr->createAnimationState("ogreIntro");
+	_animationState->setLoop(true);
+	_animationState->setEnabled(true);
 }
 
