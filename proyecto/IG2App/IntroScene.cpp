@@ -1,8 +1,7 @@
 #include "IntroScene.h"
 
 IntroScene::IntroScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, SceneNode* lp, SceneNode* ln, SceneNode* cn, OgreBites::CameraMan* cm)
-	: Scene(sm, tm, l, lp, ln, cn, cm), _keyFramePos(Vector3(0, 0, 0)) {
-
+	: Scene(sm, tm, l, lp, ln, cn, cm), _keyFramePos(Vector3(0, 0, 0)), _isRunning(false), _isDancing(false), _areSwordsAttached(false) {
 	_timer = new Timer();
 
 	// luces, plano.
@@ -27,6 +26,7 @@ IntroScene::IntroScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, S
 	_swordLeftEnt = _sceneMgr->createEntity("Sword.mesh");
 	_swordRightEnt = _sceneMgr->createEntity("Sword.mesh");
 
+	// Crea animationstates
 	_animStateDance = _sinbadEnt->getAnimationState("Dance");
 	_animRunLegs = _sinbadEnt->getAnimationState("RunBase");
 	_animRunArms = _sinbadEnt->getAnimationState("RunTop");
@@ -106,12 +106,20 @@ IntroScene::IntroScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, S
 	_animationState->setLoop(true);
 	_animationState->setEnabled(true);
 
+	// inicialmente baila pero no corre.
 	_animStateDance->setEnabled(true);
 	_animRunLegs->setEnabled(false);
 	_animRunArms->setEnabled(false);
-
-	//Empieza bailando
 	_isDancing = true;
+
+	_sinbadEnt->detachAllObjectsFromBone();
+
+	// Obtain the names of all the bones in Sinbad.mesh
+	SkeletonInstance* skeleton = _sinbadEnt->getSkeleton();
+	int numBones = skeleton->getNumBones();
+	for (int i = 0; i < numBones; i++) {
+		cout << "Bone name (Sinbad.mesh): " << skeleton->getBone(i)->getName() << endl;
+	}
 }
 
 void IntroScene::update(const Ogre::FrameEvent& evt)
@@ -129,6 +137,13 @@ void IntroScene::update(const Ogre::FrameEvent& evt)
 
 	}
 
+	// Saca espadas.
+	if (_timer->getMilliseconds() > 4 * DURATION_STEP * 1000 && !_areSwordsAttached){
+		_sinbadEnt->attachObjectToBone("Handle.L", _swordLeftEnt);
+		_sinbadEnt->attachObjectToBone("Handle.R", _swordRightEnt);
+		_areSwordsAttached = true;
+	}
+
 	//Si esta corriendo (Frames de 2 a 9)
 	if (_timer->getMilliseconds() > 9 * DURATION_STEP * 1000 && _isRunning)
 	{
@@ -140,12 +155,17 @@ void IntroScene::update(const Ogre::FrameEvent& evt)
 		_isDancing = true;
 		_isRunning = false;
 
+		// Quita espadas.
+		if (_areSwordsAttached) {
+			_sinbadEnt->detachObjectFromBone(_swordLeftEnt);
+			_sinbadEnt->detachObjectFromBone(_swordRightEnt);
+			_areSwordsAttached = false;
+		}
+		
+
 		//Reseteamos el tiempo al acabar
 		_timer->reset();
 	}
-
-
-
 
 	_animationState->addTime(evt.timeSinceLastFrame);
 	_animStateDance->addTime(evt.timeSinceLastFrame);

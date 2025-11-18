@@ -70,6 +70,7 @@ private:
     AnimationState* _animRunArms;
 
     // Flags to control the animations
-    bool _isDancing = false;
-    bool _isRunning = false;
+    bool _isDancing;
+    bool _isRunning;
+    bool _areSwordsAttached;
 };
