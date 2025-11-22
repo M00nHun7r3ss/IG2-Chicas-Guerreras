@@ -202,6 +202,14 @@ Vector3 Labyrinth::calculateRandomDir(Character* c)
     return vReturn;
 }
 
+void Labyrinth::setVisible(bool visible)
+{
+    for (int i = 0; i < _labyrinth.size(); i++)
+    {
+        _labyrinth[i]->setVisible(visible);
+    }
+}
+
 void Labyrinth::createLabyrinth(String f, SceneManager* sceneMng)
 {
     //Lectura archivo laberinto

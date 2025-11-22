@@ -37,11 +37,13 @@ class IntroScene : public Scene {
 public:
     explicit IntroScene(SceneManager* sm, OgreBites::TrayManager* tm,
         Light* l, SceneNode* lp, SceneNode* ln,
-        SceneNode* cn, OgreBites::CameraMan* cm);
+        SceneNode* cn, OgreBites::CameraMan* cm, bool sceneType = false);
 
     //virtual ~IntroScene(); // TODO hacer desconstructora bien.
 
     void update(const Ogre::FrameEvent& evt);
+
+    void setVisible(bool visible) override;
 
 private:
     // Objects

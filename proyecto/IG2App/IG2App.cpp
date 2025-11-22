@@ -12,7 +12,13 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
         getRoot()->queueEndRendering();
     }
 
-    _gameScene->keyPressed(evt);
+    if (evt.keysym.sym == SDLK_s) {
+        _gameScene->setVisible(true);
+        _introScene->setVisible(false);
+    }
+
+    if (_gameScene->getVisible())
+        _gameScene->keyPressed(evt);
 
 	return true;
 }
@@ -81,15 +87,20 @@ void IG2App::createCamera(){
 void IG2App::setupScene(void){
     createCamera();
     _introScene = new IntroScene(mSM, mTrayMgr, light, mLightParent, mLightNode, mCamNode, mCamMgr);
-    //_gameScene = new GameScene(mSM, mTrayMgr, light, mLightParent, mLightNode, mCamNode, mCamMgr);
+    _introScene->setVisible(true);
+    _gameScene = new GameScene(mSM, mTrayMgr, light, mLightParent, mLightNode, mCamNode, mCamMgr);
+    _gameScene->setVisible(false);
 }
 
 void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 {
-    _introScene->update(evt);
-    //_gameScene->update(evt);
-
-    //if (gameScene.getendGame) getRoot()->queueEndRendering();
+    if (_introScene->getVisible()) _introScene->update(evt);
+    else if (_gameScene->getVisible())
+    {
+        _gameScene->update(evt);
+        if (_gameScene->getEndGame())
+            getRoot()->queueEndRendering();
+    }
 }
 
 

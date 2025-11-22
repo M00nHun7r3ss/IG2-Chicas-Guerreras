@@ -33,19 +33,27 @@ class Scene {
 public:
     explicit Scene(SceneManager* sm, OgreBites::TrayManager* tm, 
         Light* l, SceneNode* lp, SceneNode* ln,
-        SceneNode* cn, OgreBites::CameraMan* cm);
+        SceneNode* cn, OgreBites::CameraMan* cm, bool sceneType);
     virtual ~Scene() = default; // TODO eliminar bien las cosas luego.
 
-protected:
+    virtual void setVisible(bool visible) {}
+    bool getVisible() const { return _sceneType; };
 
-    Ogre::SceneManager* _sceneMgr = nullptr;
+
+protected:
+    bool _sceneType; //False - IntroScene, True - GameScene
+
+    SceneManager* _sceneMgr = nullptr;
     OgreBites::TrayManager* _trayMgr = nullptr;
 
-    Ogre::Light* _light = nullptr;
-    Ogre::SceneNode* _lightParent = nullptr;
-    Ogre::SceneNode* _lightNode = nullptr;
+    Light* _light = nullptr;
+    SceneNode* _lightParent = nullptr;
+    SceneNode* _lightNode = nullptr;
 
-    Ogre::SceneNode* _camNode = nullptr;
+    Entity* _planeEntity;
+    SceneNode* _planeNode = nullptr;
+
+    SceneNode* _camNode = nullptr;
     OgreBites::CameraMan* _camMgr = nullptr;
 
     void createPlane(string mat, Vector3 pos, float width, float height);

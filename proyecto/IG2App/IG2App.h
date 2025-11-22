@@ -37,6 +37,7 @@ protected:
     virtual void frameRendered(const Ogre::FrameEvent& evt);
 
 private:
+
     Ogre::SceneManager* mSM = nullptr;
     OgreBites::TrayManager* mTrayMgr = nullptr;
 

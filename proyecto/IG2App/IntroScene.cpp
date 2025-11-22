@@ -1,7 +1,7 @@
 #include "IntroScene.h"
 
-IntroScene::IntroScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, SceneNode* lp, SceneNode* ln, SceneNode* cn, OgreBites::CameraMan* cm)
-	: Scene(sm, tm, l, lp, ln, cn, cm), _sinbadKeyFramePos(Vector3(0, 0, 0)), _ogreheadKeyFramePos(Vector3(0, 0, 0)), _isRunning(false), _isDancing(false), _areSwordsAttached(false) {
+IntroScene::IntroScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, SceneNode* lp, SceneNode* ln, SceneNode* cn, OgreBites::CameraMan* cm, bool sceneType)
+	: Scene(sm, tm, l, lp, ln, cn, cm, sceneType), _sinbadKeyFramePos(Vector3(0, 0, 0)), _ogreheadKeyFramePos(Vector3(0, 0, 0)), _isRunning(false), _isDancing(false), _areSwordsAttached(false) {
 	_timer = new Timer();
 
 	// luces, plano.
@@ -9,64 +9,86 @@ IntroScene::IntroScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, S
 	Vector3 planePos = Vector3(0, -300, 0);
 	createPlane("Intro/Floor", planePos, 1080, 800);
 
-	// Movemos la camara para que mire a la animacion
-	_camNode->setPosition(0, -100, -500);
-	_camNode->lookAt(Vector3(planePos.x, planePos.y + 50, planePos.z), Ogre::Node::TS_WORLD);
-
-	//createSinbadAnim();
+	createSinbadAnim();
 	createOgreheadAnim();
 }
 
 void IntroScene::update(const Ogre::FrameEvent& evt)
 {
-	////Si esta bailando y pasa el tiempo de bailar (Solo el primer frame)
-	//if (_timer->getMilliseconds() > DURATION_STEP * 1000 && _isDancing)
-	//{
-	//	//Se pone a andar
-	//	_animStateDance->setEnabled(false);
-	//	_animRunLegs->setEnabled(true);
-	//	_animRunArms->setEnabled(true);
+	//Si esta bailando y pasa el tiempo de bailar (Solo el primer frame)
+	if (_timer->getMilliseconds() > DURATION_STEP * 1000 && _isDancing)
+	{
+		//Se pone a andar
+		_animStateDance->setEnabled(false);
+		_animRunLegs->setEnabled(true);
+		_animRunArms->setEnabled(true);
 
-	//	_isDancing = false;
-	//	_isRunning = true;
-	//}
+		_isDancing = false;
+		_isRunning = true;
+	}
 
-	//// Saca espadas.
-	//if (_timer->getMilliseconds() > 4 * DURATION_STEP * 1000 && !_areSwordsAttached){
-	//	_sinbadEnt->attachObjectToBone("Handle.L", _swordLeftEnt);
-	//	_sinbadEnt->attachObjectToBone("Handle.R", _swordRightEnt);
-	//	_areSwordsAttached = true;
-	//}
+	// Saca espadas.
+	if (_timer->getMilliseconds() > 4 * DURATION_STEP * 1000 && !_areSwordsAttached){
+		_sinbadEnt->attachObjectToBone("Handle.L", _swordLeftEnt);
+		_sinbadEnt->attachObjectToBone("Handle.R", _swordRightEnt);
+		_areSwordsAttached = true;
+	}
 
-	////Si esta corriendo (Frames de 2 a 9)
-	//if (_timer->getMilliseconds() > 9 * DURATION_STEP * 1000 && _isRunning)
-	//{
-	//	//Se para
-	//	_animStateDance->setEnabled(true);
-	//	_animRunLegs->setEnabled(false);
-	//	_animRunArms->setEnabled(false);
+	//Si esta corriendo (Frames de 2 a 9)
+	if (_timer->getMilliseconds() > 9 * DURATION_STEP * 1000 && _isRunning)
+	{
+		//Se para
+		_animStateDance->setEnabled(true);
+		_animRunLegs->setEnabled(false);
+		_animRunArms->setEnabled(false);
 
-	//	_isDancing = true;
-	//	_isRunning = false;
+		_isDancing = true;
+		_isRunning = false;
 
-	//	// Quita espadas.
-	//	if (_areSwordsAttached) {
-	//		_sinbadEnt->detachObjectFromBone(_swordLeftEnt);
-	//		_sinbadEnt->detachObjectFromBone(_swordRightEnt);
-	//		_areSwordsAttached = false;
-	//	}
-	//	
+		// Quita espadas.
+		if (_areSwordsAttached) {
+			_sinbadEnt->detachObjectFromBone(_swordLeftEnt);
+			_sinbadEnt->detachObjectFromBone(_swordRightEnt);
+			_areSwordsAttached = false;
+		}
+		
 
-	//	//Reseteamos el tiempo al acabar
-	//	_timer->reset();
-	//}
+		//Reseteamos el tiempo al acabar
+		_timer->reset();
+	}
 
-	//_sinbadAnimationState->addTime(evt.timeSinceLastFrame);
-	//_animStateDance->addTime(evt.timeSinceLastFrame);
-	//_animRunArms->addTime(evt.timeSinceLastFrame);
-	//_animRunLegs->addTime(evt.timeSinceLastFrame);
+	_sinbadAnimationState->addTime(evt.timeSinceLastFrame);
+	_animStateDance->addTime(evt.timeSinceLastFrame);
+	_animRunArms->addTime(evt.timeSinceLastFrame);
+	_animRunLegs->addTime(evt.timeSinceLastFrame);
 
 	_ogreheadAnimationState->addTime(evt.timeSinceLastFrame);
+}
+
+void IntroScene::setVisible(bool visible)
+{
+	_sinbadEnt->setVisible(visible);
+	_sinbadNode->setVisible(visible);
+	_sinbadNode->setVisible(visible);
+	_swordLeftEnt->setVisible(visible);
+	_swordRightEnt->setVisible(visible);
+
+	_ogreHeadEnt->setVisible(visible);
+	_ogreHeadNode->setVisible(visible);
+
+	_planeEntity->setVisible(visible);
+	_planeNode->setVisible(visible);
+
+	_sceneType = visible;
+
+	Vector3 planePos = Vector3(0, -300, 0);
+	if (visible)
+	{
+		// Movemos la camara para que mire a la animacion
+		_camNode->setPosition(0, -100, -500);
+		_camNode->lookAt(Vector3(planePos.x, planePos.y + 50, planePos.z), Ogre::Node::TS_WORLD);
+	}
+
 }
 
 void IntroScene::addKeyFrame(double duration, Quaternion rot, Vector3 pos)

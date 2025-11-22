@@ -35,11 +35,13 @@ class GameScene : public Scene {
 public:
     explicit GameScene(SceneManager* sm, OgreBites::TrayManager* tm,
         Light* l, SceneNode* lp, SceneNode* ln,
-        SceneNode* cn, OgreBites::CameraMan* cm);
+        SceneNode* cn, OgreBites::CameraMan* cm, bool sceneType = true);
 
     //virtual ~GameScene(); // TODO hacer desconstructora bien.
 
     virtual bool keyPressed(const OgreBites::KeyboardEvent& evt);  // InputListener
+
+    void setVisible(bool visible) override;
 
     void update(const Ogre::FrameEvent& evt);
 
@@ -55,9 +57,6 @@ private:
     Hero* _hero = nullptr;
     Labyrinth* _lab = nullptr;
     std::vector<Villain*> _villains;
-    Bomb* bomba;
-
-    Ogre::SceneNode* mPSNode;
 
     //Para la ui de la vida y los puntos
     OgreBites::TextBox* mTextBox = nullptr;

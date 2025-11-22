@@ -41,6 +41,7 @@ public:
     std::vector<Vector3> choosePossibleDirs(Character* c);
     Vector3 calculateRandomDir(Character* c);
 
+    void setVisible(bool visible);
 
 private:
     // Personajes.

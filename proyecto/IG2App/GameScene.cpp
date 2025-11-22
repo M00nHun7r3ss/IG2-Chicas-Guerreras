@@ -1,7 +1,7 @@
 #include "GameScene.h"
 
-GameScene::GameScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, SceneNode* lp, SceneNode* ln, SceneNode* cn, OgreBites::CameraMan* cm)
-	: Scene(sm, tm, l, lp, ln, cn, cm) {
+GameScene::GameScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, SceneNode* lp, SceneNode* ln, SceneNode* cn, OgreBites::CameraMan* cm, bool sceneType)
+	: Scene(sm, tm, l, lp, ln, cn, cm, sceneType) {
 
     // Creating the sky
     createSkybox();
@@ -19,10 +19,6 @@ GameScene::GameScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, Sce
     // Floor creation
     createPlane(_lab->getFloorMaterial(), _lab->getPos(), _lab->getWidth(), _lab->getHeight());
 
-    //Movemos la camara para que mire al laberinto
-    _camNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z - 1250);
-    _camNode->lookAt(_lab->getPos(), Ogre::Node::TS_WORLD);
-
     //------------------------------------------------------------------------
 	// Creating the light
     switch (_lab->getLightType()) {
@@ -38,6 +34,30 @@ bool GameScene::keyPressed(const OgreBites::KeyboardEvent& evt)
     //Mira el input del player
     _hero->keyPressed(evt);
     return true;
+}
+
+void GameScene::setVisible(bool visible)
+{
+    _hero->setVisible(visible);
+    _lab->setVisible(visible);
+    for (Villain* v : _villains) {
+        v->setVisible(visible);
+	}
+
+    _planeEntity->setVisible(visible);
+    _planeNode->setVisible(visible);
+
+    _sceneMgr->setSkyPlaneEnabled(visible);
+	_sceneType = visible;
+
+    if (visible)
+    {
+        //Movemos la camara para que mire al laberinto
+        _camNode->setPosition(_lab->getPos().x, 3000, _lab->getPos().z - 1250);
+        _camNode->lookAt(_lab->getPos(), Ogre::Node::TS_WORLD);
+    }
+
+
 }
 
 void GameScene::update(const Ogre::FrameEvent& evt)
