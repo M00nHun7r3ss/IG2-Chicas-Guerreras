@@ -52,11 +52,13 @@ material Labyrinth/Skybox
             texture_unit 
             {
                 texture spaceSky.jpg
+                scroll_anim 0.005 0.005
             }
 
             texture_unit {
                 texture lightMap.jpg
             }
+
         }
     }
 }
