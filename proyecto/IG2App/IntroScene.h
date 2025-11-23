@@ -46,6 +46,7 @@ public:
     void setVisible(bool visible) override;
 
 private:
+    // TODO hacer que sean ig2objects y juntamos entidad y nodo.
     // Objects
     Entity* _sinbadEnt;
     SceneNode* _sinbadNode;
@@ -83,5 +84,4 @@ private:
 
     void createSinbadAnim();
     void createOgreheadAnim();
-    void addKeyFrame(double duration, Quaternion rot, Vector3 pos);
 };

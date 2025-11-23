@@ -91,10 +91,6 @@ void IntroScene::setVisible(bool visible)
 
 }
 
-void IntroScene::addKeyFrame(double duration, Quaternion rot, Vector3 pos)
-{
-}
-
 void IntroScene::createSinbadAnim() {
 	// Creating Sinbad
 	_sinbadEnt = _sceneMgr->createEntity("Sinbad.mesh");

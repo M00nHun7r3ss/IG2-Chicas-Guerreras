@@ -262,6 +262,7 @@ void Labyrinth::createLabyrinth(String f, SceneManager* sceneMng)
                 _hero->setPosition(actualPos);
                 _hero->setFirstPos(actualPos);
                 _hero->setScale(Vector3(_boxSize.x / _hero->calculateBoxSize().x, _boxSize.y / _hero->calculateBoxSize().y + 5, _boxSize.z / _hero->calculateBoxSize().z) / 2);
+                _hero->createAnimation();
             }
             else if (lee == 'v' && _villains.size() < 10) {
                 // crea elemento vacio

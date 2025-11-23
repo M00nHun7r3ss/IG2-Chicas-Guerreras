@@ -6,6 +6,10 @@
 #include <iostream>
 #include "Character.h"
 #include "Bomb.h"
+#include "OgreAnimation.h"
+#include <OgreSkeletonInstance.h>
+#include <OgreBone.h>
+#include <OgreKeyFrame.h>
 
 class Hero : public Character
 {
@@ -28,6 +32,8 @@ public:
 
 	void setBomb();
 
+	void createAnimation();
+
 	std::vector<Bomb*> activeBombs;
 
 private:
@@ -49,14 +55,10 @@ private:
 
 
 	// Animation state
-	Ogre::AnimationState* animationState;
+	Ogre::AnimationState* _animationState;
 
 	// Animation states for Sinbad
-	Ogre::AnimationState* animationStateRunBase;
-	Ogre::AnimationState* animationStateRunTop;
-
-	// Flags to control the animations
-	bool isDancing = false;
-	bool isRunning = false;
+	Ogre::AnimationState* _animationStateRunBase;
+	Ogre::AnimationState* _animationStateRunTop;
 };
 

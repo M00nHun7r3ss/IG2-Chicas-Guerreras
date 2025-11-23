@@ -27,6 +27,8 @@ GameScene::GameScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, Sce
     case 2: createPointLight(); break;
     default: break;
     }
+
+    
 }
 
 bool GameScene::keyPressed(const OgreBites::KeyboardEvent& evt)
@@ -66,10 +68,10 @@ void GameScene::update(const Ogre::FrameEvent& evt)
     checkCollisions();
     _hero->update(evt);
 
-    //Mira el bloque de delante, ve si es traspasable, y lo setea en el hero
-    Vector2 nextBlock = _lab->getCharacterForwardBlock(_hero);
-    bool next = _lab->getBlockType(nextBlock);
-    _hero->setCanGoForward(next);
+    ////Mira el bloque de delante, ve si es traspasable, y lo setea en el hero
+    //Vector2 nextBlock = _lab->getCharacterForwardBlock(_hero);
+    //bool next = _lab->getBlockType(nextBlock);
+    //_hero->setCanGoForward(next);
 
     for (int i = 0; i < _villains.size(); ++i) {
         //_villains[1]->setDirection(_lab->calculateRandomDir(_villains[1]));

@@ -143,6 +143,7 @@ class IG2Object : public OgreBites::InputListener {
 		//TODO: Preguntar si esto es de una clase hija o aqui directamente
         inline bool isTraspasable() { return _traspasable; }
         inline SceneNode* getNode() { return mNode; }
+        inline Entity* getEntity() { return entity; }
                         
     protected:
     

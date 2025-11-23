@@ -35,6 +35,10 @@ void Hero::update(const Ogre::FrameEvent& evt)
 {
     //evita que se mueva al arrancar
     if (_newDirection != Vector3::ZERO) { move(evt.timeSinceLastFrame); }
+
+    _animationState->addTime(evt.timeSinceLastFrame);
+    _animationStateRunTop->addTime(evt.timeSinceLastFrame);
+    _animationStateRunBase->addTime(evt.timeSinceLastFrame);
 }
 
 void Hero::damagePlayer(){
@@ -58,6 +62,37 @@ void Hero::setBomb()
 
     std::cout << activeBombs.size() << std::endl;
 
+}
+
+void Hero::createAnimation()
+{
+    getNode()->setInitialState();
+    // Crea animationstates
+    _animationStateRunBase = getEntity()->getAnimationState("RunBase");
+    _animationStateRunTop = getEntity()->getAnimationState("RunTop");
+
+    //Creamos la animacion de sinbad
+    Animation* sinbadAnim = mSM->createAnimation("sinbadIdle", 10);
+    sinbadAnim->setInterpolationMode(Animation::IM_SPLINE);
+    NodeAnimationTrack* track = sinbadAnim->createNodeTrack(0);
+    track->setAssociatedNode(getNode());
+
+    TransformKeyFrame* kf;
+
+    // Keyframe 0 (Init state) //corre
+    //addKeyFrame(DURATION_STEP, setrotation, settranslate)
+    kf = track->createNodeKeyFrame(2);
+    kf->setTranslate(getPosition());
+   // kf->setRotation(getOrientation().getRotationTo(_newDirection));
+
+    // Our defined animation
+    _animationState = mSM->createAnimationState("sinbadIdle");
+    _animationState->setLoop(true);
+    _animationState->setEnabled(true);
+
+    // inicialmente corre.
+    _animationStateRunBase->setEnabled(true);
+    _animationStateRunTop->setEnabled(true);
 }
 
 void Hero::move(double t)
