@@ -36,9 +36,9 @@ void Hero::update(const Ogre::FrameEvent& evt)
     //evita que se mueva al arrancar
     if (_newDirection != Vector3::ZERO) { move(evt.timeSinceLastFrame); }
 
-    _animationState->addTime(evt.timeSinceLastFrame);
-    _animationStateRunTop->addTime(evt.timeSinceLastFrame);
-    _animationStateRunBase->addTime(evt.timeSinceLastFrame);
+    //_animationState->addTime(evt.timeSinceLastFrame);
+    //_animationStateRunTop->addTime(evt.timeSinceLastFrame);
+    //_animationStateRunBase->addTime(evt.timeSinceLastFrame);
 }
 
 void Hero::damagePlayer(){
@@ -66,6 +66,12 @@ void Hero::setBomb()
 
 void Hero::createAnimation()
 {
+    getNode()->scale(15, 20, 10);
+    getNode()->setPosition(getPosition());
+    //Cogemos la rotacion que debe hacer entre la rotacion actual (orientation) y la nueva (_newDirection) 
+    Quaternion q = getOrientation().getRotationTo(_newDirection);
+    //Y rotamos en el eje y, solo la componente y de dicho quaternion
+    getNode()->yaw(q.getYaw());
     getNode()->setInitialState();
     // Crea animationstates
     _animationStateRunBase = getEntity()->getAnimationState("RunBase");
@@ -80,10 +86,9 @@ void Hero::createAnimation()
     TransformKeyFrame* kf;
 
     // Keyframe 0 (Init state) //corre
-    //addKeyFrame(DURATION_STEP, setrotation, settranslate)
     kf = track->createNodeKeyFrame(2);
     kf->setTranslate(getPosition());
-   // kf->setRotation(getOrientation().getRotationTo(_newDirection));
+	kf->setRotation(q);
 
     // Our defined animation
     _animationState = mSM->createAnimationState("sinbadIdle");
