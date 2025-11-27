@@ -48,3 +48,35 @@ material Intro/Water{
         }
     }
 }
+
+vertex_program sphereShaderVS glsl{
+    source sphereShaderVS.glsl
+    default_params{
+        param_named_auto modelViewProjMat worldviewproj_matrix
+    }
+}
+
+fragment_program sphereShaderFS glsl{
+    source sphereShaderFS.glsl
+    default_params{
+        param_named_auto flipping render_target_flipping
+        param_named corrosionTex int 0
+    }
+}
+
+material Intro/Sphere{
+    technique{
+        pass{
+            lighting off
+			cull_hardware none
+			cull_software none
+
+            vertex_program_ref wavesShaderVS{}
+            fragment_program_ref wavesShaderFS{}
+
+            texture_unit{
+                texture corrosion.jpg 2d
+            }
+        }
+    }
+}

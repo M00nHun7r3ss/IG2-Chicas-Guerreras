@@ -4,10 +4,11 @@ IntroScene::IntroScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, S
 	: Scene(sm, tm, l, lp, ln, cn, cm, sceneType), _sinbadKeyFramePos(Vector3(0, 0, 0)), _ogreheadKeyFramePos(Vector3(0, 0, 0)), _isRunning(false), _isDancing(false), _areSwordsAttached(false) {
 	_timer = new Timer();
 
-	// luces, plano.
+	// luces, plano, esfera
 	createDirectionalLight();
 	Vector3 planePos = Vector3(0, -300, 0);
 	createPlane("Intro/Water", planePos, 1080, 800);
+	createSphere();
 
 	createSinbadAnim();
 	createOgreheadAnim();
@@ -79,6 +80,9 @@ void IntroScene::setVisible(bool visible)
 	_planeEntity->setVisible(visible);
 	_planeNode->setVisible(visible);
 
+	_sphereEnt->setVisible(visible);
+	_sphereNode->setVisible(visible);
+
 	_sceneType = visible;
 
 	Vector3 planePos = Vector3(0, -300, 0);
@@ -89,6 +93,15 @@ void IntroScene::setVisible(bool visible)
 		_camNode->lookAt(Vector3(planePos.x, planePos.y + 50, planePos.z), Ogre::Node::TS_WORLD);
 	}
 
+}
+
+void IntroScene::createSphere()
+{
+	_sphereEnt = _sceneMgr->createEntity("uv_sphere.mesh");
+	_sphereNode = _sceneMgr->getRootSceneNode()->createChildSceneNode();
+	_sphereNode->attachObject(_sphereEnt);
+	_sphereNode->setPosition(-50, -200, 150);
+	_sphereEnt->setMaterialName("Intro/Sphere");
 }
 
 void IntroScene::createSinbadAnim() {

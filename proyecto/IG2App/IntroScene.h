@@ -56,6 +56,10 @@ private:
     Entity* _ogreHeadEnt;
     SceneNode* _ogreHeadNode;
 
+    Entity* _sphereEnt;
+    SceneNode* _sphereNode;
+    void createSphere();
+
     // consts
     const int MOVEMENT_LENGTH = 100;
     const double DURATION = 21.0;
