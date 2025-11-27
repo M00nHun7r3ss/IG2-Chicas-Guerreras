@@ -7,7 +7,7 @@ IntroScene::IntroScene(SceneManager* sm, OgreBites::TrayManager* tm, Light* l, S
 	// luces, plano.
 	createDirectionalLight();
 	Vector3 planePos = Vector3(0, -300, 0);
-	createPlane("Intro/Floor", planePos, 1080, 800);
+	createPlane("Intro/Water", planePos, 1080, 800);
 
 	createSinbadAnim();
 	createOgreheadAnim();
