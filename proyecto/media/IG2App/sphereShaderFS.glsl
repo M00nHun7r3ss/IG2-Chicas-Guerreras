@@ -7,6 +7,12 @@ in vec2 vUv0;
 uniform sampler2D corrosionTex;
 uniform float flipping;
 
+uniform vec3 lightAmbient; 
+uniform vec3 lightDiffuse; 
+uniform vec4 lightPosition; 
+
+uniform vec3 materialDiffuse; 
+
 out vec4 fFragColor;
 
 void main(){
@@ -25,20 +31,20 @@ void main(){
     }
 
     vec3 diffuse;
-    float diff
+    float diff;
 
     if (side)
-        //color = vFrontColor * color;
-        diff = max(0, dot(vNormal, -vLightDirection));
-        diffuse = diff * LightDiffuse * MaterialDiffuse;
+        color = vFrontColor * color;
+        //diff = max(0, dot(vNormal, -vLightDirection));
+        //diffuse = diff * LightDiffuse * MaterialDiffuse;
     else {
-        //color = vBackColor * color;
-        color = -vNormal;
-        diff = max(0, dot(-vNormal, -vLightDirection));
-        diffuse = diff * LightDiffuse * MaterialDiffuse;
+        color = vBackColor * color;
+        //color = -vNormal;
+        //diff = max(0, dot(-vNormal, -vLightDirection));
+        //diffuse = diff * LightDiffuse * MaterialDiffuse;
     }
 
-    //I = colorBase ⋅ colorLuz ⋅ max(N⋅L, 0)
+    //I = colorBase * colorLuz * max(N*L, 0)
     color = color * (ambient + diffuse);
 
     fFragColor = vec4(color, 1.0);
