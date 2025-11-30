@@ -12,6 +12,7 @@ Bomb::Bomb(Vector3 pos, SceneNode* node, SceneManager* sceneMng, int index) : IG
 	_scale = 0.0; // inicialmente 0.
 
 	createBombParts();
+
 }
 
 void Bomb::update(const Ogre::FrameEvent& evt)
@@ -31,7 +32,6 @@ void Bomb::update(const Ogre::FrameEvent& evt)
 		_smokeParticles->translate(Vector3(0, -1, 0));
 		scaleBomb();
 	}
-
 }
 
 void Bomb::createBombParts()
@@ -87,9 +87,12 @@ void Bomb::createExplosion() {
 	_ballEntity->setVisible(false);
 	_ball->setVisible(false);
 
+	//Centro
 	_explosionParticles = _ball->createChildSceneNode();
 	ParticleSystem* pSys = mSM->createParticleSystem("explosionSmoke" + _index, "ParticleSystem/explosionParticle");
-	pSys->setEmitting(true);
+	pSys->setEmitting(false);
 	_explosionParticles->attachObject(pSys);
+
+
 
 }

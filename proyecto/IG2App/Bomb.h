@@ -32,5 +32,7 @@ private:
 	void scaleBomb();
 	void createExplosion();
 
+	std::vector<ParticleSystem>* _pSysVector;
+
 	int _index;
 };
