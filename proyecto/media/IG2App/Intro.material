@@ -53,10 +53,6 @@ vertex_program sphereShaderVS glsl{
     source sphereShaderVS.glsl
     default_params{
         param_named_auto modelViewProjMat worldviewproj_matrix
-        param_named_auto lightDirection light_direction_view_space 0
-        param_named_auto lightDiffuse light_diffuse_colour 0
-        param_named_auto lightAmbient ambient_light_colour
-        param_named materialDiffuse float3 0.5 0.5 0.5
     }
 }
 
@@ -65,6 +61,9 @@ fragment_program sphereShaderFS glsl{
     default_params{
         param_named_auto flipping render_target_flipping
         param_named corrosionTex int 0
+        param_named_auto lightPosition light_position 0
+        param_named_auto lightDiffuse light_diffuse_colour 0
+        param_named materialDiffuse float3 0.5 0.5 0.5
     }
 }
 
@@ -80,7 +79,6 @@ material Intro/Sphere{
 
             texture_unit{
                 texture corrosion.jpg 2d
-                tex_address_mode clamp
             }
         }
     }

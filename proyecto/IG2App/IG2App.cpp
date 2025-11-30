@@ -1,7 +1,5 @@
 #include "IG2App.h"
 
-#include "Bomb.h"
-
 using namespace Ogre;
 using namespace std;
 
@@ -32,22 +30,17 @@ void IG2App::shutdown(){
 
   delete mTrayMgr;  mTrayMgr = nullptr;
   delete mCamMgr; mCamMgr = nullptr;
-  //delete _lab; _lab = nullptr;
-  //delete _hero; _hero = nullptr;
-  /*for (Villain* v : _villains) {
-      delete v;
-      v = nullptr;
-  }
-  _villains.clear();*/
   
   // do not forget to call the base 
-  IG2ApplicationContext::shutdown(); 
+  IG2ApplicationContext::shutdown();
+    //OgreApplicationContext::shutdown();
 }
 
 void IG2App::setup(void){
     
     // do not forget to call the base first
     IG2ApplicationContext::setup();
+    //OgreApplicationContext::setup();
 
     // Create the scene manager
     mSM = mRoot->createSceneManager();

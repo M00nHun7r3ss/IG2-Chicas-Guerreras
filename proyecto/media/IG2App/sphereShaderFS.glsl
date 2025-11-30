@@ -1,13 +1,10 @@
 #version 330 core
-in vec3 vFrontColor;
-in vec3 vBackColor; 
-
+in vec3 vNormals;
 in vec2 vUv0;
 
 uniform sampler2D corrosionTex;
 uniform float flipping;
 
-uniform vec3 lightAmbient; 
 uniform vec3 lightDiffuse; 
 uniform vec4 lightPosition; 
 
@@ -18,34 +15,30 @@ out vec4 fFragColor;
 void main(){
 
     bool side;
-    if(flipping > 0) {
+    if(flipping > -1) {
         side = gl_FrontFacing;
     }
     else {
         side = !gl_FrontFacing;
     } 
 
-    vec3 color = texture(materialTex, vUv0).rgb;
+    vec3 ambient = vLightAmbient * vMaterialDiffuse;
+    float diff;
+    vec3 color = texture(corrosionTex, vUv0).rgb;
     if (color.r > 0.6) {
         discard;
     }
 
-    vec3 diffuse;
-    float diff;
-
-    if (side)
-        color = vFrontColor * color;
-        //diff = max(0, dot(vNormal, -vLightDirection));
-        //diffuse = diff * LightDiffuse * MaterialDiffuse;
-    else {
-        color = vBackColor * color;
-        //color = -vNormal;
-        //diff = max(0, dot(-vNormal, -vLightDirection));
-        //diffuse = diff * LightDiffuse * MaterialDiffuse;
+    if (side) {
+        diff = max(0, dot(vNormal, -vLightDirection));
+        diffuse = diff * LightDiffuse.xyz * MaterialDiffuse;
+        color = diffuse * color;
     }
-
-    //I = colorBase * colorLuz * max(N*L, 0)
-    color = color * (ambient + diffuse);
+    else {
+        diff = max(0, dot(-vNormal, -vLightDirection));
+        diffuse = diff * LightDiffuse.xyz * MaterialDiffuse;
+        color = diffuse * color;
+    }
 
     fFragColor = vec4(color, 1.0);
 }

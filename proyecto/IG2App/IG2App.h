@@ -2,30 +2,21 @@
 #define __IG2App_H__
 
 #include "IG2ApplicationContext.h"
-//#include "OgreApplicationContext.h"
+//#include "OgreApplicationContext.h" //TODO
 #include <OgreSceneManager.h>
 #include <OgreSceneNode.h>
 #include <OgreTrays.h>
 #include <OgreCameraMan.h>
-#include <OgreEntity.h>
 #include <OgreInput.h>
-#include <SDL_keycode.h>
-#include <OgreMeshManager.h>
-#include <sstream>
-#include <iostream>
-#include <string>
-#include <iomanip>
-#include <fstream>
-#include <vector>
 
-#include "Scene.h"
 #include "IntroScene.h"
 #include "GameScene.h"
 
 class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener{
-
+	//class IG2App : public  OgreBites::OgreApplicationContext, OgreBites::InputListener {
 public:
     explicit IG2App() : IG2ApplicationContext("IG2App") { };  // new -> setup()
+    //explicit IG2App() : OgreApplicationContext("IG2App") {};  // new -> setup()
     virtual ~IG2App() { };                                    // delete -> shutdown()
  
 protected:

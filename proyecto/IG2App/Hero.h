@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IG2ApplicationContext.h"
+//#include "OgreApplicationContext.h"
 #include <OgreInput.h>
 #include <OgreMeshManager.h>
 #include <iostream>

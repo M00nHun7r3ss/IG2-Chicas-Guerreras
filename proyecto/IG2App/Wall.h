@@ -1,8 +1,8 @@
 #pragma once
 
 #include "IG2ApplicationContext.h"
+//#include "OgreApplicationContext.h"
 #include "IG2Object.h"
-#include <OgreTrays.h>
 #include <string>
 
 class Wall : public  IG2Object {
