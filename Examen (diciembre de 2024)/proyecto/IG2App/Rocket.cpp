@@ -9,6 +9,8 @@ Rocket::Rocket(Vector3 pos, SceneNode* node, SceneManager* sceneMng) : IG2Object
 	_cubeNode->attachObject(_cubeEntity);
 	_cubeNode->setScale(DataSizes::ROCKET_CUBE_SIZE);
 
+	_cubeEntity->setMaterialName("Examen/CuboCohete");
+
 	//Nodo bola
 	_sphereNode = _cubeNode->createChildSceneNode();  //Vamos a rotar estos dos por lo que a lo mejor
 	//Entidad bola
@@ -16,5 +18,7 @@ Rocket::Rocket(Vector3 pos, SceneNode* node, SceneManager* sceneMng) : IG2Object
 	_sphereNode->attachObject(_sphereEntity);
 	_sphereNode->setPosition(Vector3(0, -50, 0));
 	_sphereNode->setScale(Vector3(1, 0.25, 1)); //??ALBENUNEEEE
+
+	_sphereEntity->setMaterialName("Examen/EsferaCohete");
 
 }

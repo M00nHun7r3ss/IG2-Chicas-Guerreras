@@ -84,17 +84,36 @@ void IG2App::setupScene(void){
     mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
     //mLightNode = mCamNode->createChildSceneNode("nLuz");
     mLightNode->attachObject(luz);
-    mLightNode->setDirection(Ogre::Vector3(0, 0, -1));
+    mLightNode->setDirection(Ogre::Vector3(0, 1, -1));
     
 
     //------------------------------------------------------------------------
-    // Creating spaceship
-    //SpaceShip* sh = new SpaceShip(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
-
+    // Creating SceneObjects
+    createSkybox();
+    createPlane();
+    SpaceShip* sh = new SpaceShip(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
     Engine* engine = new Engine(Vector3(0, -200, 0), mSM->getRootSceneNode()->createChildSceneNode(), mSM);
 
-    //Rocket* rocket = new Rocket(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
-    //rocket->setScale(DataSizes::ROCKET_SIZE / 1000);
+}
+
+void IG2App::createPlane() {
+	MeshManager::getSingleton().createPlane("mPlane1500x1500",
+            ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+            Plane(Vector3::UNIT_Y, 0),
+            1500, 1500, 100, 80,
+            true, 1, 1.0, 1.0, Vector3::UNIT_Z);
+        Entity* planeEntity = mSM->createEntity("mPlane1500x1500");
+        SceneNode* planeNode = mSM->getRootSceneNode()->createChildSceneNode("floor");
+        planeNode->setPosition(Vector3(0.0, -300, 0.0));
+        planeNode->attachObject(planeEntity);
+        planeEntity->setMaterialName("Examen/Floor");
+}
+
+void IG2App::createSkybox(){
+    Plane plane;
+    plane.d = 1000;
+    plane.normal = Vector3::UNIT_Z;
+    mSM->setSkyPlane(true, plane, "Examen/Skybox", 300, 25, true, 1.5, 50, 50);
 }
 
 

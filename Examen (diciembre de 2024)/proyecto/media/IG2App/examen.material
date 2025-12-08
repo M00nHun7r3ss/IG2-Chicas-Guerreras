@@ -1,0 +1,107 @@
+material Examen/CuerpoNave
+{
+    technique
+    {
+        pass 
+        {
+            diffuse 0.5 0.5 0.5
+            ambient 0.1 0.2 0.3
+            specular 0.8 0.8 0.8 68
+
+            texture_unit 
+            {
+                texture corrosion.jpg
+                colour_op modulate
+                env_map spherical
+            }
+        }
+    }
+}
+
+material Examen/BaseMotor
+{
+    technique
+    {
+        pass 
+        {
+            diffuse 0.5 0.5 0.5
+            ambient 0.1 0.2 0.3
+            specular 0.8 0.8 0.8 68
+
+            texture_unit 
+            {
+                texture MtlPlat2.jpg
+                colour_op modulate
+                lighting off
+            }
+        }
+    }
+}
+
+material Examen/CuboCohete
+{
+    technique
+    {
+        pass 
+        {
+            diffuse 0.5 0.5 0.5
+            ambient 0.1 0.2 0.3
+            specular 0.8 0.8 0.8 68
+
+            texture_unit 
+            {
+                texture BumpyMetal.jpg
+                colour_op modulate
+            }
+        }
+    }
+}
+
+material Examen/EsferaCohete
+{
+    technique
+    {
+        pass 
+        {
+            diffuse 0.5 0.5 0.5
+            ambient 0.1 0.2 0.3
+            specular 0.8 0.8 0.8 68
+
+            texture_unit 
+            {
+                texture MtlPlat2.jpg
+                colour_op modulate
+                env_map spherical
+            }
+        }
+    }
+}
+
+material Examen/Floor
+{
+    technique
+    {
+        pass 
+        {
+            texture_unit 
+            {
+                texture Water02.jpg
+            }
+        }
+    }
+}
+
+material Examen/Skybox
+{
+    technique
+    {
+        pass 
+        {
+            lighting off
+            texture_unit 
+            {
+                texture spaceSky.jpg
+            }
+        }
+    }
+}

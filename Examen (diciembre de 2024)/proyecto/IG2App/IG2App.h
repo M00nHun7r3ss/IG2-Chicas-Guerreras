@@ -39,6 +39,10 @@ protected:
     
     Ogre::SceneNode* mCamNode = nullptr;
     OgreBites::CameraMan* mCamMgr = nullptr;
+
+private:
+    void createPlane();
+    void createSkybox();
 };
 
 #endif
