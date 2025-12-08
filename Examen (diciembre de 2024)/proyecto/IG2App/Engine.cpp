@@ -38,6 +38,13 @@ Engine::Engine(Vector3 pos, SceneNode* node, SceneManager* sceneMng) : IG2Object
 		//Escalamos
 		rocket->setScale(DataSizes::ROCKET_SIZE / 3000);
 
+		//Sistema de particulas
+		_whiteSmokeParticles = rocket->createChildSceneNode();
+
+		ParticleSystem* pSys = mSM->createParticleSystem(i, "ParticleSystem/WhiteSmoke");
+		pSys->setEmitting(true);
+		_whiteSmokeParticles->attachObject(pSys);
+
 		//Lo aniadimos al vector general
 		_rockets.push_back(rocket);
 	}

@@ -28,11 +28,12 @@ material Examen/BaseMotor
             ambient 0.1 0.2 0.3
             specular 0.8 0.8 0.8 68
 
+            lighting off
+
             texture_unit 
             {
                 texture MtlPlat2.jpg
                 colour_op modulate
-                lighting off
             }
         }
     }
@@ -87,6 +88,11 @@ material Examen/Floor
             {
                 texture Water02.jpg
             }
+            
+            texture_unit {
+                texture Noise.png                
+                scroll_anim 0.25 0.25
+            }
         }
     }
 }
@@ -101,6 +107,23 @@ material Examen/Skybox
             texture_unit 
             {
                 texture spaceSky.jpg
+                scroll_anim 0.005 0.005
+            }
+        }
+    }
+}
+
+material Examen/Smoke
+{
+technique{
+        pass{
+            lighting off
+            scene_blend alpha_blend
+            depth_write off
+            diffuse vertexcolour
+            texture_unit{
+                texture smoke.png
+                tex_address_mode clamp
             }
         }
     }

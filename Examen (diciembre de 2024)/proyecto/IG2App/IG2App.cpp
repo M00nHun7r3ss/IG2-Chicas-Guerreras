@@ -76,7 +76,7 @@ void IG2App::setupScene(void){
     //------------------------------------------------------------------------
     // Creating the light
     
-    //mSM->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
+    mSM->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
     Light* luz = mSM->createLight("Luz");
     luz->setType(Ogre::Light::LT_DIRECTIONAL);
     luz->setDiffuseColour(0.75, 0.75, 0.75);
@@ -92,7 +92,7 @@ void IG2App::setupScene(void){
     createSkybox();
     createPlane();
     SpaceShip* sh = new SpaceShip(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
-    Engine* engine = new Engine(Vector3(0, -200, 0), mSM->getRootSceneNode()->createChildSceneNode(), mSM);
+    Engine* engine = new Engine(Vector3(0, -150, 0), mSM->getRootSceneNode()->createChildSceneNode(), mSM);
 
 }
 
@@ -100,7 +100,7 @@ void IG2App::createPlane() {
 	MeshManager::getSingleton().createPlane("mPlane1500x1500",
             ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
             Plane(Vector3::UNIT_Y, 0),
-            1500, 1500, 100, 80,
+            1500, 1500, 200, 200,
             true, 1, 1.0, 1.0, Vector3::UNIT_Z);
         Entity* planeEntity = mSM->createEntity("mPlane1500x1500");
         SceneNode* planeNode = mSM->getRootSceneNode()->createChildSceneNode("floor");

@@ -1,0 +1,43 @@
+particle_system ParticleSystem/WhiteSmoke {
+    billboard_type point
+    particle_width 10
+    particle_height 10
+    quota 1000
+    material Examen/Smoke
+    emitter Point{
+        direction 1 -1 0
+        position 0 300 0
+        angle 15
+        emission_rate 20
+        time_to_live 10
+        velocity_min 150
+        velocity_max 200
+        colour 0.4 0.4 0.4 0.4
+        duration 100
+    }
+
+    affector ColourFader{
+        red 1
+        green 1
+        blue 1
+        alpha 0.06
+    }
+
+/*
+    affector LinearForce
+    {
+        force_vector 0 -100 0
+        force_application add
+    }
+
+    affector Scaler{
+        rate 75
+        scale_range 1 1
+    }
+
+    affector Rotator
+    {
+        rotation_speed_range_start 10
+        rotation_speed_range_end 50
+    }*/
+}

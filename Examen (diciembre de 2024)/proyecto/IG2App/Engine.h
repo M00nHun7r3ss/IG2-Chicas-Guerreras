@@ -2,6 +2,10 @@
 #include "IG2Object.h"
 #include "DataSizes.h"
 #include "Rocket.h"
+#include "OgreParticleSystem.h"
+#include <OgreTrays.h>
+#include "OgreBillboardSet.h"
+#include "OgreParticleSystem.h"
 #include <cmath>
 #include <numbers>
 using namespace std;
@@ -15,5 +19,10 @@ private:
 	Entity* _baseEntity;
 
 	std::vector<Rocket*> _rockets;
+
+	//Sistemas de particulas
+	SceneNode* _whiteSmokeParticles;
+	/*SceneNode* _greySmokeParticles;
+	SceneNode* _colorSmokeParticles;*/
 };
 
