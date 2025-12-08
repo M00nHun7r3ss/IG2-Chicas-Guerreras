@@ -1,10 +1,16 @@
 #pragma once
 
 #include "IG2ApplicationContext.h"
+//#include "OgreApplicationContext.h"
 #include <OgreInput.h>
 #include <OgreMeshManager.h>
 #include <iostream>
 #include "Character.h"
+#include "Bomb.h"
+#include "OgreAnimation.h"
+#include <OgreSkeletonInstance.h>
+#include <OgreBone.h>
+#include <OgreKeyFrame.h>
 
 class Hero : public Character
 {
@@ -25,10 +31,17 @@ public:
 
 	void damagePlayer();
 
+	void setBomb();
+
+	void createAnimation();
+
+	std::vector<Bomb*> activeBombs;
 
 private:
 	int _lives;
 	int _points;
+	const int MAX_BOMBS = 5;
+	int _bombs;
 
 	Vector3 _initialPos;
 	Vector3 _newDirection;
@@ -40,5 +53,13 @@ private:
 	void rotate() override;
 
 	inline void releaseLives() { _lives--; }
+
+
+	// Animation state
+	Ogre::AnimationState* _animationState;
+
+	// Animation states for Sinbad
+	Ogre::AnimationState* _animationStateRunBase;
+	Ogre::AnimationState* _animationStateRunTop;
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IG2ApplicationContext.h"
+//#include "OgreApplicationContext.h"
 #include "IG2Object.h"
 #include <OgreEntity.h>
 #include <OgreInput.h>
@@ -41,6 +42,7 @@ public:
     std::vector<Vector3> choosePossibleDirs(Character* c);
     Vector3 calculateRandomDir(Character* c);
 
+    void setVisible(bool visible);
 
 private:
     // Personajes.

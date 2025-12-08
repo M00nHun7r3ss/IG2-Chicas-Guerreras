@@ -1,34 +1,23 @@
 #ifndef __IG2App_H__
 #define __IG2App_H__
 
-#include <OgreApplicationContext.h>
+#include "IG2ApplicationContext.h"
+//#include "OgreApplicationContext.h" //TODO
 #include <OgreSceneManager.h>
 #include <OgreRTShaderSystem.h>  
 #include <OgreSceneNode.h>
 #include <OgreTrays.h>
 #include <OgreCameraMan.h>
-#include <OgreEntity.h>
 #include <OgreInput.h>
-#include <OgreMeshManager.h>
-#include <sstream>
-#include <iostream>
-#include <string>
-#include "Ogre.h"
-#include <iomanip>
-#include <fstream>
-#include <SDL_keycode.h>
-#include <OgreWindowEventUtilities.h>
-#include <vector>
 
-#include "IG2Object.h"
-#include "Labyrinth.h"
-#include "Hero.h"
-#include "Villain.h"
+#include "IntroScene.h"
+#include "GameScene.h"
 
-class IG2App : public  OgreBites::ApplicationContext, OgreBites::InputListener{
-
+class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener{
+	//class IG2App : public  OgreBites::OgreApplicationContext, OgreBites::InputListener {
 public:
-    explicit IG2App() : ApplicationContext("IG2App") { };  // new -> setup()
+    explicit IG2App() : IG2ApplicationContext("IG2App") { };  // new -> setup()
+    //explicit IG2App() : OgreApplicationContext("IG2App") {};  // new -> setup()
     virtual ~IG2App() { };                                    // delete -> shutdown()
  
 protected:
@@ -38,33 +27,24 @@ protected:
   
     virtual void setupScene();
     virtual void frameRendered(const Ogre::FrameEvent& evt);
-      
+
+private:
+
     Ogre::SceneManager* mSM = nullptr;
     OgreBites::TrayManager* mTrayMgr = nullptr;
-    
+
     Ogre::Light* light = nullptr;
     Ogre::SceneNode* mLightParent = nullptr;
     Ogre::SceneNode* mLightNode = nullptr;
-    
+
     Ogre::SceneNode* mCamNode = nullptr;
     OgreBites::CameraMan* mCamMgr = nullptr;
 
-private:
-    // Objects
-    Hero* _hero = nullptr;
-    Labyrinth* _lab = nullptr;
-    std::vector<Villain*> _villains;
+    //Escenas TODO: Gestion paso de escenas con la s
+    IntroScene* _introScene;
+    GameScene* _gameScene;
 
-    //Para la ui de la vida y los puntos
-    OgreBites::TextBox* mTextBox = nullptr;
-    OgreBites::Label* mLabel = nullptr;
-
-    void checkCollisions(); // TODO arreglar
     void createCamera();
-    void createPlane();
-    void createDirectionalLight();
-    void createSpotLight();
-    void createPointLight();
 };
 
 #endif

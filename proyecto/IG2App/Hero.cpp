@@ -1,7 +1,9 @@
 #include "Hero.h"
 
 Hero::Hero(Vector3 initPos, SceneNode* node, SceneManager* sceneMng)
-: Character(initPos, node, sceneMng, "Sinbad.mesh"), _lives(3), _points(0), _newDirection(_direction), _canGoForward(true) {
+: Character(initPos, node, sceneMng, "Sinbad.mesh"), _lives(3), _points(0), _newDirection(_direction), _canGoForward(true), _bombs(0) {
+
+    activeBombs.reserve(5);
 }
 
 void Hero::keyPressed(const OgreBites::KeyboardEvent evt){
@@ -18,6 +20,11 @@ void Hero::keyPressed(const OgreBites::KeyboardEvent evt){
         _newDirection = Vector3::NEGATIVE_UNIT_X;
     }
 
+	if (evt.keysym.sym == SDLK_x)
+    {
+        setBomb();
+    }
+
     _direction = _newDirection;
 
     //Rota en la direccion que corresponde
@@ -28,6 +35,10 @@ void Hero::update(const Ogre::FrameEvent& evt)
 {
     //evita que se mueva al arrancar
     if (_newDirection != Vector3::ZERO) { move(evt.timeSinceLastFrame); }
+
+    //_animationState->addTime(evt.timeSinceLastFrame);
+    //_animationStateRunTop->addTime(evt.timeSinceLastFrame);
+    //_animationStateRunBase->addTime(evt.timeSinceLastFrame);
 }
 
 void Hero::damagePlayer(){
@@ -37,6 +48,56 @@ void Hero::damagePlayer(){
     setPosition(_initialPos);
     //Quitamos una vida
     releaseLives();
+}
+
+void Hero::setBomb()
+{
+    //Si no hay demasiadas bombas en el tablero, las pone
+    if (_bombs < MAX_BOMBS)
+    {
+        Bomb* bomb = new Bomb(getPosition(), mSM->getRootSceneNode()->createChildSceneNode(), mSM, _bombs);
+        activeBombs.push_back(bomb);
+        _bombs++;
+    }
+
+    std::cout << activeBombs.size() << std::endl;
+
+}
+
+void Hero::createAnimation()
+{
+    getNode()->scale(15, 20, 10);
+    getNode()->setPosition(getPosition());
+    //Cogemos la rotacion que debe hacer entre la rotacion actual (orientation) y la nueva (_newDirection) 
+    Quaternion q = getOrientation().getRotationTo(_newDirection);
+    //Y rotamos en el eje y, solo la componente y de dicho quaternion
+    getNode()->yaw(q.getYaw());
+    getNode()->setInitialState();
+    // Crea animationstates
+    _animationStateRunBase = getEntity()->getAnimationState("RunBase");
+    _animationStateRunTop = getEntity()->getAnimationState("RunTop");
+
+    //Creamos la animacion de sinbad
+    Animation* sinbadAnim = mSM->createAnimation("sinbadIdle", 10);
+    sinbadAnim->setInterpolationMode(Animation::IM_SPLINE);
+    NodeAnimationTrack* track = sinbadAnim->createNodeTrack(0);
+    track->setAssociatedNode(getNode());
+
+    TransformKeyFrame* kf;
+
+    // Keyframe 0 (Init state) //corre
+    kf = track->createNodeKeyFrame(2);
+    kf->setTranslate(getPosition());
+	kf->setRotation(q);
+
+    // Our defined animation
+    _animationState = mSM->createAnimationState("sinbadIdle");
+    _animationState->setLoop(true);
+    _animationState->setEnabled(true);
+
+    // inicialmente corre.
+    _animationStateRunBase->setEnabled(true);
+    _animationStateRunTop->setEnabled(true);
 }
 
 void Hero::move(double t)

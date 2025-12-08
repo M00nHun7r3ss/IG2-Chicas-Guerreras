@@ -1,0 +1,85 @@
+material Intro/Floor
+{
+    technique
+    {
+        pass 
+        {
+            diffuse 0.5 0.5 0.5
+            ambient 0.1 0.2 0.3
+            specular 0.8 0.8 0.8 68
+
+            texture_unit 
+            {
+                texture floor_diffuse.PNG
+                colour_op modulate
+            }
+
+            texture_unit {
+                texture lightMap.jpg
+                colour_op modulate
+            }
+        }
+    }
+}
+
+vertex_program wavesShaderVS glsl{
+    source wavesShaderVS.glsl
+    default_params{
+        param_named_auto modelViewProjMat worldviewproj_matrix
+        param_named_auto time sintime_0_2pi 100
+    }
+}
+
+fragment_program wavesShaderFS glsl{
+    source wavesShaderFS.glsl
+    default_params{
+        param_named waves int 0
+    }
+}
+
+material Intro/Water{
+    technique{
+        pass{
+            vertex_program_ref wavesShaderVS{}
+            fragment_program_ref wavesShaderFS{}
+            texture_unit{
+                texture Water02.jpg 2d
+            }
+        }
+    }
+}
+
+vertex_program sphereShaderVS glsl{
+    source sphereShaderVS.glsl
+    default_params{
+        param_named_auto modelViewProjMat worldviewproj_matrix
+    }
+}
+
+fragment_program sphereShaderFS glsl{
+    source sphereShaderFS.glsl
+    default_params{
+        param_named_auto flipping render_target_flipping
+        param_named corrosionTex int 0
+        param_named_auto lightPosition light_position 0
+        param_named_auto lightDiffuse light_diffuse_colour 0
+        param_named materialDiffuse float3 0.5 0.5 0.5
+    }
+}
+
+material Intro/Sphere{
+    technique{
+        pass{
+            lighting off
+			cull_hardware none
+			cull_software none
+
+            vertex_program_ref sphereShaderVS{}
+            fragment_program_ref sphereShaderFS{}
+
+            texture_unit{
+                texture corrosion.jpg 2d
+            }
+        }
+    }
+}
