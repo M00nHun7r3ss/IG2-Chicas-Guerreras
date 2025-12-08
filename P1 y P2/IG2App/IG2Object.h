@@ -137,18 +137,10 @@ class IG2Object : public OgreBites::InputListener {
          * Calculates the bounding-box size of the entity
          * @return Vector representing the size of the AABB
          */
-        Vector3 calculateBoxSize ();
-
-        //getter
-		//TODO: Preguntar si esto es de una clase hija o aqui directamente
-        inline bool isTraspasable() { return _traspasable; }
-        inline SceneNode* getNode() { return mNode; }
-        inline Entity* getEntity() { return entity; }
+        Vector3 calculateBoxSize ();    
+          
                         
     protected:
-    
-		// Bool to know if is traspasable
-		bool _traspasable;
     
         // Scene node representing this element in the scene
         SceneNode *mNode = nullptr;

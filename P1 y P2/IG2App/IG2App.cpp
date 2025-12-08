@@ -9,20 +9,10 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
     if (evt.keysym.sym == SDLK_ESCAPE){
         getRoot()->queueEndRendering();
     }
-
-    if (evt.keysym.sym == SDLK_s) {
-        _gameScene->setVisible(true);
-        _introScene->setVisible(false);
-    }
-
-    if (_gameScene->getVisible())
-        _gameScene->keyPressed(evt);
-
-	return true;
+    
+  return true;
 }
 
-// TODO tener en cuenta que igual hay que eliminar todos los objetos aqui llamando a sus destructoras.
-// TODO hacer destructoras tambien
 void IG2App::shutdown(){
     
   mShaderGenerator->removeSceneManager(mSM);
@@ -34,15 +24,13 @@ void IG2App::shutdown(){
   delete mCamMgr; mCamMgr = nullptr;
   
   // do not forget to call the base 
-  IG2ApplicationContext::shutdown();
-    //OgreApplicationContext::shutdown();
+  IG2ApplicationContext::shutdown(); 
 }
 
 void IG2App::setup(void){
     
     // do not forget to call the base first
     IG2ApplicationContext::setup();
-    //OgreApplicationContext::setup();
 
     // Create the scene manager
     mSM = mRoot->createSceneManager();
@@ -53,7 +41,6 @@ void IG2App::setup(void){
     mSM->addRenderQueueListener(mOverlaySystem);
     mTrayMgr = new OgreBites::TrayManager("TrayGUISystem", mWindow.render);
     mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-
     addInputListener(mTrayMgr);
     
     // Adds the listener for this object
@@ -61,42 +48,51 @@ void IG2App::setup(void){
     setupScene();
 }
 
-void IG2App::createCamera(){
+void IG2App::setupScene(void){
+    
+    //------------------------------------------------------------------------
+    // Creating the camera
+    
     Camera* cam = mSM->createCamera("Cam");
     cam->setNearClipDistance(1);
     cam->setFarClipDistance(10000);
     cam->setAutoAspectRatio(true);
     //cam->setPolygonMode(Ogre::PM_WIREFRAME);
-
+            
     mCamNode = mSM->getRootSceneNode()->createChildSceneNode("nCam");
     mCamNode->attachObject(cam);
 
+    mCamNode->setPosition(0, 0, 1000);
+    mCamNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TS_WORLD);
+    
     // and tell it to render into the main window
     Viewport* vp = getRenderWindow()->addViewport(cam);
-
+    
     mCamMgr = new OgreBites::CameraMan(mCamNode);
     addInputListener(mCamMgr);
     mCamMgr->setStyle(OgreBites::CS_ORBIT);
-}
+    
+    
+    //------------------------------------------------------------------------
+    // Creating the light
+    
+    //mSM->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
+    Light* luz = mSM->createLight("Luz");
+    luz->setType(Ogre::Light::LT_DIRECTIONAL);
+    luz->setDiffuseColour(0.75, 0.75, 0.75);
 
-void IG2App::setupScene(void){
-    createCamera();
-    _introScene = new IntroScene(mSM, mTrayMgr, light, mLightParent, mLightNode, mCamNode, mCamMgr);
-    _introScene->setVisible(true);
-    _gameScene = new GameScene(mSM, mTrayMgr, light, mLightParent, mLightNode, mCamNode, mCamMgr);
-    _gameScene->setVisible(false);
-}
+    mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
+    //mLightNode = mCamNode->createChildSceneNode("nLuz");
+    mLightNode->attachObject(luz);
+    mLightNode->setDirection(Ogre::Vector3(0, 0, -1));
+    
 
-void IG2App::frameRendered(const Ogre::FrameEvent& evt)
-{
-    if (_introScene->getVisible()) _introScene->update(evt);
-    else if (_gameScene->getVisible())
-    {
-        _gameScene->update(evt);
-        if (_gameScene->getEndGame())
-            getRoot()->queueEndRendering();
-    }
-}
+    //------------------------------------------------------------------------
+    // Creating spaceship
+    SpaceShip* sh = new SpaceShip(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
 
+    Engine* engine = new Engine(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
+
+}
 
 
