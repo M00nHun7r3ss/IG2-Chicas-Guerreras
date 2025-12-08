@@ -16,6 +16,7 @@
 
 #include "SpaceShip.h"
 #include "Engine.h"
+#include "Rocket.h"
 
 class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener{
 

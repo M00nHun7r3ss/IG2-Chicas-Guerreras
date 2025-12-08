@@ -89,10 +89,12 @@ void IG2App::setupScene(void){
 
     //------------------------------------------------------------------------
     // Creating spaceship
-    SpaceShip* sh = new SpaceShip(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
+    //SpaceShip* sh = new SpaceShip(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
 
-    Engine* engine = new Engine(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
+    Engine* engine = new Engine(Vector3(0, -200, 0), mSM->getRootSceneNode()->createChildSceneNode(), mSM);
 
+    //Rocket* rocket = new Rocket(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
+    //rocket->setScale(DataSizes::ROCKET_SIZE / 1000);
 }
 
 
