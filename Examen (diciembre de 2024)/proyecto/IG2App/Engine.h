@@ -13,10 +13,13 @@ using namespace std;
 class Engine : public IG2Object {
 public:
 	explicit Engine(Vector3 pos, SceneNode* node, SceneManager* sceneMng);
-
+	void update();
 private:
 	SceneNode* _baseNode;
 	Entity* _baseEntity;
+
+	SceneNode* _secretNode;
+	Entity* _secretEntity;
 
 	std::vector<Rocket*> _rockets;
 
@@ -24,5 +27,7 @@ private:
 	SceneNode* _whiteSmokeParticles;
 	/*SceneNode* _greySmokeParticles;*/
 	SceneNode* _colorSmokeParticles;
+
+	ParticleSystem* _colorPSys;
 };
 

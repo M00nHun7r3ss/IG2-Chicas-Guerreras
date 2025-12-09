@@ -40,9 +40,14 @@ protected:
     Ogre::SceneNode* mCamNode = nullptr;
     OgreBites::CameraMan* mCamMgr = nullptr;
 
+    SpaceShip* sp;
 private:
     void createPlane();
     void createSkybox();
+
+    void frameRendered(const Ogre::FrameEvent& evt) override;
+
+    bool _startEngine;
 };
 
 #endif

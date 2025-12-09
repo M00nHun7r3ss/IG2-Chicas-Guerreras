@@ -9,6 +9,11 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
     if (evt.keysym.sym == SDLK_ESCAPE){
         getRoot()->queueEndRendering();
     }
+
+    if (evt.keysym.sym == SDLK_e)
+    {
+        _startEngine = true;
+    }
     
   return true;
 }
@@ -46,6 +51,8 @@ void IG2App::setup(void){
     // Adds the listener for this object
     addInputListener(this);
     setupScene();
+
+    _startEngine = false;
 }
 
 void IG2App::setupScene(void){
@@ -91,8 +98,8 @@ void IG2App::setupScene(void){
     // Creating SceneObjects
     createSkybox();
     createPlane();
-    // SpaceShip* sh = new SpaceShip(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
-    Engine* engine = new Engine(Vector3(0, -150, 0), mSM->getRootSceneNode()->createChildSceneNode(), mSM);
+    //Cohete
+    sp = new SpaceShip(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
 
 }
 
@@ -114,6 +121,16 @@ void IG2App::createSkybox(){
     plane.d = 1000;
     plane.normal = Vector3::UNIT_Z;
     mSM->setSkyPlane(true, plane, "Examen/Skybox", 300, 25, true, 1.5, 50, 50);
+}
+
+void IG2App::frameRendered(const Ogre::FrameEvent& evt)
+{
+
+    //Si se ha iniciado el motor
+    if (_startEngine)
+    {
+        sp->update();
+    }
 }
 
 

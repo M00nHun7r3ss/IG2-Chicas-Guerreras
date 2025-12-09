@@ -14,10 +14,18 @@ Engine::Engine(Vector3 pos, SceneNode* node, SceneManager* sceneMng) : IG2Object
 	//Sistema de particulas
 	_colorSmokeParticles = _baseNode->createChildSceneNode();
 
-	ParticleSystem* colorPSys = mSM->createParticleSystem("colorSmoke", "ParticleSystem/ColorSmoke");
-	colorPSys->setEmitting(true);
-	_colorSmokeParticles->attachObject(colorPSys);
+	_colorPSys = mSM->createParticleSystem("colorSmoke", "ParticleSystem/ColorSmoke");
+	_colorPSys->setEmitting(false);
+	_colorSmokeParticles->attachObject(_colorPSys);
 
+	//Este cilindro esta en nuestros corazones
+	_secretNode = mNode->createChildSceneNode();
+	_secretEntity = mSM->createEntity("Barrel.mesh");
+	_secretNode->attachObject(_secretEntity);
+	_secretNode->setScale(Vector3(0.9, 0.9, 0.9));
+	_secretNode->setVisible(true);
+
+	Rocket* rocket;
 	int incremento = 360 / DataSizes::NUM_ROCKETS;
 	int angulo = 0;
 	int radius = 35; 
@@ -29,7 +37,7 @@ Engine::Engine(Vector3 pos, SceneNode* node, SceneManager* sceneMng) : IG2Object
 		z = radius * sin(angulo * M_PI / 180);
 		angulo += incremento;
 		//Creamos el cohete en esa direccion
-		Rocket* rocket = new Rocket(Vector3(x, -75, z), mNode->createChildSceneNode(), mSM);
+		rocket = new Rocket(Vector3(x, -75, z), _secretNode->createChildSceneNode(), mSM);
 
 		//Rotamos los cohetes segun si son pares o no
 
@@ -43,8 +51,8 @@ Engine::Engine(Vector3 pos, SceneNode* node, SceneManager* sceneMng) : IG2Object
 		rocket->yaw(Quaternion(Degree(rot), Vector3(0, 1, 0)).getYaw());
 
 		//Escalamos
-		rocket->setScale(DataSizes::ROCKET_SIZE / 3000);
-
+		//rocket->setScale(DataSizes::ROCKET_SIZE /1000);
+		rocket->setScale(Vector3(0.01, 0.02, 0.01));
 
 		//Lo aniadimos al vector general
 		_rockets.push_back(rocket);
@@ -61,4 +69,13 @@ Engine::Engine(Vector3 pos, SceneNode* node, SceneManager* sceneMng) : IG2Object
 	}
 
 	
+}
+
+void Engine::update()
+{
+	Radian angle = Quaternion(Degree(-1), Vector3(0, 1, 0)).getYaw();
+	_secretNode->rotate(Vector3(0, 1, 0), angle);
+
+	//Echa fuego
+	_colorPSys->setEmitting(true);
 }
