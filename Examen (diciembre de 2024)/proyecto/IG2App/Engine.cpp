@@ -11,9 +11,16 @@ Engine::Engine(Vector3 pos, SceneNode* node, SceneManager* sceneMng) : IG2Object
 
 	_baseEntity->setMaterialName("Examen/BaseMotor");
 
+	//Sistema de particulas
+	_colorSmokeParticles = _baseNode->createChildSceneNode();
+
+	ParticleSystem* colorPSys = mSM->createParticleSystem("colorSmoke", "ParticleSystem/ColorSmoke");
+	colorPSys->setEmitting(true);
+	_colorSmokeParticles->attachObject(colorPSys);
+
 	int incremento = 360 / DataSizes::NUM_ROCKETS;
 	int angulo = 0;
-	int radius = 35;
+	int radius = 35; 
 	double x, z;
 	for (int i = 0; i < DataSizes::NUM_ROCKETS; i++)
 	{
@@ -38,14 +45,20 @@ Engine::Engine(Vector3 pos, SceneNode* node, SceneManager* sceneMng) : IG2Object
 		//Escalamos
 		rocket->setScale(DataSizes::ROCKET_SIZE / 3000);
 
-		//Sistema de particulas
-		_whiteSmokeParticles = rocket->createChildSceneNode();
-
-		ParticleSystem* pSys = mSM->createParticleSystem(i, "ParticleSystem/WhiteSmoke");
-		pSys->setEmitting(true);
-		_whiteSmokeParticles->attachObject(pSys);
 
 		//Lo aniadimos al vector general
 		_rockets.push_back(rocket);
 	}
+
+	
+	int i = 0;
+	for (Rocket* r : _rockets) {
+		_whiteSmokeParticles = r->createChildSceneNode();
+		ParticleSystem* whitePSys = mSM->createParticleSystem(i, "ParticleSystem/WhiteSmoke");
+		whitePSys->setEmitting(true);
+		_whiteSmokeParticles->attachObject(whitePSys);
+		i++;
+	}
+
+	
 }

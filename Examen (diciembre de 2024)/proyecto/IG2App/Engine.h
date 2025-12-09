@@ -22,7 +22,7 @@ private:
 
 	//Sistemas de particulas
 	SceneNode* _whiteSmokeParticles;
-	/*SceneNode* _greySmokeParticles;
-	SceneNode* _colorSmokeParticles;*/
+	/*SceneNode* _greySmokeParticles;*/
+	SceneNode* _colorSmokeParticles;
 };
 

@@ -1,15 +1,16 @@
 particle_system ParticleSystem/WhiteSmoke {
     billboard_type point
-    particle_width 10
-    particle_height 10
+    particle_width 100
+    particle_height 100
     quota 1000
     material Examen/Smoke
+
     emitter Point{
-        direction 1 -1 0
-        position 0 300 0
+        direction 0 -1 0
+        position 0 -3 0
         angle 15
         emission_rate 20
-        time_to_live 10
+        time_to_live 6
         velocity_min 150
         velocity_max 200
         colour 0.4 0.4 0.4 0.4
@@ -17,15 +18,13 @@ particle_system ParticleSystem/WhiteSmoke {
     }
 
     affector ColourFader{
-        red 1
-        green 1
-        blue 1
+        red 0.06
+        green 0.06
+        blue 0.06
         alpha 0.06
     }
 
-/*
-    affector LinearForce
-    {
+    affector LinearForce{
         force_vector 0 -100 0
         force_application add
     }
@@ -34,10 +33,45 @@ particle_system ParticleSystem/WhiteSmoke {
         rate 75
         scale_range 1 1
     }
+}
 
-    affector Rotator
-    {
-        rotation_speed_range_start 10
-        rotation_speed_range_end 50
-    }*/
+particle_system ParticleSystem/ColorSmoke {
+    billboard_type point
+    particle_width 35
+    particle_height 35
+    quota 500
+    material Examen/Smoke
+
+    emitter Point{
+        direction 0 -1 0
+        position 0 -3 0
+        angle 15
+        emission_rate 20
+        time_to_live 6
+        velocity_min 150
+        velocity_max 180
+        colour 0.4 0.4 0.4 0.4
+        duration 100
+    }
+
+    affector ColourFader{
+        red 0.06
+        green 0.06
+        blue 0.06
+        alpha 0.06
+    }
+
+    affector LinearForce{
+        force_vector 0 -100 0
+        force_application add
+    }
+
+    affector ColourImage{
+        image smokecolors.png
+    }
+
+    affector Scaler{
+        rate 75
+        scale_range 1 1
+    }
 }

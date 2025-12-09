@@ -91,7 +91,7 @@ void IG2App::setupScene(void){
     // Creating SceneObjects
     createSkybox();
     createPlane();
-    SpaceShip* sh = new SpaceShip(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
+    // SpaceShip* sh = new SpaceShip(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
     Engine* engine = new Engine(Vector3(0, -150, 0), mSM->getRootSceneNode()->createChildSceneNode(), mSM);
 
 }
