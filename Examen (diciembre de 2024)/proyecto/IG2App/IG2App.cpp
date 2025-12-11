@@ -113,7 +113,7 @@ void IG2App::createPlane() {
         SceneNode* planeNode = mSM->getRootSceneNode()->createChildSceneNode("floor");
         planeNode->setPosition(Vector3(0.0, -300, 0.0));
         planeNode->attachObject(planeEntity);
-        planeEntity->setMaterialName("Examen/Floor");
+        planeEntity->setMaterialName("exam/waveShader");
 }
 
 void IG2App::createSkybox(){
