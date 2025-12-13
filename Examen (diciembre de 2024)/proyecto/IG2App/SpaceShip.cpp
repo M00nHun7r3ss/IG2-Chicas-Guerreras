@@ -18,11 +18,13 @@ void SpaceShip::update()
 	//Rotacion cohetes y fuego
 	_engine->update();
 
+	//Movimiento de cohete
 	//Sube pasado un tiempo
-	if (_timer->getMilliseconds() >=  DataSizes::TIME_ENGINE_START * 1000)
-	{
-		//Sube
-		_sphereNode->translate(Vector3(0, 2, 0));
-	}
+	//if (_timer->getMilliseconds() >=  DataSizes::TIME_ENGINE_START * 1000)
+	//{
+	//	//Sube
+	//	_sphereNode->translate(Vector3(0, 2, 0));
+	//}
 
+	//Movimiento de avion
 }

@@ -99,7 +99,7 @@ void IG2App::setupScene(void){
     createSkybox();
     createPlane();
     //Cohete
-    sp = new SpaceShip(Vector3::ZERO, mSM->getRootSceneNode()->createChildSceneNode(), mSM);
+    sp = new SpaceShip(Vector3(500, 0, 0), mSM->getRootSceneNode()->createChildSceneNode(), mSM);
 
 }
 

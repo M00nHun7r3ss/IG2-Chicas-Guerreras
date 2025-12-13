@@ -78,10 +78,53 @@ material Examen/EsferaCohete
     }
 }
 
+vertex_program rocketShaderVS glsl{
+    source rocketShaderVS.glsl
+    default_params{
+        param_named_auto modelViewProjMat worldviewproj_matrix
+        param_named_auto time sintime_0_2pi 100
+
+    }
+}
+
+fragment_program rocketShaderFS glsl{
+    source rocketShaderFS.glsl
+    default_params{
+        param_named texturaL int 0
+        param_named texturaM int 0
+        param_named BF float 0.5
+        param_named intLuzAmb float 1.0
+    }
+}
+
+
+material Examen/EsferaCoheteColor
+{
+    technique
+    {
+        pass 
+        {
+            vertex_program_ref rocketShaderVS{}
+            fragment_program_ref rocketShaderFS{}
+
+            texture_unit 
+            {
+                colour_op modulate
+                env_map spherical
+                filtering bilinear
+                tex_address_mode clamp
+                
+            }
+        }
+    }
+}
+
 vertex_program waveShaderVS glsl{
     source waveShaderVS.glsl
     default_params{
         param_named_auto modelViewProjMat worldviewproj_matrix
+        param_named_auto time sintime_0_2pi 100
+
     }
 }
 

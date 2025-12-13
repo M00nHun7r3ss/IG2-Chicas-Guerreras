@@ -19,6 +19,6 @@ Rocket::Rocket(Vector3 pos, SceneNode* node, SceneManager* sceneMng) : IG2Object
 	_sphereNode->setPosition(Vector3(0, -50, 0));
 	_sphereNode->setScale(Vector3(1, 0.25, 1)); //??ALBENUNEEEE
 
-	_sphereEntity->setMaterialName("Examen/EsferaCohete");
+	_sphereEntity->setMaterialName("Examen/EsferaCoheteColor");
 
 }
