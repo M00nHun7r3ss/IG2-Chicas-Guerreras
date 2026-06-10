@@ -1,0 +1,15 @@
+material Sky{
+		technique { 
+		pass {  
+			texture_unit {
+				texture spaceSky.jpg
+				scroll_anim 0.01 0.01
+				colour_op modulate
+			}
+			texture_unit {
+				texture lightMap.jpg
+				colour_op modulate
+			}
+		}
+    }
+}

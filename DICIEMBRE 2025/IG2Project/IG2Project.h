@@ -51,7 +51,7 @@ private:
     void createSinbad();
     void createFloor();
 
-    // --- examen
+    // --- examen apartado 1
     void createInnerRings();
     void createOuterRings();
     SceneNode* _innerRingsNode;
@@ -60,6 +60,9 @@ private:
     bool _rotateSpheres = false;
     bool _rotateOuter = false;
     float _innerDir = 1.0f;
+
+    // --- examen apartado 2
+    void createSkybox();
 };
 
 #endif
