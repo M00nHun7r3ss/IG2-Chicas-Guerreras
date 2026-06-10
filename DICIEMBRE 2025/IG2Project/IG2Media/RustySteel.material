@@ -1,0 +1,11 @@
+material RustySteel{
+		technique { 
+		pass {  
+			texture_unit {
+				texture RustySteel.jpg
+				colour_op modulate
+				env_map spherical
+			}
+		}
+    }
+}

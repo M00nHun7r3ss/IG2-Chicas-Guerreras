@@ -1,0 +1,11 @@
+material RustedMetal{
+    technique { 
+		pass {  
+			texture_unit {
+				texture RustedMetal.jpg
+				colour_op modulate
+				env_map spherical
+			}
+		}
+    }
+}
