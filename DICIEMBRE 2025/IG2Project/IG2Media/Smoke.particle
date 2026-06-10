@@ -1,0 +1,16 @@
+particle_system example/smokeParticle{
+	billboard_type point
+	particle_width 10
+	particle_height 10
+	quota 500
+	material example/smoke
+	emitter Point{
+		direction 0 1 0
+		angle 1
+		emission_rate 80
+		time_to_live 2
+		velocity_min 70
+		velocity_max 100
+		colour 0.4 0.4 0.4 0.4
+	}
+}

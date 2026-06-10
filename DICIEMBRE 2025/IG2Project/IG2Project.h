@@ -63,6 +63,10 @@ private:
 
     // --- examen apartado 2
     void createSkybox();
+
+    // --- examen apartado 3
+    bool _particlesEnabled = false;
+    std::vector<Ogre::ParticleSystem*> _particleSystems;
 };
 
 #endif

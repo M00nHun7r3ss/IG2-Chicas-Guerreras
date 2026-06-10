@@ -18,6 +18,14 @@ bool IG2Project::keyPressed(const OgreBites::KeyboardEvent& evt) {
 
     if (evt.keysym.sym == SDLK_d) { _rotateOuter = !_rotateOuter; }
 
+    if (evt.keysym.sym == SDLK_a) {
+        _particlesEnabled = !_particlesEnabled;
+
+        for (ParticleSystem* ps : _particleSystems) {
+            ps->setEmitting(_particlesEnabled);
+        }
+    }
+
     return true;
 }
 
@@ -176,14 +184,35 @@ void IG2Project::createInnerRings() {
         Entity* sphere = mSM->createEntity("sphere.mesh");
         SceneNode* node = _innerRingsNode->createChildSceneNode();
 
-        if (i % 2 == 0) sphere->setMaterialName("RustedMetal"); // pares
-        else sphere->setMaterialName("RustySteel"); // impares
-
         node->attachObject(sphere);
         node->showBoundingBox(true);
         _sphereNodes.push_back(node); // guardamos cada esfera
 
-        node->setPosition(x, y, 0);
+        // saca el centro de la esfera y la direccion del chorro
+        Vector3 centerSphere(x, y, 0);
+        Vector3 dir = (centerSphere - _innerRingsNode->getPosition()).normalisedCopy();
+
+        // mete cada particula con su direccion y sus cosas
+        ParticleSystem* ps = mSM->createParticleSystem(to_string(i), "example/smokeParticle");
+        SceneNode* particleNode = _innerRingsNode->createChildSceneNode();
+
+        particleNode->setPosition(centerSphere + dir * DataSizes::SPHERE_SIZE.x);
+        particleNode->setDirection(dir);
+        particleNode->attachObject(ps);
+        _particleSystems.push_back(ps);
+
+        ParticleEmitter* emitter = ps->getEmitter(0);
+
+        if (i % 2 == 0) { // pares
+            sphere->setMaterialName("RustedMetal"); 
+            emitter->setColour(ColourValue(1.0f, 1.0f, 1.0f, 1.0f));
+        }
+        else { // impares
+            sphere->setMaterialName("RustySteel"); 
+            emitter->setColour(ColourValue(0.0f, 0.0f, 0.0f, 1.0f));
+        }
+
+        node->setPosition(centerSphere);
         node->setScale(Vector3(DataSizes::SPHERE_SIZE));
     }
 }
