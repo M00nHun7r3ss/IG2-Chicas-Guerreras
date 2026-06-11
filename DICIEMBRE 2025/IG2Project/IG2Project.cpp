@@ -113,6 +113,8 @@ void IG2Project::frameRendered(const Ogre::FrameEvent& evt) {
     }
 
     if (_sinbadAnimState) _sinbadAnimState->addTime(deltaTime);
+    _runbase->addTime(deltaTime);
+    _runtop->addTime(deltaTime);
 }
 
 void IG2Project::createCamera() {
@@ -157,18 +159,21 @@ void IG2Project::createSinbad() {
     //// Show bounding box
     //mSinbadNode->showBoundingBox(true);
 
-    // Set position of Sinbad
-    //mSinbadNode->setPosition(x, y, z);
-
-    // Set scale of Sinbad
-    //mSinbadNode->setScale(20, 20, 20);
-
     //mSinbadNode->yaw(Ogre::Degree(-45));
     //mSinbadNode->setVisible(false);
     */
 
+    mSinbadNode->setScale(5, 5, 5);
     mSinbadNode->setPosition(DataSizes::SINBAD_INITIAL_POSITION);
-    mSinbadNode->setInitialState(); // para la animacion
+
+    // para la animacion
+    _runbase = ent->getAnimationState("RunBase");
+    _runbase->setEnabled(true);
+    _runbase->setLoop(true);
+    _runtop = ent->getAnimationState("RunTop");
+    _runtop->setEnabled(true);
+    _runtop->setLoop(true);
+    mSinbadNode->setInitialState(); 
 }
 
 void IG2Project::createFloor() {
@@ -280,7 +285,7 @@ void IG2Project::createSinbadAnimation() {
     // vertices del triangulo
     Vector3 p0 = DataSizes::SINBAD_INITIAL_POSITION;
     Vector3 p1 = p0 + Vector3(l, 0, 0);
-    Vector3 p2 = p0 + Vector3(l / 2.0f, 0, h);
+    Vector3 p2 = p0 + Vector3(l / 2.0f, 0, -h);
 
     // tiempo total
     float duration = 

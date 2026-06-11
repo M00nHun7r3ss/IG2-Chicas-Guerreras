@@ -71,6 +71,8 @@ private:
     // --- examen apartado 4
     Ogre::AnimationState* _sinbadAnimState = nullptr;
     void createSinbadAnimation();
+    AnimationState* _runbase;
+    AnimationState* _runtop;
 };
 
 #endif
