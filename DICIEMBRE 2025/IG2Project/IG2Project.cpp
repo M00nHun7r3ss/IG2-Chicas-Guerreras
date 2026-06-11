@@ -74,8 +74,9 @@ void IG2Project::setupScene(void) {
     // Creating the light
     createLights();
 
-    // Creating Sinbad
+    // Creating Sinbad and its animation
     createSinbad();
+    createSinbadAnimation();
     
     // Creating the floor
     createFloor();  
@@ -83,6 +84,10 @@ void IG2Project::setupScene(void) {
     // create rings
     createInnerRings();
     createOuterRings();
+
+    // ajustamos posicion
+    _outerRingsNode->setPosition(Vector3(0.0f, DataSizes::OUTER_RING_RADIUS, 0.0f));
+    _innerRingsNode->setPosition(Vector3(0.0f, DataSizes::OUTER_RING_RADIUS, 0.0f));
 
     // create skybox
     createSkybox();
@@ -106,6 +111,8 @@ void IG2Project::frameRendered(const Ogre::FrameEvent& evt) {
             s->yaw(Ogre::Degree(DataSizes::SPHERE_SPEED * deltaTime));
         }
     }
+
+    if (_sinbadAnimState) _sinbadAnimState->addTime(deltaTime);
 }
 
 void IG2Project::createCamera() {
@@ -142,10 +149,11 @@ void IG2Project::createLights() {
 }
 
 void IG2Project::createSinbad() {
-    //Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
-    //mSinbadNode = mSM->getRootSceneNode()->createChildSceneNode("nSinbad");
-    //mSinbadNode->attachObject(ent);
+    Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
+    mSinbadNode = mSM->getRootSceneNode()->createChildSceneNode();
+    mSinbadNode->attachObject(ent);
 
+    /*
     //// Show bounding box
     //mSinbadNode->showBoundingBox(true);
 
@@ -156,7 +164,11 @@ void IG2Project::createSinbad() {
     //mSinbadNode->setScale(20, 20, 20);
 
     //mSinbadNode->yaw(Ogre::Degree(-45));
-    //mSinbadNode->setVisible(false);    
+    //mSinbadNode->setVisible(false);
+    */
+
+    mSinbadNode->setPosition(DataSizes::SINBAD_INITIAL_POSITION);
+    mSinbadNode->setInitialState(); // para la animacion
 }
 
 void IG2Project::createFloor() {
@@ -194,10 +206,10 @@ void IG2Project::createInnerRings() {
 
         // mete cada particula con su direccion y sus cosas
         ParticleSystem* ps = mSM->createParticleSystem(to_string(i), "example/smokeParticle");
+        ps->setEmitting(false);
         SceneNode* particleNode = _innerRingsNode->createChildSceneNode();
 
         particleNode->setPosition(centerSphere + dir * DataSizes::SPHERE_SIZE.x);
-        particleNode->setDirection(dir);
         particleNode->attachObject(ps);
         _particleSystems.push_back(ps);
 
@@ -211,6 +223,9 @@ void IG2Project::createInnerRings() {
             sphere->setMaterialName("RustySteel"); 
             emitter->setColour(ColourValue(0.0f, 0.0f, 0.0f, 1.0f));
         }
+
+        emitter->setDirection(dir);
+        
 
         node->setPosition(centerSphere);
         node->setScale(Vector3(DataSizes::SPHERE_SIZE));
@@ -248,7 +263,7 @@ void IG2Project::createSkybox() {
         skyPlane,
         "Sky",
         1000, // scale: la escala aplicada al plano del cielo.
-        5, // tiling: numero de veces que se coloca la textura en el cielo.
+        5,     // tiling: numero de veces que se coloca la textura en el cielo.
         true,
         0,
         1,
@@ -256,3 +271,77 @@ void IG2Project::createSkybox() {
         ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME
     );
 }
+
+void IG2Project::createSinbadAnimation() {
+    // lado y altura del triangulo
+    float l = DataSizes::SINBAD_WALK_LENGTH;
+    float h = sqrt(3.0f) * l / 2.0f; // enunciado
+
+    // vertices del triangulo
+    Vector3 p0 = DataSizes::SINBAD_INITIAL_POSITION;
+    Vector3 p1 = p0 + Vector3(l, 0, 0);
+    Vector3 p2 = p0 + Vector3(l / 2.0f, 0, h);
+
+    // tiempo total
+    float duration = 
+        3.0f * DataSizes::SINBAD_TIME_WALKING + // veces que camina
+        3.0f * DataSizes::SINBAD_TIME_ROTATING; // veces que rota
+
+    // crea el anim y el track
+    Animation* anim = mSM->createAnimation("SinbadAnimation", duration);
+    NodeAnimationTrack* track = anim->createNodeTrack(0, mSinbadNode);
+
+    // direcciones de la trayectoria (p0->p1, p1->p2, p2->p0)
+    Vector3 p0p1 = (p1 - p0).normalisedCopy();
+    Vector3 p1p2 = (p2 - p1).normalisedCopy();
+    Vector3 p2p0 = (p0 - p2).normalisedCopy();
+
+    // orientaciones de la trayectoria
+    Quaternion r01 = Vector3::UNIT_Z.getRotationTo(p0p1);
+    Quaternion r12 = Vector3::UNIT_Z.getRotationTo(p1p2);
+    Quaternion r20 = Vector3::UNIT_Z.getRotationTo(p2p0);
+
+    // keyframes
+    TransformKeyFrame* kf;
+
+    float t = 0.0f;
+    kf = track->createNodeKeyFrame(t);
+    kf->setTranslate(p0);
+    kf->setRotation(r01);
+
+    t += DataSizes::SINBAD_TIME_WALKING;
+    kf = track->createNodeKeyFrame(t);
+    kf->setTranslate(p1);
+    kf->setRotation(r01);
+
+    t += DataSizes::SINBAD_TIME_ROTATING;
+    kf = track->createNodeKeyFrame(t);
+    kf->setTranslate(p1);
+    kf->setRotation(r12);
+
+    t += DataSizes::SINBAD_TIME_WALKING;
+    kf = track->createNodeKeyFrame(t);
+    kf->setTranslate(p2);
+    kf->setRotation(r12);
+
+    t += DataSizes::SINBAD_TIME_ROTATING;
+    kf = track->createNodeKeyFrame(t);
+    kf->setTranslate(p2);
+    kf->setRotation(r20);
+
+    t += DataSizes::SINBAD_TIME_WALKING;
+    kf = track->createNodeKeyFrame(t);
+    kf->setTranslate(p0);
+    kf->setRotation(r20);
+
+    t += DataSizes::SINBAD_TIME_ROTATING;
+    kf = track->createNodeKeyFrame(t);
+    kf->setTranslate(p0);
+    kf->setRotation(r01);
+
+    _sinbadAnimState = mSM->createAnimationState("SinbadAnimation");
+    _sinbadAnimState->setEnabled(true);
+    _sinbadAnimState->setLoop(true);
+}
+
+

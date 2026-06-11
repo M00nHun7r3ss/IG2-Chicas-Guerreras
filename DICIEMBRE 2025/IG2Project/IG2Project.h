@@ -67,6 +67,10 @@ private:
     // --- examen apartado 3
     bool _particlesEnabled = false;
     std::vector<Ogre::ParticleSystem*> _particleSystems;
+
+    // --- examen apartado 4
+    Ogre::AnimationState* _sinbadAnimState = nullptr;
+    void createSinbadAnimation();
 };
 
 #endif
