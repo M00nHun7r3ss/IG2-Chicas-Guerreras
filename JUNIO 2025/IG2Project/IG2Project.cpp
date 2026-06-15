@@ -53,9 +53,23 @@ void IG2Project::setup(void) {
 
 void IG2Project::setupScene(void) {
 
-    //------------------------------------------------------------------------
     // Creating the camera
+    createCamera();
+    
+    // Creating the light
+    createLight();
+    
+    // Creating Sinbad
+    //createSinbad();
+    
+    // Creating the floor
+    //createFloor();
 
+    // Create airplane
+    createAirplane();
+}
+
+void IG2Project::createCamera() {
     Camera* cam = mSM->createCamera("Cam");
     cam->setNearClipDistance(1);
     cam->setFarClipDistance(10000);
@@ -74,13 +88,11 @@ void IG2Project::setupScene(void) {
     mCamMgr = new OgreBites::CameraMan(mCamNode);
     addInputListener(mCamMgr);
     mCamMgr->setStyle(OgreBites::CS_ORBIT);
+}
 
-
-    //------------------------------------------------------------------------
-    // Creating the light
-
+void IG2Project::createLight() {
     //mSM->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
-    
+
     Light* luz = mSM->createLight("Luz");
     luz->setType(Ogre::Light::LT_DIRECTIONAL);
     luz->setDiffuseColour(0.75, 0.75, 0.75);
@@ -88,11 +100,9 @@ void IG2Project::setupScene(void) {
     mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
     mLightNode->attachObject(luz);
     mLightNode->setDirection(Ogre::Vector3(-1, -1, -1));
- 
+}
 
-    //------------------------------------------------------------------------
-    // Creating Sinbad
-
+void IG2Project::createSinbad() {
     Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
     mSinbadNode = mSM->getRootSceneNode()->createChildSceneNode("nSinbad");
     mSinbadNode->attachObject(ent);
@@ -108,11 +118,9 @@ void IG2Project::setupScene(void) {
 
     //mSinbadNode->yaw(Ogre::Degree(-45));
     //mSinbadNode->setVisible(false);    
+}
 
-
-    //------------------------------------------------------------------------
-    // Creating the floor
-
+void IG2Project::createFloor() {
     MeshManager::getSingleton().createPlane("floor", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
         Plane(Vector3::UNIT_Y, 0),
         1500, 1500, 50, 50, true, 1, 5, 5,
@@ -122,4 +130,9 @@ void IG2Project::setupScene(void) {
     entFloor->setMaterialName("example/stonesFloor");
     SceneNode* floorNode = mSM->getRootSceneNode()->createChildSceneNode();
     floorNode->attachObject(entFloor);
+}
+
+void IG2Project::createAirplane() {
+    SceneNode* airplaneNode = mSM->getRootSceneNode()->createChildSceneNode();
+    new Airplane(Vector3::ZERO, airplaneNode, mSM);
 }

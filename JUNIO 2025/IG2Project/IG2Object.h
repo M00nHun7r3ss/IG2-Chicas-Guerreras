@@ -153,4 +153,6 @@ class IG2Object : public OgreBites::InputListener {
     
         // Initial position of this element
         Vector3 initialPosition;
+
+        Vector3 datasizesScale(Entity* ent, Vector3 datasize);
 };

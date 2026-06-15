@@ -16,6 +16,7 @@
 #include "Ogre.h"
 #include <OgreWindowEventUtilities.h>
 #include <SDL_keycode.h>
+#include "Airplane.h"
 
 
 class IG2Project: public OgreBites::ApplicationContext, OgreBites::InputListener {
@@ -42,6 +43,13 @@ protected:
 
     Ogre::SceneNode* mCamNode = nullptr;
     OgreBites::CameraMan* mCamMgr = nullptr;
+
+private:
+    void createCamera();
+    void createLight();
+    void createSinbad();
+    void createFloor();
+    void createAirplane();
 };
 
 #endif

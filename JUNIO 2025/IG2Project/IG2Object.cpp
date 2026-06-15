@@ -113,6 +113,16 @@ Vector3 IG2Object::calculateBoxSize (){
     return result;
 }
 
+Vector3 IG2Object::datasizesScale(Entity* ent, Vector3 datasize) {
+    AxisAlignedBox box = ent->getBoundingBox();
+
+    Vector3 currentSize = box.getMaximum() - box.getMinimum();
+
+    auto a = datasize / currentSize;
+
+    return Vector3(datasize / currentSize);
+}
+
 const AxisAlignedBox& IG2Object::getAABB(){    
     return mNode->_getWorldAABB();
 }
