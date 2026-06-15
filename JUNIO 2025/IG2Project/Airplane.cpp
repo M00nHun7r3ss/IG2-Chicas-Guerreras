@@ -8,6 +8,7 @@ Airplane::Airplane(Vector3 pos, SceneNode* node, SceneManager* sm) : IG2Object(p
 	Vector3 bodyScale = datasizesScale(bodyEnt, DataSizes::AIRPLANE_BODY_SIZE);
 	bodyNode->setScale(bodyScale);
 	bodyNode->pitch(Degree(90.0f));
+	bodyEnt->setMaterialName("Body");
 
 	// --- alas
 	SceneNode* wingNode = createChildSceneNode();
@@ -16,6 +17,7 @@ Airplane::Airplane(Vector3 pos, SceneNode* node, SceneManager* sm) : IG2Object(p
 	Vector3 wingScale = datasizesScale(wingEnt, DataSizes::AIRPLANE_WING_SIZE);
 	wingNode->setScale(wingScale);
 	wingNode->setPosition(0.0f, 10.0f, 0.0f);
+	wingEnt->setMaterialName("Wing");
 
 	// --- timon
 	SceneNode* rudderNode = createChildSceneNode();
@@ -26,6 +28,7 @@ Airplane::Airplane(Vector3 pos, SceneNode* node, SceneManager* sm) : IG2Object(p
 	rudderNode->roll(Degree(90));
 	rudderNode->yaw(Degree(30));
 	rudderNode->setPosition(0.0f, DataSizes::AIRPLANE_BODY_SIZE.x / 2.0f, -DataSizes::AIRPLANE_BODY_SIZE.y / 2.0f);
+	rudderEnt->setMaterialName("Wing");
 
 	// --- motor izq
 	SceneNode* engineLNode = createChildSceneNode();

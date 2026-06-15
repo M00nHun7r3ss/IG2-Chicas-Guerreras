@@ -1,0 +1,9 @@
+material Body{
+    technique { 
+		pass {  
+			texture_unit {
+				texture corrosion.jpg
+			}
+		}
+    }
+}

@@ -1,0 +1,10 @@
+material Engine{
+    technique { 
+		pass {  
+			lighting off
+			texture_unit {
+				texture MtlPlat2.jpg
+			}
+		}
+    }
+}

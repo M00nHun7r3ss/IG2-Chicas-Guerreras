@@ -8,6 +8,7 @@ Engine::Engine(Vector3 pos, SceneNode* node, SceneManager* sm) : IG2Object(pos, 
 	Vector3 engineScale = datasizesScale(baseEnt, DataSizes::ENGINE_BASE_SIZE);
 	baseNode->setScale(engineScale);
 	baseNode->pitch(Degree(90));
+	baseEnt->setMaterialName("Engine");
 
 	// --- cohetes
 	float radius = engineScale.x / 2.0f + 25.0f;
@@ -25,5 +26,6 @@ Engine::Engine(Vector3 pos, SceneNode* node, SceneManager* sm) : IG2Object(pos, 
 		rocketNode->setPosition(x, y, -50);
 		Vector3 rocketScale = datasizesScale(rocketEnt, DataSizes::ROCKET_SIZE);
 		rocketNode->setScale(rocketScale);
+		rocketEnt->setMaterialName("Rocket");
 	}
 }
