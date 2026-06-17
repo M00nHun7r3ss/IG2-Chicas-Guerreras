@@ -63,10 +63,13 @@ void IG2Project::setupScene(void) {
     //createSinbad();
     
     // Creating the floor
-    //createFloor();
+    createFloor();
 
     // Create airplane
     createAirplane();
+
+    // create skybox
+    createSkyBox();
 }
 
 void IG2Project::createCamera() {
@@ -127,12 +130,29 @@ void IG2Project::createFloor() {
         Vector3::UNIT_Z);
 
     Entity* entFloor = mSM->createEntity("exampleFloor", "floor");
-    entFloor->setMaterialName("example/stonesFloor");
+    entFloor->setMaterialName("Floor");
     SceneNode* floorNode = mSM->getRootSceneNode()->createChildSceneNode();
     floorNode->attachObject(entFloor);
 }
 
 void IG2Project::createAirplane() {
     SceneNode* airplaneNode = mSM->getRootSceneNode()->createChildSceneNode();
-    new Airplane(Vector3::ZERO, airplaneNode, mSM);
+    new Airplane(Vector3(0.0f, 100.0f, 0.0f), airplaneNode, mSM);
+}
+
+void IG2Project::createSkyBox() {
+    Plane skyPlane(Vector3::UNIT_Z, -5000);
+
+    mSM->_setSkyPlane(
+        true,
+        skyPlane,
+        "Sky",
+        1000, // scale: la escala aplicada al plano del cielo.
+        5, // tiling: numero de veces que se coloca la textura en el cielo.
+        true,
+        0,
+        1,
+        1,
+        ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME
+    );
 }

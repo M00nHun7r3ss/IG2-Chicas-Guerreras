@@ -50,6 +50,9 @@ private:
     void createSinbad();
     void createFloor();
     void createAirplane();
+    void createSkyBox();
+    
+    std::vector<ParticleSystem*> _smokeSystems;
 };
 
 #endif
