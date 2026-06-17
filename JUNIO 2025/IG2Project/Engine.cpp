@@ -26,7 +26,7 @@ Engine::Engine(Vector3 pos, SceneNode* node, SceneManager* sm) : IG2Object(pos, 
 		ParticleSystem* smoke = sm->createParticleSystem(to_string(rand()), "example/smokeParticle");
 		ParticleEmitter* emitter = smoke->getEmitter(0);
 		if (i % 2 == 0) emitter->setColour(ColourValue::White);
-		//else emitter->setColour(ColourValue(0.2f, 0.2f, 0.2f));
+		else emitter->setColour(ColourValue(0.2f, 0.2f, 0.2f));
 		rocketNode->attachObject(smoke);
 
 		rocketNode->setPosition(x, y, -50);

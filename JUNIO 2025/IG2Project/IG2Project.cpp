@@ -11,6 +11,8 @@ bool IG2Project::keyPressed(const OgreBites::KeyboardEvent& evt) {
         getRoot()->queueEndRendering();
     }
 
+    _ap->input(evt);
+
     return true;
 }
 
@@ -70,6 +72,10 @@ void IG2Project::setupScene(void) {
 
     // create skybox
     createSkyBox();
+}
+
+void IG2Project::frameRendered(const Ogre::FrameEvent& evt) {
+    _ap->update(evt.timeSinceLastFrame);
 }
 
 void IG2Project::createCamera() {
@@ -137,7 +143,9 @@ void IG2Project::createFloor() {
 
 void IG2Project::createAirplane() {
     SceneNode* airplaneNode = mSM->getRootSceneNode()->createChildSceneNode();
-    new Airplane(Vector3(0.0f, 100.0f, 0.0f), airplaneNode, mSM);
+    _ap = new Airplane(Vector3(0.0f, 100.0f, (- 1500.0f / 2.0f) + 100.0f), airplaneNode, mSM);
+    airplaneNode->yaw(Degree(-90.0f));
+    airplaneNode->scale(Vector3(1.0f / 2.0f, 1.0f / 2.0f, 1.0f / 2.0f));
 }
 
 void IG2Project::createSkyBox() {

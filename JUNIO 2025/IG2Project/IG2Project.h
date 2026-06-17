@@ -30,6 +30,7 @@ protected:
     virtual void setup();
     virtual void shutdown();
     virtual void setupScene();
+    void frameRendered(const Ogre::FrameEvent& evt) override;
 
 
     Ogre::SceneNode* mSinbadNode = nullptr;
@@ -51,8 +52,8 @@ private:
     void createFloor();
     void createAirplane();
     void createSkyBox();
-    
-    std::vector<ParticleSystem*> _smokeSystems;
+
+    Airplane* _ap;
 };
 
 #endif
